@@ -106,16 +106,16 @@ the field of machine comprehension. Essentially, by trying to answer SAT
 questions we can try to solve problems that will be present in real-world
 applications but have not yet been tackled by existing research.
 
-In particular, we combine two techniques: Memory Networks andrelational semantic
-analysis. Memory Networks were introduced by Weston et al. in \cite{Weston2015a}
-and improved by Sukhbaatar et al. in \cite{Sukhbaatar2015}. These are a
-particular type of neural network. We discuss memory networks and alternatives
-in much greater depth in \ref{Related Work} and \ref{Model}. Most recent machine
-comprehension research has focused on using neural nets as the core system, so
-we use them in this paper as well. Neural nets are a very generalizable
-technique and in the past decade have become very popular. In fact, advances in
-neural net techniques have greatly contributed to the recent surge in machine
-comprehension research.
+In particular, we modify and combine two techniques: Memory Networks and
+relational semantic analysis. Memory Networks were introduced by Weston et al.
+in \cite{Weston2015a} and improved by Sukhbaatar et al. in
+\cite{Sukhbaatar2015}. These are a particular type of neural network. We discuss
+memory networks and alternatives in much greater depth in \ref{Related Work} and
+\ref{Model}. Most recent machine comprehension research has focused on using
+neural nets as the core system, so we use them in this paper as well. Neural
+nets are a very generalizable technique and in the past decade have become very
+popular. In fact, advances in neural net techniques have greatly contributed to
+the recent surge in machine comprehension research.
 
 Memory Networks require the input text and the query to be embedded in some form
 for easy computation. These embedding techniques are covered in detail in
@@ -334,20 +334,20 @@ temporal questions, or true-false questions. This model scores almost 67\% on
 the dataset, over 6\% better than the next-best model.
 
 Weston et al.\cite{Weston2015a} introduced memory networks. These are a type of
-neural network which simulate a long-term memory. We discussed in
-\ref{Recurrent Neural Networks} how RNNs have a ``vanishing gradient'' problem,
-and are not able to take advantage of states from more than a few steps prior.
-Memory networks have a memory module which stores old memories and then updates
-them given new inputs. When given a query, the memory network finds relevant
-memories, then finds memories that are relevant given those memories, and so
-on. Finally, it provides an answer to the query. Sukhbaatar et
+neural network which simulate a long-term memory. We discussed in \ref{Recurrent
+Neural Networks} how RNNs have a ``vanishing gradient'' problem, and are not
+able to take advantage of states from more than a few steps prior. Memory
+networks have a memory module which stores old memories and then updates them
+given new inputs. When given a query, the memory network finds relevant
+memories, then finds memories that are relevant given those memories, and so on.
+Finally, it provides an answer to the query. Sukhbaatar et
 al.\cite{Sukhbaatar2015} improved this model by creating a model that can be
 trained end to end, while in the original design each module needed to be
-trained independently. This is the model we use for our design, so we discuss
-it in more detail in \ref{Model}. Kumar et al.\cite{Kumar2015} create ``Dynamic
-Memory Networks''. Their design uses two memory modules. The semantic memory
-module stores general knowledge, while the episodic memory module iteratively
-finds memories relevant to the query.
+trained independently. This is the model that is the basis for our design, so we
+discuss it in more detail in \ref{Model}. Kumar et al.\cite{Kumar2015} create
+``Dynamic Memory Networks''. Their design uses two memory modules. The semantic
+memory module stores general knowledge, while the episodic memory module
+iteratively finds memories relevant to the query.
 
 \section{Data}
 \label{Data}
@@ -401,6 +401,62 @@ parsing to train our final model.
 
 \section{Model}
 \label{Model}
+
+Our model consists of two main parts: the semantic analysis/embedding, and the
+neural network. The semantic analysis is inspired by Nickel et al.
+\cite{Nickel2011} and the neural network is based on the Memory Network model
+introduced by Sukhbaatar et al. \cite{Sukhbaatar2015}. Because our problem is
+more complex than that tackled by these original models, we have to modify the
+conceptual and mathematical basis of these models. This allows us to combine the
+semantic analysis and neural network learning models.
+
+This research presents three fundamental insights.
+\begin{enumerate}
+
+    \item We treat the input text as a knowledge base and dynamically convert it
+    into a knowledge graph. We can then interpret the questions as queries on
+    the graph, requiring us to find an entity or relation that represents the
+    answer to the question.
+
+    \item We use tensor decomposition to embed the knowledge graph and
+    questions. Most other research has used simple bag-of-words embedding or
+    word2vec embedding. However, neither of these approaches are compatible
+
+    Specifically, we use an enhanced version of
+    RESCAL\cite{Nickel2011}. RESCAL by itself is a fine model, but we make it
+    more accurate by adding ``Semantically Smooth Embedding''(SSE), as proposed
+    by Guo et al.\cite{Guo2015}. In their original paper they propose adding
+    this type of embedding to tensor decomposition as future work, so to our
+    knowledge we are the first to perform tensor decomposition with SSE.
+
+    \item We use the embedded models as inputs to a modified version of Memory
+    Networks. Given a set of embedded inputs and queries, this type of neural
+    network takes advantage of ``memory'' to find new facts that are relevant
+    given the current set of relevant facts, but may not be relevant solely
+    based on the query.
+
+\end{enumerate}
+
+These techniques were first introduced in previous research. However, all of
+them were applied to separate domains. Neural nets have been used for machine
+comprehension on MCTest, bAbi, and questions of similar difficulty. Their
+embedding model is quite simple, however (often just bag-of-words). Knowledge
+graphs and tensor decomposition have traditionally been used only for relational
+learning when a knowledge graph or set of triples already exists.
+
+\subsection{Knowledge Graph Representation}
+\label{Knowledge Graph Representation}
+We choose to represent the input as a knowledge graph
+
+and
+the goal is to answer queries linking two entities or an entity and a relation
+
+\subsection{Tensor Decomposition Embedding}
+\label{Tensor Decomposition Embedding}
+Essentially, SSE enforces geometric constraints on
+
+\subsection{Memory Networks}
+\label{Memory Networks}
 
 \bstctlcite{bstctl:etal, bstctl:nodash, bstctl:simpurl}
 \bibliographystyle{IEEEtranS}
