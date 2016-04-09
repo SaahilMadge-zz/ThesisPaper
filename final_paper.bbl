@@ -41,21 +41,9 @@ J.~Berant and P.~Clark, ``{Modeling Biological Processes for Reading
 \bibitem{Bishop1995}
 C.~M. Bishop, \emph{{Neural networks for pattern recognition}}, 1995, vol.~92.
 
-\bibitem{Bordes2015}
-\BIBentryALTinterwordspacing
-A.~Bordes, N.~Usunier, S.~Chopra, and J.~Weston, ``{Large-scale Simple Question
-  Answering with Memory Networks},'' 2015. [Online]. Available:
-  \url{http://arxiv.org/abs/1506.02075}
-\BIBentrySTDinterwordspacing
-
-\bibitem{Chen2014}
-\BIBentryALTinterwordspacing
-D.~Chen and C.~D. Manning, ``{A Fast and Accurate Dependency Parser using
-  Neural Networks},'' \emph{Proceedings of the 2014 Conference on Empirical
-  Methods in Natural Language Processing (EMNLP)}, no.~i, pp. 740--750, 2014.
-  [Online]. Available:
-  \url{https://cs.stanford.edu/{~}danqi/papers/emnlp2014.pdf}
-\BIBentrySTDinterwordspacing
+\bibitem{Guo2015}
+S.~Guo, Q.~Wang, B.~Wang, L.~Wang, and L.~Guo, ``Semantically smooth knowledge
+  graph embedding,'' in \emph{Proceedings of ACL}, 2015, pp. 84--94.
 
 \bibitem{Hirschman1999}
 L.~Hirschman, M.~Light, E.~Breck, and J.~D. Burger, ``{{\{}D{\}}eep

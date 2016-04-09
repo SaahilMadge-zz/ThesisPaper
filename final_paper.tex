@@ -176,6 +176,10 @@ methods are to return a probability vector of size $V$ where each element
 represents how likely that word is to be the output, or to pick the most likely
 word from that distribution and return only that word. \\
 
+\subsubsection{Dependency Graph}
+\label{Dependency Graph}
+******FINISH THIS******** \\
+
 \subsubsection{word2vec}
 \label{word2vec}
 
@@ -211,8 +215,10 @@ all the knowledge in our ``Knowledge Base''.
 We can represent these triples as a directed graph, with each entity as a vertex
 and the relations as edge types between them. Figure \ref{Figure: KG} shows an
 example of a very small knowledge graph. Note that there is only one node per
-entity. The mathematical details of our knowledge graph model can be found in
-\ref{Model}.
+entity. This allows the graph to store multiple pieces of information regarding
+the same entity together, to allow for easy processing by the program while also
+making it simple for humans to understand. The mathematical details of our
+knowledge graph model can be found in \ref{Model}.
 
 \subsection{Neural Networks}
 \label{Neural Networks}
@@ -349,6 +355,151 @@ discuss it in more detail in \ref{Model}. Kumar et al.\cite{Kumar2015} create
 memory module stores general knowledge, while the episodic memory module
 iteratively finds memories relevant to the query.
 
+\section{Model}
+\label{Model}
+
+This research presents three fundamental insights. \\
+
+\begin{enumerate}
+
+    \item We treat the input text as a knowledge base and dynamically convert it
+    into a knowledge graph. We can then interpret the questions as queries on
+    the graph, requiring us to find an entity or relation that represents the
+    answer to the question. \\
+
+    \item We use tensor decomposition to embed the knowledge graph and
+    questions. Specifically, we use an enhanced version of
+    RESCAL\cite{Nickel2011}. RESCAL by itself is a fine model, but we make it
+    more accurate by adding ``Semantically Smooth Embedding''(SSE), as proposed
+    by Guo et al.\cite{Guo2015}. In their original paper they propose adding
+    this type of embedding to tensor decomposition as future work, so to our
+    knowledge we are the first to perform tensor decomposition with SSE. \\
+
+    \item We use the embedded models as inputs to a modified version of Memory
+    Networks. Given a set of embedded inputs and queries, this type of neural
+    network takes advantage of ``memory'' to find new facts that are relevant
+    given the current set of relevant facts, but may not be relevant solely
+    based on the query. \\
+
+\end{enumerate}
+
+These techniques were first introduced in previous research. However, all of
+them were applied to separate domains. Neural nets have been used for machine
+comprehension on MCTest, bAbi, and questions of similar difficulty. Their
+embedding model is quite simple, however (often just bag-of-words). Knowledge
+graphs and tensor decomposition have traditionally been used only for relational
+learning when a knowledge graph or set of triples already exists. As our problem
+is more complex than that tackled by these original models, and we must combine
+these original models, we have to significantly modify their conceptual and
+mathematical basis.
+
+\subsection{Knowledge Graph Representation}
+\label{Knowledge Graph Representation}
+
+The first part of our design is to dynamically convert the input passage into a
+knowledge graph and the questions as queries on that graph. \\
+
+\subsubsection{Advantages of Knowledge Graph Representation}
+\label{Advantages of Knowledge Graph Representation}
+
+There are several advantages to using a knowledge graph representation. The main
+benefit is that it actually preserves the meaning of the text. Whereas
+bag-of-words loses the ordering of words and word2vec keeps the latent
+properties but no others, a knowledge graph representation almost completely
+stores the intended meaning of the original text. Most sentences in English can
+be broken down into Subject-Verb-Object triples, which require little if any
+processing to convert into the $\langle \textit{entity}_1, \, \textit{relation}, \,
+\textit{entity}_2 \rangle$ format. The knowledge graph itself is simply a list of
+these triples. If we can parse the input text and extract the
+Subject-Verb-Object relationship, we can convert each sentence into a triple of
+the form
+
+$$\langle \textit{subject}, \, \textit{verb}, \, \textit{object} \rangle
+\Rightarrow \langle e_1, \, r, \, e_2 \rangle$$
+
+How to actually perform this conversion is covered in \ref{Converting to
+Knowledge Graph Representation}. *****ADD FIGURES HERE SHOWING EXAMPLE TRANSFORMATIONS******
+
+Even more importantly, the knowledge graph inherently has \textit{memory}. What
+this means is that it automatically pieces together information about the same
+concept, even if that information occurs across different sentences or even
+different paragraphs. *****ADD FIGURE HERE SHOWING EXAMPLE******* As the figure
+shows, even if in one paragraph the text says that Harry was born in 1980 and
+several paragraphs later we learn that he has a friend named James, these
+relations both link to the single Harry entity node. By analyzing the outbound
+and inbound relations of the Harry entity node, we can easily find all the
+information the text has stated about Harry. Any question that is asked about
+Harry can be answered using this information. While such a representation for
+memory may seem natural, virtually all previous research in the machine
+comprehension space has parsed by sentence. As a result, the knowledge graph
+representation is the best way for our system to easily find all information
+about an entity that was given in the original text.
+
+Entities also do not have to be concrete things; they can just as easily be
+abstract concepts. For example, Figure~\ref{Figure: KG} shows entities like Carl
+Pavano (a person), but it also shows an entity node for the year 1976. To
+roughly generalize, any noun can be an entity node. The phrase ``abstract
+concept'' itself could be an entity node. Entity-relation triples can all be
+analyzed similarly, so abstract reasoning is as simple as concrete reasoning.
+Not only does a knowledge graph allow us to perform abstract reasoning, but it
+is arguably the only way to perform reasoning of this form.
+
+A good way to understand the knowledge graph representation is to think of it as
+a \textit{concept map}. Every sentence in the text introduces a new concept
+(concrete or abstract) and/or provides more information about a previously
+introduced concept. All information is provided in such a way that the concept
+is either the actor or the receiver of some action. We update our concept map
+with this new information by adding entity nodes as needed and the relation
+provided in the current sentence. When we've finished parsing the input text,
+we have the full concept map, which gives complete information on each concept
+and the information we know about it.
+
+Another benefit is that there are already methods and theory of analysis for
+knowledge graphs. As mentioned earlier, passages as complex as SAT reading
+comprehension tests have rarely been analyzed semantically. Moreover, the fact
+that information comes in a variety of sentence structures across several
+paragraphs means that traditional semantic analysis will not suffice.
+Traditional analysis often parses one sentence or one paragraph at a time, which
+is not enough for our particular use case. The original input simply cannot be
+analyzed as it is using existing techniques. Since this problem cannot be solved
+in its original form, we convert it to a form which we know how to analyze. Not
+only have knowledge graphs been studied extensively in the field of relational
+learning, but they can also be analyzed using techniques from graph theory.
+Essentially, we turn the problem of analyzing complex text into a problem of
+analyzing a knowledge graph.
+
+At the same time, the knowledge graph representation also preserves human
+readability. A major problem with text input is that it is easily interpretable
+by humans but requires much preprocessing before it can be interpreted by a
+program. It is not necessary for our processed text to be in a format humans can
+interpret, but it certainly helps us reason about the problem and come up with
+interesting solutions. The entity-relation triple format is almost as intuitive
+to humans as the original textual input.
+
+Of course, even the knowledge graph representation has some drawbacks. Because
+we build the knowledge graph using the statements in the original text, we can
+only perform analysis on the textual information. We can trace relations through
+the graph but there is no way to perform higher-level reasoning. For example,
+questions that ask about classification of new information or broad themes of
+the passage cannot be answered. Nevertheless, these are flaws in any form of
+representation. The knowledge graph representation provides the most advantages
+and fewest drawbacks of any representation. \\
+
+\subsubsection{Converting to Knowledge Graph Representation}
+\label{Converting to Knowledge Graph Representation}
+******FILL THIS IN******
+
+\subsection{Tensor Decomposition Embedding}
+\label{Tensor Decomposition Embedding}
+Most other research has used simple bag-of-words embedding or
+word2vec embedding. However, neither of these approaches are compatible with the
+knowledge graph. 
+
+Essentially, SSE enforces geometric constraints on
+
+\subsection{Memory Networks}
+\label{Memory Networks}
+
 \section{Data}
 \label{Data}
 
@@ -383,80 +534,6 @@ format. Amazon Mechanical Turk was used for this task. Each test was scanned,
 and we approximated that typing up one test requires an hour. We requested
 Master Turkers, 2 per test, and paid \$8.00 for each task. The total expenditure
 was \$304.00.
-
-\section{Progress} Besides all of the preliminary research, the basic neural
-network model has been implemented, in both 1-hop and 3-hop version, as
-specified in \cite{Sukhbaatar2015}. Additionally, the programs to read in and
-format data from MCTest, bAbi, and the SAT tests have been written and tested.
-The tests have been scanned and the Turk tasks should be finished within a week.
-
-The remaining steps are to create a model for dependencies within sentences and
-across sentences. Two approaches look promising. The first is to use a joint
-probability model as defined in \cite{Narasimhan2015} and with dependency
-parsing by \cite{Chen2014}. The second is to try and create a concept map that
-is updated as we parse the passage. The questions can then be answered by
-looking at the concept map for a particular entity. This is similar to
-\cite{Bordes2015}. Once we have that we can combine the neural net with the
-parsing to train our final model.
-
-\section{Model}
-\label{Model}
-
-Our model consists of two main parts: the semantic analysis/embedding, and the
-neural network. The semantic analysis is inspired by Nickel et al.
-\cite{Nickel2011} and the neural network is based on the Memory Network model
-introduced by Sukhbaatar et al. \cite{Sukhbaatar2015}. Because our problem is
-more complex than that tackled by these original models, we have to modify the
-conceptual and mathematical basis of these models. This allows us to combine the
-semantic analysis and neural network learning models.
-
-This research presents three fundamental insights.
-\begin{enumerate}
-
-    \item We treat the input text as a knowledge base and dynamically convert it
-    into a knowledge graph. We can then interpret the questions as queries on
-    the graph, requiring us to find an entity or relation that represents the
-    answer to the question.
-
-    \item We use tensor decomposition to embed the knowledge graph and
-    questions. Most other research has used simple bag-of-words embedding or
-    word2vec embedding. However, neither of these approaches are compatible
-
-    Specifically, we use an enhanced version of
-    RESCAL\cite{Nickel2011}. RESCAL by itself is a fine model, but we make it
-    more accurate by adding ``Semantically Smooth Embedding''(SSE), as proposed
-    by Guo et al.\cite{Guo2015}. In their original paper they propose adding
-    this type of embedding to tensor decomposition as future work, so to our
-    knowledge we are the first to perform tensor decomposition with SSE.
-
-    \item We use the embedded models as inputs to a modified version of Memory
-    Networks. Given a set of embedded inputs and queries, this type of neural
-    network takes advantage of ``memory'' to find new facts that are relevant
-    given the current set of relevant facts, but may not be relevant solely
-    based on the query.
-
-\end{enumerate}
-
-These techniques were first introduced in previous research. However, all of
-them were applied to separate domains. Neural nets have been used for machine
-comprehension on MCTest, bAbi, and questions of similar difficulty. Their
-embedding model is quite simple, however (often just bag-of-words). Knowledge
-graphs and tensor decomposition have traditionally been used only for relational
-learning when a knowledge graph or set of triples already exists.
-
-\subsection{Knowledge Graph Representation}
-\label{Knowledge Graph Representation}
-We choose to represent the input as a knowledge graph
-
-and
-the goal is to answer queries linking two entities or an entity and a relation
-
-\subsection{Tensor Decomposition Embedding}
-\label{Tensor Decomposition Embedding}
-Essentially, SSE enforces geometric constraints on
-
-\subsection{Memory Networks}
-\label{Memory Networks}
 
 \bstctlcite{bstctl:etal, bstctl:nodash, bstctl:simpurl}
 \bibliographystyle{IEEEtranS}
