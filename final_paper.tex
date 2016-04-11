@@ -1,8 +1,12 @@
+\linespread{1.6}
 \documentclass[pageno]{jpaper}
 
 % \newcommand{\IWreport}{2015}
 
 \usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 
 \begin{document}
 
@@ -106,37 +110,32 @@ the field of machine comprehension. Essentially, by trying to answer SAT
 questions we can try to solve problems that will be present in real-world
 applications but have not yet been tackled by existing research.
 
-In particular, we modify and combine two techniques: Memory Networks and
-relational semantic analysis. Memory Networks were introduced by Weston et al.
-in \cite{Weston2015a} and improved by Sukhbaatar et al. in
-\cite{Sukhbaatar2015}. These are a particular type of neural network. We discuss
-memory networks and alternatives in much greater depth in \ref{Related Work} and
-\ref{Model}. Most recent machine comprehension research has focused on using
-neural nets as the core system, so we use them in this paper as well. Neural
-nets are a very generalizable technique and in the past decade have become very
-popular. In fact, advances in neural net techniques have greatly contributed to
-the recent surge in machine comprehension research.
+Due to the difficulty of interpreting the text as-is, we represent the text
+using relational logic instead. Essentially we dynamically create a
+\textit{Knowledge Graph} (covered in more detail in \ref{Representation
+Techniques}) as we parse through the text and try to frame each question as a
+query on this knowledge graph. The knowledge graph representation is typically
+used for factual data that has already been collected in entity-relation triple
+form. As far as we know, no previous research in this space has tried to
+dynamically create a knowledge graph on which we can answer questions.
 
-Memory Networks require the input text and the query to be embedded in some form
-for easy computation. These embedding techniques are covered in detail in
-\ref{Representation Techniques}. Typically the embedding is done with
-bag-of-words embedding. This embedding technique relies on the same word being
-used in the answer choices as well as in the original text, which is true for
-MCTest and tests of similar difficulty. However, SAT reading comprehension
-passages often have very complex answer choices that rarely use the exact same
-word as used in the text. As a result we have to change the way we represent and
-parse the text. Instead of using \textit{one-hot} vector encoding and picking
-answer choices based on how many words are in common with the query or text, we
-represent the text using relational logic. Essentially we dynamically create a
-``Knowledge Graph'' as we parse through the text and try to frame each question
-as a query on this knowledge graph. We enhance a tensor factorization method
-known as RESCAL \cite{Bader2007}\cite{Nickel2011} and use this enhanced method
-to embed the text, questions, and answers. Once the embedding is done we can
-train our Memory Network on the text and query to find the answer. The knowledge
-graph representation is typically used for factual data that has already been
-collected in entity-relation triple form. As far as we know, no previous
-research in this space has tried to dynamically create a knowledge graph on
-which we can answer questions.
+Traditionally most research on relational learning has used either neural
+networks or tensor decomposition to answer queries on the graph. In this work we
+present an improved version of both these method. For tensor factorization we
+enhance a method known as RESCAL\cite{Bader2007}\cite{Nickel2011} with a
+technique known as \textit{Semantically Smooth Embedding}\cite{Guo2015}. RESCAL
+trains a factorization of the knowledge graph using Alternating Least Squares,
+and this factorization can then be used to answer queries.
+
+The neural network approaches such as TransE\cite{Bordes2013} and
+TransH\cite{Wang2014} use neural networks to train an embedding method for the
+relations on the knowledge graph, and use the trained model to answer queries.
+However, none of these previous approaches are designed for question-answering.
+We enhance the Memory Networks architecture proposed by Weston et
+al.\cite{Weston2015a} and improved by Sukhbaatar et al.\cite{Sukhbaatar2015} to
+take knowledge graph triples and queries as input, and provide a scoring of the
+answer choices as output. We discuss memory networks and alternatives in much
+greater depth in \ref{Related Work} and \ref{Model}.
 
 Our goal with this research is to present a way to combine ideas that were
 previously used in isolation for QA or other learning tasks into a system which
@@ -219,6 +218,13 @@ entity. This allows the graph to store multiple pieces of information regarding
 the same entity together, to allow for easy processing by the program while also
 making it simple for humans to understand. The mathematical details of our
 knowledge graph model can be found in \ref{Model}.
+
+Once a knowledge graph is built, we can pose queries about the graph. For
+example, we can provide two entities $e_1$, $e_2$ and ask which relation $r$
+links the two on the graph. We can also provide an entity $e$ and the relation
+$r$, and ask for which other entity $e'$ do the triples $\langle e,r,e' \rangle$
+or $\langle e',r,e \rangle$ exist on the graph. Put another way, the queries are
+either \textit{link prediction} queries or \textit{entity prediction} queries.
 
 \subsection{Neural Networks}
 \label{Neural Networks}
@@ -338,6 +344,12 @@ first create events and then predict relations between the events. The queries
 are also formulated as a graph. They are categorized as dependency questions,
 temporal questions, or true-false questions. This model scores almost 67\% on
 the dataset, over 6\% better than the next-best model.
+
+Most recent machine comprehension research has focused on using neural nets as
+the core system, so we use them in this paper as well. Neural nets are a very
+generalizable technique and in the past decade have become very popular. In
+fact, advances in neural net techniques have greatly contributed to the recent
+surge in machine comprehension research.
 
 Weston et al.\cite{Weston2015a} introduced memory networks. These are a type of
 neural network which simulate a long-term memory. We discussed in \ref{Recurrent
@@ -487,18 +499,212 @@ and fewest drawbacks of any representation. \\
 
 \subsubsection{Converting to Knowledge Graph Representation}
 \label{Converting to Knowledge Graph Representation}
-******FILL THIS IN******
+******FILL THIS IN****** \\
 
 \subsection{Tensor Decomposition Embedding}
 \label{Tensor Decomposition Embedding}
-Most other research has used simple bag-of-words embedding or
-word2vec embedding. However, neither of these approaches are compatible with the
-knowledge graph. 
 
-Essentially, SSE enforces geometric constraints on
+First we discuss the tensor decomposition approach to answering knowledge graph
+queries. The other main way to solve relational learning queries is with tensor
+analysis.  The advantage of using tensor decomposition is that it is based on
+well-understood mathematics, rather than simply empirical validation as with the
+neural network.
+
+Our model is an improved version of RESCAL, proposed by Nickel et
+al.\cite{Nickel2011} and used by Chang et al.\cite{Chang2014}. RESCAL itself
+takes the general tensor decomposition model proposed by Bader et
+al.\cite{Bader2007} and modifies it to work for relational learning. \\
+
+\subsubsection{Knowledge Base Tensor}
+\label{Knowledge Base Tensor}
+
+The tensor decomposition approach treats the knowledge graph as a directed
+graph. A tensor is simply a multi-dimensional array. In our case, we use a
+three-dimensional array $\mathcal{X}$ to represent the knowledge graph. If we
+have $N$ entities $e_1, e_2, ..., e_N$ and $M$ relations $k_1, k_2, ..., k_M$
+then we can consider $\mathcal{X}$ as $M$ layers of $N\times N$ matrices. Each layer
+$\mathcal{X}_k$ tells which entities are linked by relation $k$. If we denote
+our knowledge base as $KB$, then $\mathcal{X}$ is formulated as
+
+$$
+\begin{cases}
+    \mathcal{X}_{ijk} = 1 & \langle e_i,\,k,\,e_j\rangle \in KB \\
+    \mathcal{X}_{ijk} = 0 & \text{otherwise}
+\end{cases}
+$$
+
+*********INCLUDE FIGURE HERE********. Another way
+to think of this is to see the matrix $\mathcal{X}_k$ as an adjacency matrix
+of the knowledge graph, but only for the relation type $k$. \\
+
+\subsubsection{Tensor Factorization}
+\label{Tensor Factorization}
+
+Our approach aims to factorize the tensor such that we take advantage of the
+inherent structure of the graph. To that end, we train a rank-$r$ factorization
+of each slice, as suggested in \cite{Bader2007}\cite{Nickel2011}.
+
+$$X_k \approx A R_k A^T \text{ for } k \in [1,m]$$
+
+Here, A is an $n\times r$ matrix which contains the latent-component representation
+of the entities in the knowledge graph. We can think of this as an $r$-dimensional
+embedding of the entities, where we claim that there are $r$ hidden features of
+each entity. This is conceptually similar to the word2vec embedding, where each
+feature of a word vector does not necessarily mean something intuitive but is a
+hidden component found through training.
+
+$R_k$ is a an $r\times r$ matrix which represents how these hidden features
+interact with each other for the $k$-th relation. $R_k$ is asymmetric, which
+means that the hidden feature interactions are one-way. It is not necessarily
+true that $R_{ijk} = R_{jik}$, although it could be. Note that $R$ itself is
+also a three-dimensional tensor of shape $r\times r\times k$.
+
+The reason we factorize the tensor is that we can now answer queries using the factorization,
+which has the hidden components of the graph and is thus more generalizable, as
+opposed to using the original tensor which is simply an adjacency tensor of the
+knowledge graph.
+
+We will frame the problem of finding $A$ and $R_k$ as an optmiziation problem,
+where we aim to minimize the difference between the original matrix
+$\mathcal{X}_k$ and its factorization $AR_kA^T$. Specifically, define the loss
+function $f$ as the squared frobenius norm of this difference.
+
+\begin{equation}
+\label{eq: loss function}
+    f(A, R_k) = \dfrac{1}{2} \sum_k \Vert \mathcal{X} - AR_kA^T \Vert _F^2
+\end{equation}
+
+where the frobenius norm of some $a\times b$ matrix X is defined as
+
+$$\Vert X \Vert_F = \sqrt{\sum_{i=1}^a \sum_{j=1}^b |X_{ij}|^2}$$
+
+To find the optimal $A$ and $R_k$, we just have to minimize \ref{eq: loss
+function}, along with some regularization function $g(A, R_k)$. Formally,
+
+\begin{equation}
+    \label{eq: to minimize}
+    \underset{A, R_k}{\text{min }} f(A,R_k) + \lambda g(A, R_k)
+\end{equation}
+
+In \cite{Nickel2011}\cite{Chang2014} the regularization term is simply defined
+as $g(A, R_k) = \dfrac{1}{2}\lambda (\Vert A \Vert_F + \sum_k \Vert R_k
+\Vert_F)$. This is a standard regularization function, meant to prevent
+overfitting when we try to solve the optimization problem. We enhance their
+approach by using a stronger regularization function which adds more constraints
+on the factorization. \\
+
+\subsubsection{Semantically Smooth Embedding}
+\label{Semantically Smooth Embedding}
+
+Semantically Smooth Embedding (SSE) was proposed by Guo et al.\cite{Guo2015} as a
+way to improve the TransE\cite{Bordes2013} embedding model. Whereas the
+traditional models simply embed each individual fact in isolation, SSE imposes
+geometric constraints on the whole model.
+
+Specifically, we modify the \textit{Locally Linear Embedding} (LLE) constraint.
+This constraint states that each node should be roughly a linear combination of
+its neighbors\cite{Roweis2000}. Guo et al. created a version which applies to
+the neural net embeddings done by TransE and other models, but does not apply to
+the tensor decomposition method. Here we review their version first and then
+present our new version.
+
+In the original implementation each entity was labeled with a category and
+then embedded into a vector representation. All nodes in the same category as
+$e_i$ were defined as its neighbors and this set was denoted $\mathcal{N}(e_i)$.
+Then they defined
+
+$$
+w_{ij} =
+\begin{cases}
+    1 & \text{if } e_j \in \mathcal{N}(e_i) \\
+    0 & \text{otherwise}
+\end{cases}
+$$
+
+$$R = \sum_{i=1}^n \lVert \mathbf{e_i} - \sum_{e_j \in \mathcal{N}(e_i)} w_{ij}
+\mathbf{e_j} \rVert_2^2$$
+
+where $R$ is the regularization term added to the loss function. The logic here
+is that we suffer more penalty in our loss function when entities that are close
+to each other in the original set (i.e. are neighbors) have embedded vectors
+that are far from each other. We cannot use this equation for our purposes since
+our entities do not have categories and we do not have embedded vectors, but we
+can apply similar logic.
+
+To that end we propose defining the neighbor set of each entity $e_i$ in our graph
+as all other entities for which there is a directed edge from $e_i$ to $e_j$ in
+the knowledge graph.
+
+\begin{equation}
+    \label{eq: new wij}
+    w_{ij} =
+    \begin{cases}
+        1 & \sum_k \mathcal{X}_{ijk} > 1 \\
+        0 & \text{otherwise} \\
+    \end{cases}
+\end{equation}
+
+\begin{equation}
+    \label{eq: new neighbor set}
+    e_j \in \mathcal{N}(e_i) \text{ iff } w_{ij} = 1
+\end{equation}
+
+That is to say, $w_{ij} = 1$ if and only if we have some relation $r$ for which
+the triple $\langle e_i,\,r,\,e_j \rangle$ exists in the knowledge base. We do
+not consider entities which are related to $e_i$ in such a way that $e_i$ is the
+recipient of the relation. Note that this means the neighbor relation goes one
+way. $e_j \in \mathcal{N}(e_i)$ does not imply that $e_i \in \mathcal{N}(e_j)$.
+
+Now consider the nodes in $\mathcal{N}(e_i)$. Since $e_i$ is related to all of
+these, and because we want to enforce some geometric structure on our
+representation (as done by Guo) we claim that the latent properties of each node
+$e_i$, as provided in the matrix $A$, should be some linear combination of its
+neighbor set.
+
+$$ A_i \approx \sum_{i=1}^n w_{ij}A_j$$
+
+ We can penalize more for an $A$ in which this distance is large. The reason we
+ made the neighbor relation only one way is that we do not expect a large number
+ of disconnected components of our knowledge graph, and a two-way neighbor set
+ would push every node to have the same latent representation. \\
+
+\subsubsection{Solving the Optimization Problem}
+\label{Solving the Optimization Problem}
+
+The new, semantically smooth regularization function is
+
+\begin{equation}
+    \label{eq: new g}
+    g(A, R_k) = \sum_{i=1}^n \norm{A_i - \sum_{i=1}^n w_{ij}A_j}
+\end{equation}
+
+We are now ready to actually solve for $A$ and $R_k$. We want to minimize $f(A,
+R_k) + \lambda g(A, R_k)$. This is a nonlinear, non-convex optimization problem
+which would require complicated techniques. Calculating $f$ and $g$ is
+expensive, so we use the Alternating Least Squares(ALS) method\cite{Koren2009}.
+Specifically, we use the ASALSAN factorization method\cite{Bader2007}.
+
+ALS turns the non-convex optimization problem into a convex problem by fixing
+one of the unknowns. 
 
 \subsection{Memory Networks}
 \label{Memory Networks}
+
+Most other research has used simple bag-of-words embedding or word2vec
+embedding. However, neither of these make use of the inherent structure of the
+original text, nor are they compatible with the knowledge graph. The biggest
+drawback to these other
+
+Memory Networks require the input text and the query to be embedded in some form
+for easy computation. These embedding techniques are covered in detail in
+\ref{Representation Techniques}. Typically the embedding is done with
+bag-of-words embedding. This embedding technique relies on the same word being
+used in the answer choices as well as in the original text, which is true for
+MCTest and tests of similar difficulty. However, SAT reading comprehension
+passages often have very complex answer choices that rarely use the exact same
+word as used in the text. As a result we have to change the way we represent and
+parse the text. Instead of using \textit{one-hot} vector encoding and picking
+answer choices based on how many words are in common with the query or text,
 
 \section{Data}
 \label{Data}

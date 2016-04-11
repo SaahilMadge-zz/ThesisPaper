@@ -41,6 +41,18 @@ J.~Berant and P.~Clark, ``{Modeling Biological Processes for Reading
 \bibitem{Bishop1995}
 C.~M. Bishop, \emph{{Neural networks for pattern recognition}}, 1995, vol.~92.
 
+\bibitem{Bordes2013}
+A.~Bordes, N.~Usunier, A.~Garcia-Duran, J.~Weston, and O.~Yakhnenko,
+  ``Translating embeddings for modeling multi-relational data,'' in
+  \emph{Advances in Neural Information Processing Systems}, 2013, pp.
+  2787--2795.
+
+\bibitem{Chang2014}
+K.-W. Chang, W.-t. Yih, B.~Yang, and C.~Meek, ``{Typed tensor decomposition of
+  knowledge bases for relation extraction},'' \emph{Proceedings of the 2014
+  Conference on Empirical Methods in Natural Language Processing (EMNLP)}, pp.
+  1568--1579, 2014.
+
 \bibitem{Guo2015}
 S.~Guo, Q.~Wang, B.~Wang, L.~Wang, and L.~Guo, ``Semantically smooth knowledge
   graph embedding,'' in \emph{Proceedings of ACL}, 2015, pp. 84--94.
@@ -86,12 +98,21 @@ M.~Richardson, C.~J.~C. Burges, and E.~Renshaw, ``{MCTest: A Challenge Dataset
   the 2013 Conference on Empirical Methods in Natural Language Processing
   (EMNLP 2013)}, no. October, pp. 193--203, 2013.
 
+\bibitem{Roweis2000}
+S.~T. Roweis and L.~K. Saul, ``Nonlinear dimensionality reduction by locally
+  linear embedding,'' \emph{Science}, vol. 290, no. 5500, pp. 2323--2326, 2000.
+
 \bibitem{Sukhbaatar2015}
 \BIBentryALTinterwordspacing
 S.~Sukhbaatar, A.~Szlam, J.~Weston, and R.~Fergus, ``{End-To-End Memory
   Networks},'' pp. 1--11, 2015. [Online]. Available:
   \url{http://arxiv.org/abs/1503.08895}
 \BIBentrySTDinterwordspacing
+
+\bibitem{Wang2014}
+Z.~Wang, J.~Zhang, J.~Feng, and Z.~Chen, ``Knowledge graph embedding by
+  translating on hyperplanes.'' in \emph{AAAI}.\hskip 1em plus 0.5em minus
+  0.4em\relax Citeseer, 2014, pp. 1112--1119.
 
 \bibitem{Weston2015}
 \BIBentryALTinterwordspacing
