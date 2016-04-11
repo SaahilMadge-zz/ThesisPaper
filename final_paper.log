@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  10 APR 2016 21:14
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  10 APR 2016 23:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1025,7 +1025,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 185--197
 
  []
 
-<figures/Example_KG.png, id=139, 501.875pt x 500.87125pt>
+<figures/Example_KG.png, id=143, 501.875pt x 500.87125pt>
 File: figures/Example_KG.png Graphic file (type png)
 
 <use figures/Example_KG.png>
@@ -1107,36 +1107,40 @@ Underfull \hbox (badness 10000) in paragraph at lines 666--670
  []
 
 [11]
+Underfull \hbox (badness 10000) in paragraph at lines 743--753
+
+ []
+
 
 LaTeX Warning: Reference `Representation Techniques' on page 12 undefined on in
-put line 750.
+put line 762.
 
-[12] (./final_paper.bbl
+[12] [13] (./final_paper.bbl
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
- [13])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 807.
- [14]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 807.
+ [14])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 853.
+ [15]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 853.
  (./final_paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 807.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 807.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 853.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 853.
 Package rerunfilecheck Info: File `final_paper.out' has not changed.
-(rerunfilecheck)             Checksum: C376AC02909A10B7DB1F5859FCB15154;4002.
+(rerunfilecheck)             Checksum: 3EC91D02BA877150BA97663E6FCBCFE1;4216.
 
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 15544 strings out of 493315
- 225279 string characters out of 6137904
- 349157 words of memory out of 5000000
- 18414 multiletter control sequences out of 15000+600000
+ 15548 strings out of 493315
+ 225356 string characters out of 6137904
+ 350223 words of memory out of 5000000
+ 18416 multiletter control sequences out of 15000+600000
  93843 words of font info for 299 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  48i,10n,40p,773b,504s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1152,10 +1156,10 @@ nts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/u
 rw/times/utmb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/u
 tmr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmri8a.pfb
 >
-Output written on final_paper.pdf (14 pages, 218916 bytes).
+Output written on final_paper.pdf (15 pages, 222293 bytes).
 PDF statistics:
- 319 PDF objects out of 1000 (max. 8388607)
- 287 compressed objects within 3 object streams
- 67 named destinations out of 1000 (max. 500000)
- 47814 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 328 PDF objects out of 1000 (max. 8388607)
+ 295 compressed objects within 3 object streams
+ 69 named destinations out of 1000 (max. 500000)
+ 47822 words of extra memory for PDF output out of 51595 (max. 10000000)
 

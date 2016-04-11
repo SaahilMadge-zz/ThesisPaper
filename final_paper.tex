@@ -740,17 +740,81 @@ $\hat{\mathcal{X}_{ijk}} > \theta$, where $\theta$ is some threshold of confiden
 \subsection{Memory Networks}
 \label{Memory Networks}
 
+The second way we propose answering queries is with neural networks.
+Specifically, an enhanced version of Memory Networks. The advantage of the
+neural network approach is that it is very intuitive, computationally feasible,
+and empirically proven. However, it does lack the strong theory of the
+mathematical approach. We choose the Memory Networks architecture as the basis
+for our model because it has strong performance on the bAbi dataset and the
+foundational architecture itself scales easily to more complex problems as long
+as the input is in a valid format. First we review the architecture as proposed
+by \cite{Sukhbaatar2015}. Then we discuss how to adapt it to this specific
+problem. \\
+
+\subsubsection{Memory Networks Architecture}
+\label{Memory Networks Architecture}
+
+First we will review the architecture for one layer, as the extension to several
+layers is straightforward. The basic model takes in a set of input vectors $x_1, ...,
+x_n$ and a query vector $q$, and outputs an answer $a$. Memory Networks require
+the input text and the query to be vectorized in some form for easy computation.
+These embedding techniques are covered in detail in \ref{Representation
+Techniques}. Typically the embedding is done with bag-of-words embedding. This
+embedding technique relies on the same word being used in the answer choices as
+well as in the original text, which is true for MCTest and bAbi. The vocabulary
+comes from a dictionary of fixed size $V$.
+
+The input vectors are converted into a set of memory vectors ${m_i}$ using a
+matrix $A$ of size $d\times V$, where $d$ is a pre-determined dimension. $q$ is
+also embedded into a state $u$ using a different matrix $B$ of size $d\times V$.
+To find which memory vectors are most relevant to the initial query, we take the
+dot product of each vector with $u$.
+
+$$p_i = \text{Softmax}(u^Tm_i)$$
+
+where Softmax$(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}$. Since the softmax function
+returns a value between 0 and 1, each score $p_i$ is a scalar that can be considered
+a probability of how relevant each memory vector is to the query. The more relevant
+it is, the more likely it will help find the answer.
+
+The input vectors are now sent through another matrix $C$ to produce a set of
+transformed inputs ${c_i}$. Each transformed vector $c_i$ is weighted by its
+probability $c_i$ and the sum is taken as the output $o$ of that layer.
+
+$$o = \sum_i p_i c_i$$
+
+This output can then be fed as an input to the next layer, but in the single
+layer case it is added to $u$ and sent through one final matrix $W$ of size
+$V\times d$. Lastly, a softmax is taken on the result to yield a probability
+distribution over the vocabulary space. This is designed to pick one word
+or set of words as the answer.
+
+$$\hat{a} = \text{Softmax}\left(W\left(o + u\right)\right)$$
+
+Several strategies can be used to extend the Memory Network to multiple layers.
+We use the \textit{Recurrent Neural Network} strategy as it makes most sense
+for our purposes. This strategy is the simplest to understand as well as to train.
+Each layer acts the same as in the one-layer case. The only difference is that
+for all layers $k > 1$ the input $u^{k+1} = u^k + o^k$, and the matrix $W$
+is only applied to $o^{final}$. Each layer uses the same $A,B,C$ matrices. By
+using the same matrices at each level and passing the state along, this architecture
+acts like a Recurrent Neural Network.
+
+The initial layer calculates how relevant each memory vector is to the initial
+query. That output is combined with the initial query and passed as $u$ to the
+next layer. That layer finds how relevant each memory vector is to the new state
+$u$. This means that memories which were not very relevant to the initial query
+may be relevant to the memories which were relevant to the initial query. Each
+layer finds new memories that can help answer the question.
+
+\subsubsection{}
+
 Most other research has used simple bag-of-words embedding or word2vec
 embedding. However, neither of these make use of the inherent structure of the
 original text, nor are they compatible with the knowledge graph. The biggest
 drawback to these other
 
-Memory Networks require the input text and the query to be embedded in some form
-for easy computation. These embedding techniques are covered in detail in
-\ref{Representation Techniques}. Typically the embedding is done with
-bag-of-words embedding. This embedding technique relies on the same word being
-used in the answer choices as well as in the original text, which is true for
-MCTest and tests of similar difficulty. However, SAT reading comprehension
+ However, SAT reading comprehension
 passages often have very complex answer choices that rarely use the exact same
 word as used in the text. As a result we have to change the way we represent and
 parse the text. Instead of using \textit{one-hot} vector encoding and picking
