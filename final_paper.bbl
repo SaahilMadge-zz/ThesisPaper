@@ -62,6 +62,10 @@ L.~Hirschman, M.~Light, E.~Breck, and J.~D. Burger, ``{{\{}D{\}}eep
   {\{}R{\}}ead: {\{}A{\}} Reading Comprehension System},'' \emph{Proceedings of
   ACL}, pp. 325--332, 1999.
 
+\bibitem{Koren2009}
+Y.~Koren, R.~Bell, and C.~Volinsky, ``{Matrix Factorization Techniques for
+  Recommender Systems},'' \emph{Computer}, vol.~42, no.~8, pp. 42--49, 2009.
+
 \bibitem{Kumar2015}
 A.~Kumar, O.~Irsoy, J.~Su, J.~Bradbury, R.~English, B.~Pierce, P.~Ondruska,
   I.~Gulrajani, and R.~Socher, ``{Ask Me Anything: Dynamic Memory Networks for

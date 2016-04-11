@@ -588,10 +588,10 @@ function}, along with some regularization function $g(A, R_k)$. Formally,
 
 In \cite{Nickel2011}\cite{Chang2014} the regularization term is simply defined
 as $g(A, R_k) = \dfrac{1}{2}\lambda (\Vert A \Vert_F + \sum_k \Vert R_k
-\Vert_F)$. This is a standard regularization function, meant to prevent
-overfitting when we try to solve the optimization problem. We enhance their
-approach by using a stronger regularization function which adds more constraints
-on the factorization. \\
+\Vert_F)$. This is a standard regularization function where $\lambda$ is a
+hyperparameter. The aim is to prevent overfitting when we try to solve the
+optimization problem. We enhance their approach by using a stronger
+regularization function which adds more constraints on the factorization. \\
 
 \subsubsection{Semantically Smooth Embedding}
 \label{Semantically Smooth Embedding}
@@ -685,7 +685,57 @@ expensive, so we use the Alternating Least Squares(ALS) method\cite{Koren2009}.
 Specifically, we use the ASALSAN factorization method\cite{Bader2007}.
 
 ALS turns the non-convex optimization problem into a convex problem by fixing
-one of the unknowns. 
+one of the unknowns. Then the problem can be solved with ordinary least-squares
+optimization, so we use the normal method of least-squares to lower the
+variable unknown. Then we alternate by fixing this unknown and changing the
+other one. The ordinary least-squares can be solved relatively fast (although
+calculating inverse matrices is expensive) and since each unknown is calculated
+independently (keeping one fixed), the ALS algorithm can be easily parallelized.
+These two qualities make it very computationally fast, a quality necessary for
+our purposes.
+
+We have
+
+$$\bar{\mathcal{X}} = A\bar{R}(\mathbf{I}_{2m} \otimes A^T)$$
+
+where $\otimes$ is the Kronecker product and
+
+$$\bar{\mathcal{X}} = \left( \mathcal{X}_1\mathcal{X}_1^T ... \mathcal{X}_m\mathcal{X}_m^T \right)$$
+$$\bar{R} = \left( R_1 R_1^T ... R_mR_m^T \right)$$
+
+Then by ASALSAN we derive the following update rules. We first update $A$ while
+keeping $R_k$ fixed.
+
+$$A \leftarrow \bigg[ \sum_k \mathcal{X}_kAR_k^T + \mathcal{X}_k^TAR_k \bigg] \bigg[ B_k + C_k + \lambda\mathbf{I} \bigg]^{-1}$$
+where
+$$B_k = R_k A^T AR_k^T,\,\,\,\,\,\,\, C_k = R_k^TA^TAR_k$$
+
+To update $R_k$, we first fix $A$. Then we notice that if we vectorize $\mathcal{X}$ and
+$R_k$, we can rewrite \ref{eq: to minimize} as
+
+$$f(R_k) = \norm{\textbf{vec}\left(\mathcal{X}_k\right) - \left(A \otimes A \right)
+\textbf{vec}\left(R_k\right)}$$
+
+where we have removed an extra term $\lambda \norm{\textbf{vec}(R_k)}$ because
+$R_k$ is no longer in our regularization term. This rewritten $f$ is actually
+a linear regression problem whose solution is
+
+$$R_k \leftarrow \left( \left(A \otimes A \right)^T \left(A \otimes A\right) + \lambda\textbf{I}
+ \right) ^{-1} \left(A \otimes A\right) \textbf{vec}\left(\mathcal{X}_k\right)$$
+
+We alternate updating $A$ and $R_k$ until we have performed some maximum number
+of iterations or until $\frac{f(A, R_k)}{\norm{\mathcal{X}_k}_F^2}$ is below
+some tolerance $\epsilon$. The final factorization $\hat{\mathcal{X}}$ can now be used to answer
+queries.
+
+\subsubsection{Answering Queries}
+\label{Answering Queries}
+
+Link-prediction queries are relatively simple to answer. Given $e_i, e_j$
+the existence of a link between the two can be found by seeing whether for any
+relation $k$ we have that $\hat{\mathcal{X}_{ijk}} > 0$. Given an entity $e_i$ and a relation
+$k$, we can see whether some entity $e_j$ completes the triple by seeing whether
+$\hat{\mathcal{X}_{ijk}} > \theta$, where $\theta$ is some threshold of confidence.
 
 \subsection{Memory Networks}
 \label{Memory Networks}
