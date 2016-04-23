@@ -667,14 +667,14 @@ can apply similar logic.
 
 To that end we propose defining the neighbor set of each entity $e_i$ in our graph
 as all other entities for which there is a directed edge from $e_i$ to $e_j$ in
-the knowledge graph.
+the knowledge graph. The full neighbor set matrix is denoted $W$.
 
 \begin{equation}
     \label{eq: new wij}
     w_{ij} =
     \begin{cases}
-        1 & \sum_k \mathcal{X}_{ijk} > 1 \\
-        0 & \text{otherwise} \\
+        1, & \sum_k \mathcal{X}_{ijk} \geq 1 \\
+        0, & \text{otherwise} \\
     \end{cases}
 \end{equation}
 
@@ -695,7 +695,7 @@ representation (as done by Guo) we claim that the latent properties of each node
 $e_i$, as provided in the matrix $A$, should be some linear combination of its
 neighbor set.
 
-$$ A_i \approx \sum_{i=1}^n w_{ij}A_j$$
+$$ A_i \approx \sum_{i=1}^n w_{ij}A_j = \sum_{i=1} W_iA$$
 
  We can penalize more for an $A$ in which this distance is large. The reason we
  made the neighbor relation only one way is that we do not expect a large number
@@ -709,7 +709,10 @@ The new, semantically smooth regularization function is
 
 \begin{equation}
     \label{eq: new g}
-    g(A, R_k) = \sum_{i=1}^n \norm{A_i - \sum_{i=1}^n w_{ij}A_j}
+
+    g(A, R_k) = \sum_{i=1}^n \norm{A_i - \sum_{j=1}^n w_{ij}A_j}_F^2 =
+    \sum_{i=1}^n \norm{A_i - W_iA}_F^2
+
 \end{equation}
 
 We are now ready to actually solve for $A$ and $R_k$. We want to minimize $f(A,
