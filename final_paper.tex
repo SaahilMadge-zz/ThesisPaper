@@ -121,11 +121,11 @@ dynamically create a knowledge graph on which we can answer questions.
 
 Traditionally most research on relational learning has used either neural
 networks or tensor decomposition to answer queries on the graph. In this work we
-present an improved version of both these method. For tensor factorization we
-enhance a method known as RESCAL\cite{Bader2007}\cite{Nickel2011} with a
-technique known as \textit{Semantically Smooth Embedding}\cite{Guo2015}. RESCAL
-trains a factorization of the knowledge graph using Alternating Least Squares,
-and this factorization can then be used to answer queries.
+present an improved version of both methods. For tensor factorization we enhance
+a method known as RESCAL\cite{Bader2007}\cite{Nickel2011} with a technique known
+as \textit{Semantically Smooth Embedding}\cite{Guo2015}. RESCAL trains a
+factorization of the knowledge graph using Alternating Least Squares, and this
+factorization can then be used to answer queries.
 
 The neural network approaches such as TransE\cite{Bordes2013} and
 TransH\cite{Wang2014} use neural networks to train an embedding method for the
@@ -152,8 +152,8 @@ the development of safe artificial intelligence.
 In this section we review some of the techniques that are used in previous
 research and in this paper.
 
-\subsection{Embedding Techniques}
-\label{Embedding Techniques}
+\subsection{Representation Techniques}
+\label{Representation Techniques}
 
 We begin by reviewing various methods for embedding text and performing queries
 on the embedded representations. \\
@@ -175,9 +175,27 @@ methods are to return a probability vector of size $V$ where each element
 represents how likely that word is to be the output, or to pick the most likely
 word from that distribution and return only that word. \\
 
-\subsubsection{Dependency Graph}
-\label{Dependency Graph}
-******FINISH THIS******** \\
+\subsubsection{Dependency Parsing}
+\label{Dependency Parsing}
+
+Dependency parsing is an important technique used to understand the structural
+information in a sentence. Essentially, dependency parsing creates a graph of
+the words in the sentence and describes how each word relates to other words. A
+sample graph is shown in Figure~\ref{fig: dependency parsing}. Each dependency
+in the graph has a \textit{governor} and \textit{dependent}. The collection of
+dependencies contains all the structural relationships in the sentence. Each
+dependency is labelled to show the exact relationship between governor and
+dependent. For example, in the graph in Figure~\ref{fig: dependency parsing} the
+label \textit{nsubj} highlights the nominal subject of a particular clause in
+the sentence\cite{De2014}. The specific parser we use is the Stanford
+High-Performance Dependency Parser by Chen and Manning\cite{Chen2014}.
+
+Once the dependency graph is created, we can analyze it to extract the relevant
+information in the sentence. The exact details are discussed more in Section
+\ref{Converting to Knowledge Graph Representation}. The basic approach is to
+find the main subject of the sentence and either the direct object it acts on
+or some description of it. Then it can be turned into an entity-relation triple
+on the knowledge graph.
 
 \subsubsection{word2vec}
 \label{word2vec}
@@ -346,10 +364,9 @@ temporal questions, or true-false questions. This model scores almost 67\% on
 the dataset, over 6\% better than the next-best model.
 
 Most recent machine comprehension research has focused on using neural nets as
-the core system, so we use them in this paper as well. Neural nets are a very
-generalizable technique and in the past decade have become very popular. In
-fact, advances in neural net techniques have greatly contributed to the recent
-surge in machine comprehension research.
+the core system. Neural nets are a very generalizable technique and in the past
+decade have become very popular. In fact, advances in neural net techniques have
+greatly contributed to the recent surge in machine comprehension research.
 
 Weston et al.\cite{Weston2015a} introduced memory networks. These are a type of
 neural network which simulate a long-term memory. We discussed in \ref{Recurrent
@@ -366,6 +383,23 @@ discuss it in more detail in \ref{Model}. Kumar et al.\cite{Kumar2015} create
 ``Dynamic Memory Networks''. Their design uses two memory modules. The semantic
 memory module stores general knowledge, while the episodic memory module
 iteratively finds memories relevant to the query.
+
+Knowledge Graphs are also a popular research area. There are two main approaches
+that are used for solving knowledge graph embedding and query problems. The
+first is the neural network embedding style, popularized by Bordes et
+al.\cite{Bordes2013} and improved by Wang et al.\cite{Wang2014}. Bordes' TransE
+and Wang's TransH both train a neural network to recognize triple embeddings in
+some higher dimension. The triples are embedded in such a way that triples that
+are ``similar'' according to some metric are embedded near each other. Queries
+can be answered more easily using the embedded vectors.
+
+The second approach focuses on representing the knowledge graph as a tensor.
+Nickel et al.\cite{Nickel2011} proposed RESCAL, a model which converts the
+knowledge graph into a tensor of adjacency matrices and trains a latent rank-$r$
+factorization of the tensor using a technique called ASALSAN\cite{Bader2007}.
+Queries about the knowledge graph can be easily converted into searching over a
+relevant subset of elements in the factorization. Chang et al.\cite{Chang2014}
+created TRESCAL, which is an optimized version of RESCAL.
 
 \section{Model}
 \label{Model}
@@ -387,11 +421,11 @@ This research presents three fundamental insights. \\
     this type of embedding to tensor decomposition as future work, so to our
     knowledge we are the first to perform tensor decomposition with SSE. \\
 
-    \item We use the embedded models as inputs to a modified version of Memory
-    Networks. Given a set of embedded inputs and queries, this type of neural
-    network takes advantage of ``memory'' to find new facts that are relevant
-    given the current set of relevant facts, but may not be relevant solely
-    based on the query. \\
+    \item We embed the knowledge graph and questions into input vectors, and
+    pass them into a Memory Network. Given a set of embedded inputs and queries,
+    this type of neural network takes advantage of ``memory'' to find new facts
+    that are relevant given the current set of relevant facts, but may not be
+    relevant solely based on the query. \\
 
 \end{enumerate}
 
@@ -571,7 +605,7 @@ function $f$ as the squared frobenius norm of this difference.
 
 \begin{equation}
 \label{eq: loss function}
-    f(A, R_k) = \dfrac{1}{2} \sum_k \Vert \mathcal{X} - AR_kA^T \Vert _F^2
+    f(A, R_k) = \dfrac{1}{2} \sum_k \Vert \mathcal{X}_k - AR_kA^T \Vert _F^2
 \end{equation}
 
 where the frobenius norm of some $a\times b$ matrix X is defined as
@@ -751,8 +785,8 @@ as the input is in a valid format. First we review the architecture as proposed
 by \cite{Sukhbaatar2015}. Then we discuss how to adapt it to this specific
 problem. \\
 
-\subsubsection{Memory Networks Architecture}
-\label{Memory Networks Architecture}
+\subsubsection{Memory Network Architecture}
+\label{Memory Network Architecture}
 
 First we will review the architecture for one layer, as the extension to several
 layers is straightforward. The basic model takes in a set of input vectors $x_1, ...,
@@ -805,20 +839,47 @@ query. That output is combined with the initial query and passed as $u$ to the
 next layer. That layer finds how relevant each memory vector is to the new state
 $u$. This means that memories which were not very relevant to the initial query
 may be relevant to the memories which were relevant to the initial query. Each
-layer finds new memories that can help answer the question.
+layer finds new memories that can help answer the question. \\
 
-\subsubsection{}
+\subsubsection{Memory Network Enhancements}
+\label{Memory Network Enhancements}
 
-Most other research has used simple bag-of-words embedding or word2vec
-embedding. However, neither of these make use of the inherent structure of the
-original text, nor are they compatible with the knowledge graph. The biggest
-drawback to these other
+As discussed, the original Memory Networks model uses simple bag-of-words
+embedding to vectorize the text into the input vectors ${x_i}$. This cannot work
+for SAT question purposes because each layer finds what is most relevant based
+on which words are shared between query and input. To answer SAT questions the
+text must be vectorized in such a way that the knowledge graph relationships are
+captured. One possible way would be to use word2vec embedding, but it still does
+not make use of the inherent structure of the original text, nor is it
+compatible with the knowledge graph. We need to change the inputs while preserving
+the overall architecture so that the memories chosen as relevant actually match
+the concept in the query, as opposed to simply matching the words.
 
- However, SAT reading comprehension
-passages often have very complex answer choices that rarely use the exact same
-word as used in the text. As a result we have to change the way we represent and
-parse the text. Instead of using \textit{one-hot} vector encoding and picking
-answer choices based on how many words are in common with the query or text,
+We propose stacking horizontally each slice of the tensor $\mathcal{X}$ as
+defined in \ref{Knowledge Base Tensor} and using each column as an input vector.
+In total the input matrix $\mathcal{X}'$ will be of shape $n\times (nm)$. The
+query is more complicated to vectorize. The key is that we can parse the
+question itself in the same way we parsed the original text and obtain an
+entity-relation triple. However, in this case either an entity or the relation
+is missing. Finding the right answer can be turned into a problem of finding the
+missing entity or relation. If the query has an entity $e_i$ and a relation $k$,
+we pass in the column vector $\mathcal{X}_{ik}^T$ as the query. If instead it is
+a missing link problem, we create a $m$-length vector where element $k$ is equal
+to $\mathcal{X}_{ijk}$ and pad the rest so that it becomes an $n$-length vector
+$q$.
+
+The input vectors and query vectors already take advantage of the knowledge
+graph representation, so we do not need to embed them again using $A,B$
+matrices. ${m_i} = {x_i}$ and $u = q$. We do, however, use a separate matrix $C$
+to transform the input vectors again. In a one-layer case, the architecture
+calculates
+
+$$p_i = \text{Softmax}\left(u^Tm_i\right)$$
+$$o = \sum_i p_ic_i$$
+$$\hat{a} = \text{Softmax}\left(W\left(o+u\right)\right)$$
+
+In the multiple-layer case, the approach is the same as in the original model where
+the matrix $C$ stays constant at each layer, and $u^{k+1} = u^k + o^k$.
 
 \section{Data}
 \label{Data}
@@ -864,6 +925,39 @@ was \$304.00.
 
 \subsection{Derivation of Output Layer Error}
 \label{Derivation of Output Layer Error}
+
+In this section we present the derivation for the output layer error of an RNN
+with cross-entropy loss and softmax at the output layer. Let us consider an
+output layer with $n$ nodes. Define $z_i$ as the quantity before activation
+function at the output layer, and $h_i$ as the final output of node $i$.
+
+\begin{equation}
+    \label{eq: output layer value}
+    h_i = \text{Softmax}(z_i) = \dfrac{e^{z_i}}{\sum\limits_{j=1}^n e^{z_j}} = \dfrac{e^{z_i}}
+    {e^{z_i} + \sum\limits_{j\neq i} e^{z_j}}
+\end{equation}
+
+The partial derivatives yield
+
+\begin{equation}
+    \label{eq: output partials}
+    % \begin{gather*}
+    \begin{aligned}
+        \dfrac{\partial h_i}{\partial z_i} &= \dfrac{\sum\limits_{j=1}^n e^{z_j}(e^{z_i}) - e^{z_i}(e^{z_i})}
+        {\left( \sum\limits_{j=1}^n e^{z_j} \right)^2}
+        = \dfrac{e^{z_i}\sum\limits_{j=1}^n e^{z_j}}{\left( \sum\limits_{j=1}^n e^{z_j} \right)^2}
+        - \left( \dfrac{e^{z_i}}{ \sum\limits_{j=1}^n e^{z_j} } \right)^2 \\
+        &= h_i - h_i^2
+        = h_i\left( 1 - h_i \right) \\
+        \dfrac{\partial h_i}{\partial z_j} &= \dfrac{\sum\limits_{j=1}^n e^{z_j}*0 - e^{z_i}(e^{z_i})}
+        {\left( \sum\limits_{j=1}^n e^{z_j} \right)^2}
+        = \dfrac{-e^{z_i}}{\sum\limits_{j=1}^n e^{z_j}}\dfrac{e^{z_j}}{\sum\limits_{j=1}^n e^{z_j}} \\
+        &= -h_ih_j
+    \end{aligned}
+    % \end{gather*}
+\end{equation}
+
+******WORK IN PROGRESS*******
 
 % When we have $n$ output nodes, our cost function is $\sum^n_i y_i
 % \log(\hat{y_i})$. Consider some output
