@@ -53,6 +53,20 @@ K.-W. Chang, W.-t. Yih, B.~Yang, and C.~Meek, ``{Typed tensor decomposition of
   Conference on Empirical Methods in Natural Language Processing (EMNLP)}, pp.
   1568--1579, 2014.
 
+\bibitem{Chen2014}
+\BIBentryALTinterwordspacing
+D.~Chen and C.~D. Manning, ``{A Fast and Accurate Dependency Parser using
+  Neural Networks},'' \emph{Proceedings of the 2014 Conference on Empirical
+  Methods in Natural Language Processing (EMNLP)}, no.~i, pp. 740--750, 2014.
+  [Online]. Available:
+  \url{https://cs.stanford.edu/{~}danqi/papers/emnlp2014.pdf}
+\BIBentrySTDinterwordspacing
+
+\bibitem{De2014}
+M.-C. De~Marneffe, T.~Dozat, N.~Silveira, K.~Haverinen, F.~Ginter, J.~Nivre,
+  and C.~D. Manning, ``Universal stanford dependencies: A cross-linguistic
+  typology.'' in \emph{LREC}, vol.~14, 2014, pp. 4585--4592.
+
 \bibitem{Guo2015}
 S.~Guo, Q.~Wang, B.~Wang, L.~Wang, and L.~Guo, ``Semantically smooth knowledge
   graph embedding,'' in \emph{Proceedings of ACL}, 2015, pp. 84--94.

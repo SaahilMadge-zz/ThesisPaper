@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  11 APR 2016 10:29
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  25 APR 2016 02:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -808,54 +808,112 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
 LaTeX Info: Redefining \[ on input line 2665.
 LaTeX Info: Redefining \] on input line 2666.
 )
+(/usr/local/texlive/2013/texmf-dist/tex/latex/adjustbox/adjustbox.sty
+Package: adjustbox 2012/05/21 v1.0 Adjusting TeX boxes (trim, clip, ...)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+Package: xkeyval 2012/10/14 v2.6b package option processing (HA)
+
+(/usr/local/texlive/2013/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+\XKV@toks=\toks34
+\XKV@tempa@toks=\toks35
+\XKV@depth=\count133
+File: xkeyval.tex 2012/10/14 v2.6b key=value parser (HA)
+))
+(/usr/local/texlive/2013/texmf-dist/tex/latex/adjustbox/adjcalc.sty
+Package: adjcalc 2012/05/16 v1.1 Provides advanced setlength with multiple back
+-ends (calc, etex, pgfmath)
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/adjustbox/trimclip.sty
+Package: trimclip 2012/05/16 v1.0 Trim and clip general TeX material
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/collectbox/collectbox.sty
+Package: collectbox 2012/05/17 v0.4b Collect macro arguments as boxes
+\collectedbox=\box35
+)
+\tc@llx=\dimen160
+\tc@lly=\dimen161
+\tc@urx=\dimen162
+\tc@ury=\dimen163
+Package trimclip Info: Using driver 'tc-pdftex.def'.
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/adjustbox/tc-pdftex.def
+File: tc-pdftex.def 2012/05/13 v1.0 Clipping driver for pdftex
+))
+\adjbox@Width=\dimen164
+\adjbox@Height=\dimen165
+\adjbox@Depth=\dimen166
+\adjbox@Totalheight=\dimen167
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
+Package: ifoddpage 2011/09/13 v1.0 Conditionals for odd/even page detection
+\c@checkoddpage=\count134
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/varwidth/varwidth.sty
+Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
+\@vwid@box=\box36
+\sift@deathcycles=\count135
+\@vwid@loff=\dimen168
+\@vwid@roff=\dimen169
+))
+(/usr/local/texlive/2013/texmf-dist/tex/latex/tools/tabularx.sty
+Package: tabularx 1999/01/07 v2.07 `tabularx' package (DPC)
+\TX@col@width=\dimen170
+\TX@old@table=\dimen171
+\TX@old@col=\dimen172
+\TX@target=\dimen173
+\TX@delta=\dimen174
+\TX@cols=\count136
+\TX@ftn=\toks36
+)
 LaTeX Font Info:    Redeclaring math alphabet \mathcal on input line 8.
 
 (./final_paper.aux)
 \openout1 = `final_paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 11.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 11.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 12.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 12.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Try loading font information for T1+ptm on input line 11.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Try loading font information for T1+ptm on input line 12.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 )
 (/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count133
-\scratchdimen=\dimen160
-\scratchbox=\box35
-\nofMPsegments=\count134
-\nofMParguments=\count135
-\everyMPshowfont=\toks34
-\MPscratchCnt=\count136
-\MPscratchDim=\dimen161
-\MPnumerator=\count137
-\makeMPintoPDFobject=\count138
-\everyMPtoPDFconversion=\toks35
+\scratchcounter=\count137
+\scratchdimen=\dimen175
+\scratchbox=\box37
+\nofMPsegments=\count138
+\nofMParguments=\count139
+\everyMPshowfont=\toks37
+\MPscratchCnt=\count140
+\MPscratchDim=\dimen176
+\MPnumerator=\count141
+\makeMPintoPDFobject=\count142
+\everyMPtoPDFconversion=\toks38
 )
-LaTeX Info: Redefining \microtypecontext on input line 11.
+LaTeX Info: Redefining \microtypecontext on input line 12.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -922,8 +980,8 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\AtBeginShipoutBox=\box36
-Package hyperref Info: Link coloring ON on input line 11.
+\AtBeginShipoutBox=\box38
+Package hyperref Info: Link coloring ON on input line 12.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -931,11 +989,11 @@ Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count139
+\c@section@level=\count143
 )
-LaTeX Info: Redefining \ref on input line 11.
-LaTeX Info: Redefining \pageref on input line 11.
-LaTeX Info: Redefining \nameref on input line 11.
+LaTeX Info: Redefining \ref on input line 12.
+LaTeX Info: Redefining \pageref on input line 12.
+LaTeX Info: Redefining \nameref on input line 12.
 
 (./final_paper.out) (./final_paper.out)
 \@outlinefile=\write3
@@ -945,7 +1003,7 @@ LaTeX Info: Redefining \nameref on input line 11.
 Option `squaren' provided! 
  Command \squaren defined by SIunits package!
 
-LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 20
+LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 21
 .
 (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/ot1ztmcm.fd
 File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
@@ -954,188 +1012,212 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             `ztmcm' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 20
+LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 21
 .
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/omlztmcm.fd
 File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 20
+LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 21
 .
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/omsztmcm.fd
 File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 20
+LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 21
 .
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/omxztmcm.fd
 File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 20.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 21.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 20.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 21.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 20.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 21.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 20.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 21.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/microtype/mt-eur.cfg
 File: mt-eur.cfg 2006/07/31 v1.1 microtype config. file: AMS Euler Roman (RS)
 )
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 27.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 28.
  [1
 
-{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
+{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 155.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 156.
 
-Underfull \hbox (badness 10000) in paragraph at lines 158--160
+Underfull \hbox (badness 10000) in paragraph at lines 159--161
 
  []
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 166.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 167.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 166.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 167.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 166.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 167.
 
-Underfull \hbox (badness 10000) in paragraph at lines 164--177
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 180--181
+Underfull \hbox (badness 10000) in paragraph at lines 165--178
 
  []
 
+[4]
 
-Underfull \hbox (badness 10000) in paragraph at lines 185--197
+LaTeX Warning: Reference `fig: dependency parsing' on page 5 undefined on input
+ line 185.
+
+
+LaTeX Warning: Reference `fig: dependency parsing' on page 5 undefined on input
+ line 189.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 204--216
 
  []
 
-<figures/Example_KG.png, id=148, 501.875pt x 500.87125pt>
+<figures/Example_KG.png, id=163, 501.875pt x 500.87125pt>
 File: figures/Example_KG.png Graphic file (type png)
 
 <use figures/Example_KG.png>
-Package pdftex.def Info: figures/Example_KG.png used on input line 209.
+Package pdftex.def Info: figures/Example_KG.png used on input line 228.
 (pdftex.def)             Requested size: 328.82707pt x 328.18388pt.
-LaTeX Font Info:    Try loading font information for T1+phv on input line 210.
+LaTeX Font Info:    Try loading font information for T1+phv on input line 229.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
 )
 LaTeX Font Info:    Font shape `T1/phv/m/n' will be
-(Font)              scaled to size 9.99591pt on input line 210.
+(Font)              scaled to size 9.99591pt on input line 229.
 Package microtype Info: Loading generic settings for font family
 (microtype)             `phv' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 210.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 229.
 LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 9.99591pt on input line 210.
- [3] [4 <./figures/Example_KG.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 258--266
+(Font)              scaled to size 9.99591pt on input line 229.
+ [5] [6 <./figures/Example_KG.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 277--285
 
  []
 
-[5]
-Underfull \hbox (badness 10000) in paragraph at lines 373--374
-
- []
-
-[6]
-Underfull \hbox (badness 10000) in paragraph at lines 377--381
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 382--389
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 390--395
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 411--413
-
- []
-
-[7]
-Underfull \hbox (badness 10000) in paragraph at lines 491--499
-
- []
-
-[8]
-Underfull \hbox (badness 10000) in paragraph at lines 502--503
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 513--517
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 536--539
-
- []
-
-[9]
-Underfull \hbox (badness 10000) in paragraph at lines 589--595
+[7] [8] [9]
+Underfull \hbox (badness 10000) in paragraph at lines 408--409
 
  []
 
 [10]
-Underfull \hbox (badness 10000) in paragraph at lines 666--670
+Underfull \hbox (badness 10000) in paragraph at lines 412--416
 
  []
 
-[11]
-Underfull \hbox (badness 10000) in paragraph at lines 743--753
+
+Underfull \hbox (badness 10000) in paragraph at lines 417--424
 
  []
 
-[12]
-Underfull \hbox (badness 10000) in paragraph at lines 803--809
+
+Underfull \hbox (badness 10000) in paragraph at lines 425--430
 
  []
 
-[13] [14] (./final_paper.bbl
+
+Underfull \hbox (badness 10000) in paragraph at lines 446--448
+
+ []
+
+[11] [12] [13]
+Underfull \hbox (badness 10000) in paragraph at lines 526--534
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 537--538
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 548--552
+
+ []
+
+[14]
+Underfull \hbox (badness 10000) in paragraph at lines 571--574
+
+ []
+
+[15]
+Underfull \hbox (badness 10000) in paragraph at lines 624--630
+
+ []
+
+[16] [17]
+Underfull \hbox (badness 10000) in paragraph at lines 701--705
+
+ []
+
+[18] [19]
+Underfull \hbox (badness 10000) in paragraph at lines 779--789
+
+ []
+
+[20]
+Underfull \hbox (badness 10000) in paragraph at lines 839--845
+
+ []
+
+[21] [22] (./final_paper.bbl
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
-) [15]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 931.
- [16]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 931.
+ [23]) [24]
+
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `tbp') on input line 1042.
+
+
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `tbp') on input line 1101.
+
+LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10.95> not available
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 1108.
+LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <10.95> not available
+(Font)              Font shape `T1/ptm/b/it' tried instead on input line 1109.
+
+LaTeX Warning: Float too large for page by 58.63853pt on input line 1156.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1159.
+[25] [26] [27]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1159.
  (./final_paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 931.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 931.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1159.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1159.
+
 Package rerunfilecheck Info: File `final_paper.out' has not changed.
-(rerunfilecheck)             Checksum: 6509F799173BABDE05E9714E8770D367;4445.
+(rerunfilecheck)             Checksum: 84EFE6B767FECBA92705C76E9DFF7B3B;4619.
+
+
+LaTeX Warning: There were undefined references.
+
  ) 
 Here is how much of TeX's memory you used:
- 15555 strings out of 493315
- 225478 string characters out of 6137904
- 352410 words of memory out of 5000000
- 18419 multiletter control sequences out of 15000+600000
- 93843 words of font info for 299 fonts, out of 8000000 for 9000
+ 16406 strings out of 493315
+ 238943 string characters out of 6137904
+ 443289 words of memory out of 5000000
+ 19200 multiletter control sequences out of 15000+600000
+ 114377 words of font info for 326 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 48i,10n,40p,773b,460s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,11n,75p,773b,515s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
 xlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/tex
@@ -1146,12 +1228,12 @@ e/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/
 xmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2013/texmf-dist/fo
 nts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/u
 rw/times/utmb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/u
-tmr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmri8a.pfb
->
-Output written on final_paper.pdf (16 pages, 228639 bytes).
+tmbi8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb
+></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on final_paper.pdf (27 pages, 246418 bytes).
 PDF statistics:
- 344 PDF objects out of 1000 (max. 8388607)
- 309 compressed objects within 4 object streams
- 73 named destinations out of 1000 (max. 500000)
- 47830 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 413 PDF objects out of 1000 (max. 8388607)
+ 366 compressed objects within 4 object streams
+ 89 named destinations out of 1000 (max. 500000)
+ 56030 words of extra memory for PDF output out of 61914 (max. 10000000)
 

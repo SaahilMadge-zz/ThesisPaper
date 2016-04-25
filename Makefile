@@ -1,4 +1,4 @@
-PAPER = final_paper #template
+PAPER = final_paper#template
 TEX = $(wildcard *.tex)
 BIB = final_references.bib
 FIGS = $(wildcard figures/*.pdf figures/*.png graphs/*.pdf graphs/*.png)
@@ -11,6 +11,7 @@ $(PAPER).pdf: $(TEX) $(BIB) $(FIGS) final_paper.cls
 	bibtex $(PAPER)
 	pdflatex $(PAPER)
 	pdflatex $(PAPER)
+	open $(PAPER).pdf
 
 clean:
 	rm -f *.aux *.bbl *.blg *.log *.out $(PAPER).pdf
