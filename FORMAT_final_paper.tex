@@ -14,7 +14,7 @@
 \title{
 Solving SAT Reading Comprehension Questions with Memory Networks}
 
-\author{Saahil Madge\\Advisor: Professor Christiane Fellbaum}
+\author{Saahil Madge\\Adviser: Professor Christiane Fellbaum}
 
 \date{}
 \maketitle
@@ -71,18 +71,18 @@ research in many other areas of artificial intelligence and natural language
 processing.
 
 As a consequence of machine comprehension tasks being so difficult, most
-research with reading comprehension tests has focused on elementary school level
-tests. The most common dataset is MCTest \cite{Richardson2013}, which we discuss
-in more detail in Section \ref{Related Work}. This dataset is a set of passages
+research with reading comprehension tests has focused on elementary school
+level tests. The most common dataset is MCTest\cite{Richardson2013}, which we
+discuss in more detail in \ref{Related Work}. This dataset is a set of passages
 and reading comprehension questions created by crowdsourcing. The stories are
-``carefully limited to those a young child would understand''
-\cite{Richardson2013}. Another common dataset is Facebook's bAbi dataset
-\cite{Weston2015}, which has a collection of short toy problems that can be used
-to train machine comprehension systems. These problems could certainly be solved
-by a human elementary school student. Berant et al. \cite{Berant2014} train a
-system to answer questions based on a paragraph describing biological processes,
-which is certainly an advanced topic, but the system is specialized for
-biological tasks and not applicable as is to general reading comprehension.
+``carefully limited to those a young child would
+understand''\cite{Richardson2013}. Another common dataset is Facebook's bAbi
+dataset\cite{Weston2015}, which has a collection of short toy problems that can
+be used to train machine comprehension systems. These problems could certainly
+be solved by a human elementary school student. Berant et al.\cite{Berant2014}
+train a system to answer questions based on a paragraph describing biological
+processes, which is certainly an advanced topic, but the system is specialized
+for biological tasks and not applicable as is to general reading comprehension.
 
 In this paper we focus on SAT reading questions. The major reason is that they
 are far more complex than MCTest questions and other commonly-used machine
@@ -98,23 +98,22 @@ answer.
 Another aspect that makes SAT questions so difficult is that they require
 inference to answer, as opposed to just matching words or syntax. MCTest and
 similar questions can mostly be answered through word-matching (discussed in
-Section \ref{Bag-of-words}) or via syntactic matching. Word-matching means the
-system will try to find which sentences in the passage have the most words in
-common with the query, and use that to choose an answer. Syntactic matching is
-the same principle, but aims to match syntactic structure. SAT questions,
-however, almost never repeat the answer words in the question itself, and the
-query structure is not correlated with passage structure. To solve these
-questions, our system has to really understand the high-level concepts and
-information that is implied but not directly on the surface. This is a
-significantly harder problem than has been tackled before, but it is necessary
-to solve to continue moving forwad in the field of machine comprehension.
-Essentially, by trying to answer SAT questions we can try to solve problems that
-will be present in real-world applications but have not yet been tackled by
-existing research.
+\ref{Bag-of-words}) or via syntactic matching. Word-matching means the system
+will try to find which sentences in the passage have the most words in common
+with the query, and use that to choose an answer. Syntactic matching is the same
+principle, but aims to match syntactic structure. SAT questions, however, almost
+never repeat the answer words in the question itself, and the query structure is
+not correlated with passage structure. To solve these questions, our system has
+to really understand the high-level concepts and information that is implied but
+not directly on the surface. This is a significantly harder problem than has
+been tackled before, but it is necessary to solve to continue moving forwad in
+the field of machine comprehension. Essentially, by trying to answer SAT
+questions we can try to solve problems that will be present in real-world
+applications but have not yet been tackled by existing research.
 
 Due to the difficulty of interpreting the text as-is, we represent the text
 using relational logic instead. Essentially we dynamically create a
-\textit{Knowledge Graph} (covered in more detail in Section \ref{Representation
+\textit{Knowledge Graph} (covered in more detail in \ref{Representation
 Techniques}) as we parse through the text and try to frame each question as a
 query on this knowledge graph. The knowledge graph representation is typically
 used for factual data that has already been collected in entity-relation triple
@@ -124,20 +123,20 @@ dynamically create a knowledge graph on which we can answer questions.
 Traditionally most research on relational learning has used either neural
 networks or tensor decomposition to answer queries on the graph. In this work we
 present an improved version of both methods. For tensor factorization we enhance
-a method known as RESCAL \cite{Bader2007, Nickel2011} with a technique known as
-\textit{Semantically Smooth Embedding} \cite{Guo2015}. RESCAL trains a
+a method known as RESCAL\cite{Bader2007}\cite{Nickel2011} with a technique known
+as \textit{Semantically Smooth Embedding}\cite{Guo2015}. RESCAL trains a
 factorization of the knowledge graph using Alternating Least Squares, and this
 factorization can then be used to answer queries.
 
-The neural network approaches such as TransE \cite{Bordes2013} and TransH
-\cite{Wang2014} use neural networks to train an embedding method for the
+The neural network approaches such as TransE\cite{Bordes2013} and
+TransH\cite{Wang2014} use neural networks to train an embedding method for the
 relations on the knowledge graph, and use the trained model to answer queries.
 However, none of these previous approaches are designed for question-answering.
-We enhance the Memory Networks architecture proposed by Weston et al.
-\cite{Weston2015a} and improved by Sukhbaatar et al. \cite{Sukhbaatar2015} to
+We enhance the Memory Networks architecture proposed by Weston et
+al.\cite{Weston2015a} and improved by Sukhbaatar et al.\cite{Sukhbaatar2015} to
 take knowledge graph triples and queries as input, and provide a scoring of the
 answer choices as output. We discuss memory networks and alternatives in much
-greater depth in Section \ref{Related Work} and Section \ref{Model}.
+greater depth in \ref{Related Work} and \ref{Model}.
 
 Our goal with this research is to present a way to combine ideas that were
 previously used in isolation for QA or other learning tasks into a system which
@@ -182,30 +181,22 @@ word from that distribution and return only that word. \\
 
 Dependency parsing is an important technique used to understand the structural
 information in a sentence. Essentially, dependency parsing creates a graph of
-the words in the sentence and describes how each word relates to other words,
-using the standard Universal Dependencies \cite{De2014}. A sample graph is shown
-in Figure~\ref{fig: dependency parsing}, from \cite{Chen2014}. Each dependency
+the words in the sentence and describes how each word relates to other words. A
+sample graph is shown in Figure~\ref{fig: dependency parsing}. Each dependency
 in the graph has a \textit{governor} and \textit{dependent}. The collection of
 dependencies contains all the structural relationships in the sentence. Each
 dependency is labelled to show the exact relationship between governor and
 dependent. For example, in the graph in Figure~\ref{fig: dependency parsing} the
 label \textit{nsubj} highlights the nominal subject of a particular clause in
-the sentence \cite{De2014}. The specific parser we use is the Stanford
-High-Performance Dependency Parser by Chen and Manning \cite{Chen2014}.
-
-\begin{figure}[!tb]
-    \centering
-    \includegraphics[width=0.7\textwidth,keepaspectratio]{figures/Dependency_Graph.png}
-    \caption{A small example knowledge graph, from \cite{Chen2014}}
-    \label{fig: dependency parsing}
-\end{figure}
+the sentence\cite{De2014}. The specific parser we use is the Stanford
+High-Performance Dependency Parser by Chen and Manning\cite{Chen2014}.
 
 Once the dependency graph is created, we can analyze it to extract the relevant
 information in the sentence. The exact details are discussed more in Section
 \ref{Converting to Knowledge Graph Representation}. The basic approach is to
-find the main subject of the sentence and either the direct object it acts on or
-some description of it. Then it can be turned into an entity-relation triple on
-the knowledge graph.
+find the main subject of the sentence and either the direct object it acts on
+or some description of it. Then it can be turned into an entity-relation triple
+on the knowledge graph.
 
 \subsubsection{word2vec}
 \label{word2vec}
@@ -220,8 +211,8 @@ higher-dimensional space, allowing for interesting operations on words. For
 example, \textbf{vector(``king'')} - \textbf{vector(``man'')} +
 \textbf{vector(``woman'')} produces a vector that is very close to
 \textbf{vector(``queen'')}. The reason word2vec is able to embed so successfully
-is generally thought to be the fact that the process of embedding gives similar
-words a similar embedding (which is measured by cosine similarity). \\
+is generally thought to be the fact that the process of embedding gives
+similar words a similar embedding (which is measured by cosine similarity). \\
 
 \subsubsection{Knowledge Graph}
 \label{Knowledge Graph}
@@ -232,20 +223,20 @@ are entities and $r$ describes the relation between these two entities. Entities
 and relations can be repeated across triples. The total set of triples denotes
 all the knowledge in our ``Knowledge Base''.
 
-\begin{figure}[!tb]
+\begin{figure}
     \centering
     \includegraphics[width=0.7\textwidth,keepaspectratio]{figures/Example_KG.png}
     \caption{A small example knowledge graph}
-    \label{fig: KG}
+    \label{Figure: KG}
 \end{figure}
 
 We can represent these triples as a directed graph, with each entity as a vertex
-and the relations as edge types between them. Figure \ref{fig: KG} shows an
+and the relations as edge types between them. Figure \ref{Figure: KG} shows an
 example of a very small knowledge graph. Note that there is only one node per
 entity. This allows the graph to store multiple pieces of information regarding
 the same entity together, to allow for easy processing by the program while also
 making it simple for humans to understand. The mathematical details of our
-knowledge graph model can be found in Section \ref{Model}.
+knowledge graph model can be found in \ref{Model}.
 
 Once a knowledge graph is built, we can pose queries about the graph. For
 example, we can provide two entities $e_1$, $e_2$ and ask which relation $r$
@@ -257,10 +248,10 @@ either \textit{link prediction} queries or \textit{entity prediction} queries.
 \subsection{Neural Networks}
 \label{Neural Networks}
 
-As discussed in Section \ref{Background and Motivation}, recent research in
-machine comprehension has extensively used neural nets (NNs) and their variants.
-Here we provide a quick review of neural network design. These topics can be
-covered in far more depth in \cite{Bishop1995, Nielsen2015}.
+As discussed in \ref{Background and Motivation}, recent research in machine
+comprehension has extensively used neural nets (NNs) and their variants. Here we
+provide a quick review of neural network design. These topics can be covered in
+far more depth in \cite{Bishop1995} and \cite{Nielsen2015}.
 
 The most basic model is known as a \textit{feed-forward} neural net. These have
 several layers composed of units (nodes). There is an initial input layer, a
@@ -290,7 +281,7 @@ the error of our output. We find the error at the output layer, and then change
 the weights at each previous layer, working backwards to the input layer. The
 key to backpropagation relies on updating the weights based on their partial
 derivatives with relation to $C$. In-depth derivations are provided in
-\cite{Bishop1995, Nielsen2015}.\\
+\cite{Bishop1995} and \cite{Nielsen2015}.\\
 
 \subsubsection{Recurrent Neural Networks}
 \label{Recurrent Neural Networks}
@@ -316,20 +307,20 @@ error at the output node $i$ is simply $\hat{y_i} - y_i$. This is very
 convenient because it can be calculated rapidly, so it allows for fast training
 of the RNN. Training is normally a bottleneck, and by combining a robust output
 function and robust loss function we get a very elegant output error. As this is
-a very important result, we have included it in Section \ref{Derivation of
-Output Layer Error}.
+a very important result, we have included it in \ref{Derivation of Output Layer
+Error}.
 
 \section{Related Work}
 \label{Related Work}
 
-The first major research in machine comprehension was conducted by Hirschman, et
-al. \cite{Hirschman1999}. Their system ``Deep Read'' takes a story and a series
-of questions as input, and proposes answers by using bag-of-words techniques
-with other methods such as stemming and pronoun resolution layered on top. On a
-collection of remedial reading questions for grades 3-6, Deep Read answered
-about 40\% of the questions correctly.
+The first major research in machine comprehension was conducted by Hirschman,
+et al.\cite{Hirschman1999}. Their system ``Deep Read'' takes a story and a
+series of questions as input, and proposes answers by using bag-of-words
+techniques with other methods such as stemming and pronoun resolution layered
+on top. On a collection of remedial reading questions for grades 3-6, Deep Read
+answered about 40\% of the questions correctly.
 
-Most recent research has used the MCTest \cite{Richardson2013}, released by
+Most recent research has used the MCTest\cite{Richardson2013}, released by
 Richardson, et al. at Microsoft research. There are a total of 500 passages,
 each with 400 questions, created at the reading level of a young child. The
 stories are fictitious, which means the answers can only be found in the story
@@ -341,23 +332,24 @@ implementations score significantly higher on questions where the answer is
 contained in just one sentence than on questions where the answer requires
 information across multiple sentences.
 
-Narasimhan and Barzilay \cite{Narasimhan2015} also work on the MCTest tasks.
+Narasimhan and Barzilay\cite{Narasimhan2015} also work on the MCTest tasks.
 Their main insight is to create a task-specific discourse parser to capture
-specific discourse relations in the MCTest passages, while the prevailing method
-had been to use generalized off-the-shelf discourse parsers. They create three
-models of increasing complexity. The first assumes each question can be answered
-using just one sentence, and estimates a joint probability distribution across
-the question, query, and answer. The second model adds in the joint distribution
-across a second sentence as well, to handle the case in which the answer needs
-two sentences to answer. The third model incorporates discourse relations
-between the two sentences to better understand the relationship between
-information in each sentence. The relations are defined as ``Causal'',
-``Temporal'', ``Explanation'', and ``Other''. Most systems have performed the
-worst on these types of questions. By focusing specifically on modeling these
-explanatory relations, the third model easily outscores the other two, and the
-two MCTest baseline implementations, achieving almost 64\% accuracy.
+specific discourse relations in the MCTest passages, while the prevailing
+method had been to use generalized off-the-shelf discourse parsers. They create
+three models of increasing complexity. The first assumes each question can be
+answered using just one sentence, and estimates a joint probability
+distribution across the question, query, and answer. The second model adds in
+the joint distribution across a second sentence as well, to handle the case in
+which the answer needs two sentences to answer. The third model incorporates
+discourse relations between the two sentences to better understand the
+relationship between information in each sentence. The relations are defined as
+``Causal'', ``Temporal'', ``Explanation'', and ``Other''. Most systems have
+performed the worst on these types of questions. By focusing specifically on
+modeling these explanatory relations, the third model easily outscores the
+other two, and the two MCTest baseline implementations, achieving almost 64\%
+accuracy.
 
-Berant et al. \cite{Berant2014} also focus on analyzing inter-sentence
+Berant et al.\cite{Berant2014} also focus on analyzing inter-sentence
 relations, with application specifically to passages and questions about
 biological processes. These passages generally describe a chemical reaction or
 other process in which there are various starting entities which interact with
@@ -366,9 +358,9 @@ tracing the flow of the process is crucial to answering the question. To solve
 this, Berant et al. define events (or non-events) as ``triggers'', and try to
 find relationships between events. The events can be thought of as nodes on a
 graph, with an edge defining some relation between the two. There are eight
-possible relations, including ``cause'', ``enable'', and ``prevent''. They first
-create events and then predict relations between the events. The queries are
-also formulated as a graph. They are categorized as dependency questions,
+possible relations, including ``cause'', ``enable'', and ``prevent''. They
+first create events and then predict relations between the events. The queries
+are also formulated as a graph. They are categorized as dependency questions,
 temporal questions, or true-false questions. This model scores almost 67\% on
 the dataset, over 6\% better than the next-best model.
 
@@ -377,37 +369,37 @@ the core system. Neural nets are a very generalizable technique and in the past
 decade have become very popular. In fact, advances in neural net techniques have
 greatly contributed to the recent surge in machine comprehension research.
 
-Weston et al. \cite{Weston2015a} introduced memory networks. These are a type of
-neural network which simulate a long-term memory. We discussed in Section
-\ref{Recurrent Neural Networks} how RNNs have a ``vanishing gradient'' problem,
-and are not able to take advantage of states from more than a few steps prior.
-Memory networks have a memory module which stores old memories and then updates
-them given new inputs. When given a query, the memory network finds relevant
+Weston et al.\cite{Weston2015a} introduced memory networks. These are a type of
+neural network which simulate a long-term memory. We discussed in \ref{Recurrent
+Neural Networks} how RNNs have a ``vanishing gradient'' problem, and are not
+able to take advantage of states from more than a few steps prior. Memory
+networks have a memory module which stores old memories and then updates them
+given new inputs. When given a query, the memory network finds relevant
 memories, then finds memories that are relevant given those memories, and so on.
-Finally, it provides an answer to the query. Sukhbaatar et al.
-\cite{Sukhbaatar2015} improved this model by creating a model that can be
+Finally, it provides an answer to the query. Sukhbaatar et
+al.\cite{Sukhbaatar2015} improved this model by creating a model that can be
 trained end to end, while in the original design each module needed to be
 trained independently. This is the model that is the basis for our design, so we
-discuss it in more detail in Section \ref{Model}. Kumar et al. \cite{Kumar2015}
-create ``Dynamic Memory Networks''. Their design uses two memory modules. The
-semantic memory module stores general knowledge, while the episodic memory
-module iteratively finds memories relevant to the query.
+discuss it in more detail in \ref{Model}. Kumar et al.\cite{Kumar2015} create
+``Dynamic Memory Networks''. Their design uses two memory modules. The semantic
+memory module stores general knowledge, while the episodic memory module
+iteratively finds memories relevant to the query.
 
 Knowledge Graphs are also a popular research area. There are two main approaches
 that are used for solving knowledge graph embedding and query problems. The
-first is the neural network embedding style, popularized by Bordes et al.
-\cite{Bordes2013} and improved by Wang et al. \cite{Wang2014}. Bordes' TransE
+first is the neural network embedding style, popularized by Bordes et
+al.\cite{Bordes2013} and improved by Wang et al.\cite{Wang2014}. Bordes' TransE
 and Wang's TransH both train a neural network to recognize triple embeddings in
 some higher dimension. The triples are embedded in such a way that triples that
 are ``similar'' according to some metric are embedded near each other. Queries
 can be answered more easily using the embedded vectors.
 
 The second approach focuses on representing the knowledge graph as a tensor.
-Nickel et al. \cite{Nickel2011} proposed RESCAL, a model which converts the
+Nickel et al.\cite{Nickel2011} proposed RESCAL, a model which converts the
 knowledge graph into a tensor of adjacency matrices and trains a latent rank-$r$
-factorization of the tensor using a technique called ASALSAN \cite{Bader2007}.
+factorization of the tensor using a technique called ASALSAN\cite{Bader2007}.
 Queries about the knowledge graph can be easily converted into searching over a
-relevant subset of elements in the factorization. Chang et al. \cite{Chang2014}
+relevant subset of elements in the factorization. Chang et al.\cite{Chang2014}
 created TRESCAL, which is an optimized version of RESCAL.
 
 \section{Model}
@@ -423,11 +415,11 @@ This research presents three fundamental insights. \\
     answer to the question. \\
 
     \item We use tensor decomposition to embed the knowledge graph and
-    questions. Specifically, we use an enhanced version of RESCAL
-    \cite{Nickel2011}. RESCAL by itself is a fine model, but we make it more
-    accurate by adding ``Semantically Smooth Embedding''(SSE), as proposed by
-    Guo et al. \cite{Guo2015}. In their original paper they propose adding this
-    type of embedding to tensor decomposition as future work, so to our
+    questions. Specifically, we use an enhanced version of
+    RESCAL\cite{Nickel2011}. RESCAL by itself is a fine model, but we make it
+    more accurate by adding ``Semantically Smooth Embedding''(SSE), as proposed
+    by Guo et al.\cite{Guo2015}. In their original paper they propose adding
+    this type of embedding to tensor decomposition as future work, so to our
     knowledge we are the first to perform tensor decomposition with SSE. \\
 
     \item We embed the knowledge graph and questions into input vectors, and
@@ -472,25 +464,26 @@ the form
 $$\langle \textit{subject}, \, \textit{verb}, \, \textit{object} \rangle
 \Rightarrow \langle e_1, \, r, \, e_2 \rangle$$
 
-The details of the conversion are covered in Section \ref{Converting to
-Knowledge Graph Representation}.
+How to actually perform this conversion is covered in \ref{Converting to
+Knowledge Graph Representation}. *****ADD FIGURES HERE SHOWING EXAMPLE TRANSFORMATIONS******
 
 Even more importantly, the knowledge graph inherently has \textit{memory}. What
 this means is that it automatically pieces together information about the same
 concept, even if that information occurs across different sentences or even
-different paragraphs. Consider a passage about a boy named Harry. Even if in one
-paragraph the text says that Harry was born in 1980 and several paragraphs later
-we learn that he has a friend named Ron, these relations both link to the single
-Harry entity node. By analyzing the outbound and inbound relations of the Harry
-entity node, we can easily find all the information the text has stated about
-Harry. Any question asked about Harry can be answered using this information.
-While such a representation for memory may seem natural, virtually all previous
-research in the machine comprehension space has parsed by sentence. As a result,
-the knowledge graph representation is the best way for our system to easily find
-all information about an entity that was given in the original text.
+different paragraphs. *****ADD FIGURE HERE SHOWING EXAMPLE******* As the figure
+shows, even if in one paragraph the text says that Harry was born in 1980 and
+several paragraphs later we learn that he has a friend named James, these
+relations both link to the single Harry entity node. By analyzing the outbound
+and inbound relations of the Harry entity node, we can easily find all the
+information the text has stated about Harry. Any question that is asked about
+Harry can be answered using this information. While such a representation for
+memory may seem natural, virtually all previous research in the machine
+comprehension space has parsed by sentence. As a result, the knowledge graph
+representation is the best way for our system to easily find all information
+about an entity that was given in the original text.
 
 Entities also do not have to be concrete things; they can just as easily be
-abstract concepts. For example, Figure~\ref{fig: KG} shows entities like Carl
+abstract concepts. For example, Figure~\ref{Figure: KG} shows entities like Carl
 Pavano (a person), but it also shows an entity node for the year 1976. To
 roughly generalize, any noun can be an entity node. The phrase ``abstract
 concept'' itself could be an entity node. Entity-relation triples can all be
@@ -541,47 +534,7 @@ and fewest drawbacks of any representation. \\
 
 \subsubsection{Converting to Knowledge Graph Representation}
 \label{Converting to Knowledge Graph Representation}
-
-In this section we present the exact details of converting the text into a
-Knowledge Graph. Section~\ref{Data} discusses how the raw tests are converted
-into textual information that we can then parse.
-
-We use the Stanford High Performance Dependency Parser \cite{Chen2014} to
-extract the entity-relation information from the text. Section \ref{Dependency
-Parsing} explains how this tool creates a dependency graph of a particular
-sentence. We then provide a set of semantic rules to isolate the important
-information and create a triple from it. Figure~\ref{fig: dependency extraction}
-from \cite{Narasimhan2015} shows a simple sentence, as well as the extracted
-triple.
-
-\begin{figure}[!tb]
-    \centering
-    \includegraphics[width=0.7\textwidth,keepaspectratio]{figures/Dependency_Extraction.png}
-    \caption{Extracting an entity-relation triple from a sentence, from \cite{Narasimhan2015}}
-    \label{fig: dependency extraction}
-\end{figure}
-
-The information extracted should be in knowledge graph format, namely $\langle
-\text{entity}_1, \,\text{relation}, \,\text{entity}_2 \rangle$. We want to frame
-the information in the sentence so that it is one entity with some relation to
-another entity. Most sentences are of the form where the subject performs some
-action or has some description, so we focus on these two types of sentences. In
-each sentence we isolate the main subject using the \textit{nsubj} dependency.
-Then we check for one of two relations. If the subject is performing some action
-then the sentence can be generally extracted as $\langle \text{subject},
-\,\text{action}, \,\text{direct object} \rangle$. In this case the \textit{dobj}
-dependency is used to extract the action verb as well as the direct object.
-Figure~\ref{fig: dependency extraction} shows this case. In the second case, the
-sentence is often of the form ``<subject> is... <description>''. Here we use the
-\textit{cop} dependency to extract the verb and the description. The triple
-$\langle \text{subject}, \,\text{copular verb}, \,\text{description} \rangle$ is
-added to the knowledge graph. In English, ``verbs of being'' such as ``is'',
-``are'', ``were'', etc. are all copular verbs. Narasimhan and Barzilay
-\cite{Narasimhan2015} do a similar type of extraction, but they create what they
-call an \textit{entity graph}, which is slightly different from our knowledge
-graph. Their entity graph refers to linguistic entities from the dependency
-parsing, while our knowledge graph refers to information, not linguistic
-objects.
+******FILL THIS IN****** \\
 
 \subsection{Tensor Decomposition Embedding}
 \label{Tensor Decomposition Embedding}
@@ -592,10 +545,10 @@ analysis.  The advantage of using tensor decomposition is that it is based on
 well-understood mathematics, rather than simply empirical validation as with the
 neural network.
 
-Our model is an improved version of RESCAL, proposed by Nickel et al.
-\cite{Nickel2011} and used by Chang et al. \cite{Chang2014}. RESCAL itself takes
-the general tensor decomposition model proposed by Bader et al. \cite{Bader2007}
-and modifies it to work for relational learning. \\
+Our model is an improved version of RESCAL, proposed by Nickel et
+al.\cite{Nickel2011} and used by Chang et al.\cite{Chang2014}. RESCAL itself
+takes the general tensor decomposition model proposed by Bader et
+al.\cite{Bader2007} and modifies it to work for relational learning. \\
 
 \subsubsection{Knowledge Base Tensor}
 \label{Knowledge Base Tensor}
@@ -624,7 +577,7 @@ of the knowledge graph, but only for the relation type $k$. \\
 
 Our approach aims to factorize the tensor such that we take advantage of the
 inherent structure of the graph. To that end, we train a rank-$r$ factorization
-of each slice, as suggested in \cite{Bader2007, Nickel2011}.
+of each slice, as suggested in \cite{Bader2007}\cite{Nickel2011}.
 
 $$X_k \approx A R_k A^T \text{ for } k \in [1,m]$$
 
@@ -678,14 +631,14 @@ regularization function which adds more constraints on the factorization. \\
 \subsubsection{Semantically Smooth Embedding}
 \label{Semantically Smooth Embedding}
 
-Semantically Smooth Embedding (SSE) was proposed by Guo et al. \cite{Guo2015} as
-a way to improve the TransE \cite{Bordes2013} embedding model. Whereas the
+Semantically Smooth Embedding (SSE) was proposed by Guo et al.\cite{Guo2015} as a
+way to improve the TransE\cite{Bordes2013} embedding model. Whereas the
 traditional models simply embed each individual fact in isolation, SSE imposes
 geometric constraints on the whole model.
 
 Specifically, we modify the \textit{Locally Linear Embedding} (LLE) constraint.
 This constraint states that each node should be roughly a linear combination of
-its neighbors \cite{Roweis2000}. Guo et al. created a version which applies to
+its neighbors\cite{Roweis2000}. Guo et al. created a version which applies to
 the neural net embeddings done by TransE and other models, but does not apply to
 the tensor decomposition method. Here we review their version first and then
 present our new version.
@@ -764,8 +717,8 @@ The new, semantically smooth regularization function is
 We are now ready to actually solve for $A$ and $R_k$. We want to minimize $f(A,
 R_k) + \lambda g(A, R_k)$. This is a nonlinear, non-convex optimization problem
 which would require complicated techniques. Calculating $f$ and $g$ is
-expensive, so we use the Alternating Least Squares(ALS) method \cite{Koren2009}.
-Specifically, we use the ASALSAN factorization method \cite{Bader2007}.
+expensive, so we use the Alternating Least Squares(ALS) method\cite{Koren2009}.
+Specifically, we use the ASALSAN factorization method\cite{Bader2007}.
 
 ALS turns the non-convex optimization problem into a convex problem by fixing
 one of the unknowns. Then the problem can be solved with ordinary least-squares
@@ -793,8 +746,8 @@ $$A \leftarrow \bigg[ \sum_k \mathcal{X}_kAR_k^T + \mathcal{X}_k^TAR_k \bigg] \b
 where
 $$B_k = R_k A^T AR_k^T,\,\,\,\,\,\,\, C_k = R_k^TA^TAR_k$$
 
-To update $R_k$, we first fix $A$. Then we notice that if we vectorize
-$\mathcal{X}$ and $R_k$, we can rewrite Equation \ref{eq: to minimize} as
+To update $R_k$, we first fix $A$. Then we notice that if we vectorize $\mathcal{X}$ and
+$R_k$, we can rewrite \ref{eq: to minimize} as
 
 $$f(R_k) = \norm{\textbf{vec}\left(\mathcal{X}_k\right) - \left(A \otimes A \right)
 \textbf{vec}\left(R_k\right)}$$
@@ -808,8 +761,8 @@ $$R_k \leftarrow \left( \left(A \otimes A \right)^T \left(A \otimes A\right) + \
 
 We alternate updating $A$ and $R_k$ until we have performed some maximum number
 of iterations or until $\frac{f(A, R_k)}{\norm{\mathcal{X}_k}_F^2}$ is below
-some tolerance $\epsilon$. The final factorization $\hat{\mathcal{X}}$ can now
-be used to answer queries.
+some tolerance $\epsilon$. The final factorization $\hat{\mathcal{X}}$ can now be used to answer
+queries.
 
 \subsubsection{Answering Queries}
 \label{Answering Queries}
@@ -831,7 +784,7 @@ mathematical approach. We choose the Memory Networks architecture as the basis
 for our model because it has strong performance on the bAbi dataset and the
 foundational architecture itself scales easily to more complex problems as long
 as the input is in a valid format. First we review the architecture as proposed
-in \cite{Sukhbaatar2015}. Then we discuss how to adapt it to this specific
+by \cite{Sukhbaatar2015}. Then we discuss how to adapt it to this specific
 problem. \\
 
 \subsubsection{Memory Network Architecture}
@@ -841,7 +794,7 @@ First we will review the architecture for one layer, as the extension to several
 layers is straightforward. The basic model takes in a set of input vectors $x_1, ...,
 x_n$ and a query vector $q$, and outputs an answer $a$. Memory Networks require
 the input text and the query to be vectorized in some form for easy computation.
-These embedding techniques are covered in detail in Section \ref{Representation
+These embedding techniques are covered in detail in \ref{Representation
 Techniques}. Typically the embedding is done with bag-of-words embedding. This
 embedding technique relies on the same word being used in the answer choices as
 well as in the original text, which is true for MCTest and bAbi. The vocabulary
@@ -905,10 +858,10 @@ the overall architecture so that the memories chosen as relevant actually match
 the concept in the query, as opposed to simply matching the words.
 
 We propose stacking horizontally each slice of the tensor $\mathcal{X}$ as
-defined in Section \ref{Knowledge Base Tensor} and using each column as an input
-vector. In total the input matrix $\mathcal{X}'$ will be of shape $n\times
-(nm)$. The query is more complicated to vectorize. The key is that we can parse
-the question itself in the same way we parsed the original text and obtain an
+defined in \ref{Knowledge Base Tensor} and using each column as an input vector.
+In total the input matrix $\mathcal{X}'$ will be of shape $n\times (nm)$. The
+query is more complicated to vectorize. The key is that we can parse the
+question itself in the same way we parsed the original text and obtain an
 entity-relation triple. However, in this case either an entity or the relation
 is missing. Finding the right answer can be turned into a problem of finding the
 missing entity or relation. If the query has an entity $e_i$ and a relation $k$,
@@ -933,80 +886,38 @@ the matrix $C$ stays constant at each layer, and $u^{k+1} = u^k + o^k$.
 \section{Data}
 \label{Data}
 
-The model evaluation is conducted on SAT tests in the old (pre-2016) format.
-There are several reasons we use the old format. The main reason is that the old
-reading section consists of mostly reading comprehension, while in the new
-format there are charts and graphs that must be interpreted as well. Reading
-these requires some computer vision work on top of our existing models, and the
-questions do not naturally make sense as queries on a knowledge graph. The old
-format was tried and tested for many years, but the new format is just in its
-first year. Additionally, there are far more resources for the old SAT which we
-can use for data.
+For preliminary testing, we use both the MCTest \cite{Richardson2013} dataset as
+well as the Facebook bAbi dataset \cite{Weston2015}. The MCTest baseline
+algorithms provide a benchmark to test our preliminary bag-of-words
+implementations against. The bAbi dataset is used to evaluate
+\cite{Sukhbaatar2015}. We use the same model so our preliminary neural net
+implementation is also evaluated on the bAbi dataset. However, we do not use as
+many training optimizations. These comparisons are meant to be benchmark
+comparisons, rather than trying to perform better.
 
-There are no publicly available datasets for the SAT. We tried contacting ETS to
-obtain a research dataset, but as we have not yet heard a response, we collected
-practice SAT tests from a 2005 CollegeBoard preparation book. We evaluated on
-all reading comprehension sections from 3 full SAT tests. These books were
-already purchased several years ago. For convenience, we use ``test'' to refer
-to just the 3 reading sections of a test, and ``reading section'' to refer to
-just the reading comprehension passages and accompanying questions of each
-reading section.
+The crux of our project relies on SAT reading comprehension tests for both
+training and testing. As there are no publicly available datasets, we tried
+contacting ETS to obtain a research dataset. As we have not yet heard a response,
+we also collected practice SAT tests from prep books. As of now we have 8 tests
+from a CollegeBoard prep book, and 11 from a Princeton Review prep book (10 full
+practice tests and 1 practice PSAT test). We already owned these prep books.
 
-Each practice test contains 3 reading sections. Within each section there can be
-\textit{small} passages (about 100 words) with 4 questions, \textit{medium}
-passages of 450-500 words and 5-8 accompanying questions, and \textit{long}
-passages of 500-600 words with 12-13 questions. Of the first two sections, each
-has one small passage and 2 medium passages while the other has one small
-passage and 1 long passage. The third reading section always has one long
-passage. Each question has an associated difficulty as well (\textit{easy},
-\textit{medium}, or \textit{hard}). The Math and Writing sections, as well as
-the vocabulary questions in the reading section, are not used in evaluation.
+Each practice test contains 3 reading sections. Each reading section has
+approximately 18 comprehension questions. About 4-6 of these are from short
+passages (100 words), and the remaining are from longer passages (450-500
+words). There are 2 short passages and 1-2 long passages per section, each
+followed by comprehension questions. Hereafter we use ``test'' to refer to just
+the 3 reading sections of a test, and ``reading section'' to refer to just the
+reading comprehension passages and accompanying questions of each reading
+section. Math and writing sections, as well as the vocabulary questions in the
+reading section, are ignored.
 
-Our practice tests are in paper format and needed to be converted to an
-electronic format. This conversion was actually quite complicated. First, every
-test was scanned into PDF format. Then these PDFs were converted into text
-format using a combination of Amazon Mechanical Turk and OCR software. For
-Mechanical Turk we split each test into individual passages - 2 small, 2 medium,
-and 2 large. Each passage is published as its own task for workers. The PDFs
-were converted into images and the images for each passage plus questions were
-uploaded to Amazon Web Services S3 File Storage. Each task consisted of the
-images on the left side of the screen and text boxes to type the text on the
-right side of the screen. With the OCR software, copies of each image had to be
-made, and the right-hand side and left-hand side of the image processed
-separately. Each SAT page has two columns, which are misinterepreted by the OCR
-software as a single line. Tests 2 and 3 were processed via Mechanical Turk
-while Test 1 was processed via OCR software. The expenditure on Mechanical Turk
-was \$116.92 and expenditure on OCR was \$17.95, for a total of \$134.87. Due to
-some errors in the conversion process, a few questions (mainly on small
-passages) were not used in the full evaluation.
+Our practice tests are in paper format, so we must put them in an electronic
+format. Amazon Mechanical Turk was used for this task. Each test was scanned,
+and we approximated that typing up one test requires an hour. We requested
+Master Turkers, 2 per test, and paid \$8.00 for each task. The total expenditure
+was \$304.00.
 
-\section{Results and Discussion}
-\label{Results and Discussion}
-
-In this section we present and interpret our results on three full SAT reading
-comprehension tests. The 
-
-\subsection{****SOMETHING ABOUT KNOWLEDGE GRAPH****}
-\label{****SOMETHING ABOUT KNOWLEDGE GRAPH****}
-
-There are some drawbacks to the way we extract the knowledge graph triples from
-the text. Some information is lost in the extraction process. Because the
-subject is forced to be $\text{entity}_1$ we lose information about the direct
-object. For example, in the sentence in Figure~\ref{fig: dependency extraction},
-we learn that the dog likes sausage but not that the sausage is spicy.
-
-Additionally, SAT sentences are very difficult to parse. Most have multiple
-clauses, and normally unusual structural elements such as the colon or dash are
-quite commonplace. One sentence used in an actual passage is: \textit{The critic
-Edumund Wilson was not a self-conscious letter writer or one who tried to
-sustain studied mannerisms.} We are able to extract the triple $\langle
-\text{Wilson}, \,\text{was}, \,\text{writer} \rangle$ but due to the complicated
-structure of the sentence we are not able to extract that Wilson was not
-self-conscious or that Wilson did not \textit{try to sustain studied
-mannerisms.} Overall we can extract the most important points, but we often miss
-the subtleties of the sentence.
-
-\newpage
 \bstctlcite{bstctl:etal, bstctl:nodash, bstctl:simpurl}
 \bibliographystyle{IEEEtranS}
 \bibliography{final_references}
@@ -1055,6 +966,76 @@ The partial derivatives yield
 \subsection{Full Evaluation Data}
 \label{Full Evaluation Data}
 Here we present the full evaluation data on three practice tests.
+
+%
+% \begin{tabular}{ | l | l | l | l | l | l | l | l | l | l | l | }
+% \hline
+% 	Number & Tensor w/o Reg & Tensor w/ Reg & 1-layer MemN2N & 3-layer MemN2N & Correct Answer & Difficulty & Tensor w/o Reg correct & Tensor w/ Reg correct & 1-layer MemN2N correct & 3-layer MemN2N correct \\ \hline
+% 	First section & \  & \  & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	Small passage & 9 & A & A & E & E & \  & \  & \  & \  & \  \\ \hline
+% 	10 & A & D & B & M & \  & \  & \  & \  & \  & \  \\ \hline
+% 	11 & D & D & D & E & y & y & \  & \  & \  & \  \\ \hline
+% 	12 & E & E & D & E & \  & \  & \  & \  & \  & \  \\ \hline
+% 	Long passage & 13 & C & D & train & train & E & M & \  & \  & \  \\ \hline
+% 	14 & D & D & train & train & D & E & y & y & \  & \  \\ \hline
+% 	15 & E & B & train & train & B & M & y & \  & \  & \  \\ \hline
+% 	16 & E & A & train & train & A  & H & y & \  & \  & \  \\ \hline
+% 	17 & A & A & train & train & A  & H & y & y & \  & \  \\ \hline
+% 	18 & E & D & train & train & C & E & \  & \  & \  & \  \\ \hline
+% 	19 & D & D & train & train & A & M & \  & \  & \  & \  \\ \hline
+% 	20 & D & A & train & train & B & M & \  & \  & \  & \  \\ \hline
+% 	21 & E & E & A & A & B & M & \  & \  & \  & \  \\ \hline
+% 	22 & A & A & A & A & C & M & \  & \  & \  & \  \\ \hline
+% 	23 & D & D & A & A & B & M & \  & \  & \  & \  \\ \hline
+% 	24 & A & B & A & A & A & E & y & y & y & \  \\ \hline
+% 	Second section & \  & \  & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	Small  passage & 6 & D & M & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	7 & B & M & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	8 & B & H & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	9 & C & M & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	Medium passage & 10 & C & M & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	11 & A & E & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	12 & B & E & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	13 & B & B & train & train & C & M & \  & \  & \  & \  \\ \hline
+% 	14 & C & D & train & train & B & E & \  & \  & \  & \  \\ \hline
+% 	15 & E & E & train & train & C & M & \  & \  & \  & \  \\ \hline
+% 	16 & B & B & train & train & E & E & \  & \  & \  & \  \\ \hline
+% 	17 & A & A & C & C & D & E & \  & \  & \  & \  \\ \hline
+% 	18 & A & A & C & D & C & M & y & \  & \  & \  \\ \hline
+% 	Medium passage & 19 & B & E & train & train & E & M & y & \  & \  \\ \hline
+% 	20 & E & E & train & train & C & E & \  & \  & \  & \  \\ \hline
+% 	21 & D & B & train & train & D & M & y & \  & \  & \  \\ \hline
+% 	22 & E & E & train & train & E & M & y & y & \  & \  \\ \hline
+% 	23 & D & E & E & C & A & M & \  & \  & \  & \  \\ \hline
+% 	24 & B & B & E & C & B & M & y & y & \  & \  \\ \hline
+% 	Third section & \  & \  & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	Long passage & 7 & A & A & train & train & B & M & \  & \  & \  \\ \hline
+% 	8 & C & C & train & train & A & M & \  & \  & \  & \  \\ \hline
+% 	9 & E & E & train & train & D & M & \  & \  & \  & \  \\ \hline
+% 	10 & D & D & train & train & E & M & \  & \  & \  & \  \\ \hline
+% 	11 & B & B & train & train & A & M & \  & \  & \  & \  \\ \hline
+% 	12 & C & C & train & train & A & E & \  & \  & \  & \  \\ \hline
+% 	13 & E & B & train & train & D & E & \  & \  & \  & \  \\ \hline
+% 	14 & B & B & train & train & D & M & \  & \  & \  & \  \\ \hline
+% 	15 & A & A & D & D & E & M & \  & \  & \  & \  \\ \hline
+% 	16 & A & A & D & D & E & M & \  & \  & \  & \  \\ \hline
+% 	17 & D & D & D & D & C & M & \  & \  & \  & \  \\ \hline
+% 	18 & D & D & D & A & A & M & y & \  & \  & \  \\ \hline
+% 	19 & C & C & D & D & E & M & \  & \  & \  & \  \\ \hline
+% 	Total & 41 & 41 & 13 & 13 & 7 & 8 & 2 & 2 & \  & \  \\ \hline
+% 	\  & \  & \  & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	\  & \  & \  & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	\  & \  & \  & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	\  & \  & \  & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	\  & \  & \  & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	\  & \  & \  & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	\  & \  & \  & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	total & 7 out of 41 & 8 out of 41 & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	scales to 12/67 &  & \  & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	320 converted &  & \  & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	370 scaled &  & \  & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% 	18th percentile &  & \  & \  & \  & \  & \  & \  & \  & \  & \  \\ \hline
+% \end{tabular}
 
 % Please add the following required packages to your document preamble:
 % \usepackage{booktabs}
@@ -1111,8 +1092,8 @@ Here we present the full evaluation data on three practice tests.
 \textbf{}                & 17              & D                       & D                      & D                       & D                       & C                       & M                   \\
 \textbf{}                & 18              & D                       & D                      & D                       & A                       & A                       & M                   \\
 \textbf{}                & 19              & C                       & C                      & D                       & D                       & E                       & M                   \\ \midrule
-\textbf{Total Correct}   &                 & 7                       & 8                      & 2                       & 2                       &                         &                     \\
-\textbf{Total Questions} &                 & 41                      & 41                     & 13                      & 13                      &                         &                     \\ \bottomrule
+\textbf{Total Questions} &                 & 41                      & 41                     & 13                      & 13                      &                         &                     \\
+\textbf{Total Correct}   &                 & 7                       & 8                      & 2                       & 2                       &                         &                     \\ \bottomrule
 % \end{tabularx}
 \end{tabular}
 \end{table}
@@ -1170,8 +1151,8 @@ Here we present the full evaluation data on three practice tests.
 \textbf{}                & 17                                  & C                                          & D                                           & D                                           & M                                       \\
 \textbf{}                & 18                                  & A                                          & B                                           & B                                           & M                                       \\
 \textbf{}                & 19                                  & C                                          & C                                           & A                                           & M                                       \\ \midrule
-\textbf{Total Correct}   &                                     & 11                                         & 7                                           &                                             &                                         \\
-\textbf{Total Questions} &                                     & 40                                         & 14                                          &                                             &                                         \\ \bottomrule
+\textbf{Total Questions} &                                     & 40                                         & 14                                          &                                             &                                         \\
+\textbf{Total Correct}   &                                     & 11                                         & 7                                           &                                             &                                         \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -1228,8 +1209,8 @@ Here we present the full evaluation data on three practice tests.
 \textbf{}               & 17                                  & C                                          & D                                           & E                                           & M                                       \\
 \textbf{}               & 18                                  & B                                          & D                                           & A                                           & M                                       \\
 \textbf{}               & 19                                  & E                                          & D                                           & D                                           & M                                       \\ \midrule
-\textbf{Total Correct}  &                                     & 9                                          & 3                                           &                                             &                                         \\
-\textbf{Total Questions} &                                     & 41                                         & 14                                          &                                             &                                         \\ \bottomrule
+\textbf{Total Question} &                                     & 41                                         & 14                                          &                                             &                                         \\
+\textbf{Total Correct}  &                                     & 9                                          & 3                                           &                                             &                                         \\ \bottomrule
 \end{tabular}
 \end{table}
 

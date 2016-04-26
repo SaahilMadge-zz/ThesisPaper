@@ -41,8 +41,8 @@
 
 % Basic text typesetting options.
 \RequirePackage{mathptmx}
-\RequirePackage[scaled=0.833]{helvet}
-\RequirePackage[scaled=0.875]{couriers}
+%\RequirePackage[scaled=0.833]{helvet}
+%\RequirePackage[scaled=0.875]{couriers}
 \setlength{\parindent}{1em}
 \RequirePackage{setspace}
 \newcommand{\normalspacing}{}
