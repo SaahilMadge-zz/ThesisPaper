@@ -29,6 +29,11 @@ B.~Bader, R.~a. Harshman, and T.~G. Kolda, ``{Temporal Analysis of Semantic
   \url{http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=4470227}
 \BIBentrySTDinterwordspacing
 
+\bibitem{Bastien2012}
+F.~Bastien, P.~Lamblin, R.~Pascanu, J.~Bergstra, I.~J. Goodfellow, A.~Bergeron,
+  N.~Bouchard, and Y.~Bengio, ``Theano: new features and speed improvements,''
+  Deep Learning and Unsupervised Feature Learning NIPS 2012 Workshop, 2012.
+
 \bibitem{Berant2014}
 \BIBentryALTinterwordspacing
 J.~Berant and P.~Clark, ``{Modeling Biological Processes for Reading
@@ -37,6 +42,12 @@ J.~Berant and P.~Clark, ``{Modeling Biological Processes for Reading
   [Online]. Available:
   \url{http://allenai.org/content/publications/berant-srikumar-manning-emnlp14.pdf}
 \BIBentrySTDinterwordspacing
+
+\bibitem{Bergstra2010}
+J.~Bergstra, O.~Breuleux, F.~Bastien, P.~Lamblin, R.~Pascanu, G.~Desjardins,
+  J.~Turian, D.~Warde-Farley, and Y.~Bengio, ``Theano: a {CPU} and {GPU} math
+  expression compiler,'' in \emph{Proceedings of the Python for Scientific
+  Computing Conference ({SciPy})}, Jun. 2010, oral Presentation.
 
 \bibitem{Bishop1995}
 C.~M. Bishop, \emph{{Neural networks for pattern recognition}}, 1995, vol.~92.
@@ -76,6 +87,13 @@ L.~Hirschman, M.~Light, E.~Breck, and J.~D. Burger, ``{{\{}D{\}}eep
   {\{}R{\}}ead: {\{}A{\}} Reading Comprehension System},'' \emph{Proceedings of
   ACL}, pp. 325--332, 1999.
 
+\bibitem{Jones2001}
+\BIBentryALTinterwordspacing
+E.~Jones, T.~Oliphant, P.~Peterson \emph{et~al.}, ``{SciPy}: Open source
+  scientific tools for {Python},'' 2001--, [Online; accessed 2016-04-23].
+  [Online]. Available: \url{http://www.scipy.org/}
+\BIBentrySTDinterwordspacing
+
 \bibitem{Koren2009}
 Y.~Koren, R.~Bell, and C.~Volinsky, ``{Matrix Factorization Techniques for
   Recommender Systems},'' \emph{Computer}, vol.~42, no.~8, pp. 42--49, 2009.
@@ -84,6 +102,12 @@ Y.~Koren, R.~Bell, and C.~Volinsky, ``{Matrix Factorization Techniques for
 A.~Kumar, O.~Irsoy, J.~Su, J.~Bradbury, R.~English, B.~Pierce, P.~Ondruska,
   I.~Gulrajani, and R.~Socher, ``{Ask Me Anything: Dynamic Memory Networks for
   Natural Language Processing},'' \emph{arXiv}, pp. 1--10, 2015.
+
+\bibitem{Manning2014}
+C.~D. Manning, M.~Surdeanu, J.~Bauer, J.~Finkel, S.~J. Bethard, and
+  D.~McClosky, ``{The Stanford CoreNLP Natural Language Processing Toolkit},''
+  \emph{Proceedings of 52nd Annual Meeting of the ACL: System Demonstrations},
+  pp. 55--60, 2014.
 
 \bibitem{Mikolov2013}
 T.~Mikolov, K.~Chen, G.~Corrado, and J.~Dean, ``{Distributed Representations of
@@ -109,6 +133,11 @@ M.~A. Nielsen, \emph{Neural Networks and Deep Learning}.\hskip 1em plus 0.5em
   minus 0.4em\relax Determination Press, 2015. [Online]. Available:
   \url{http://neuralnetworksanddeeplearning.com/index.html}
 \BIBentrySTDinterwordspacing
+
+\bibitem{Perez2007}
+F.~Perez and B.~E. Granger, ``Ipython: A system for interactive scientific
+  computing,'' \emph{Computing in Science Engineering}, vol.~9, no.~3, pp.
+  21--29, May 2007.
 
 \bibitem{Richardson2013}
 M.~Richardson, C.~J.~C. Burges, and E.~Renshaw, ``{MCTest: A Challenge Dataset

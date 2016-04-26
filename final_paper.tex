@@ -262,6 +262,9 @@ machine comprehension has extensively used neural nets (NNs) and their variants.
 Here we provide a quick review of neural network design. These topics can be
 covered in far more depth in \cite{Bishop1995, Nielsen2015}.
 
+\subsubsection{Feed-forward Neural Networks}
+\label{Feed-forward Neural Networks}
+
 The most basic model is known as a \textit{feed-forward} neural net. These have
 several layers composed of units (nodes). There is an initial input layer, a
 final output layer, and \textit{hidden layers} in the middle. A unit in layer
@@ -583,8 +586,11 @@ graph. Their entity graph refers to linguistic entities from the dependency
 parsing, while our knowledge graph refers to information, not linguistic
 objects.
 
-\subsection{Tensor Decomposition Embedding}
-\label{Tensor Decomposition Embedding}
+\subsection{Tensor Decomposition}
+\label{Tensor Decomposition}
+
+*******REVISE THIS PART AND ALSO DESCRIBE HOW THE WORD2VEC QUESTION MATCHING
+IS DONE TO CONVERT QUERIES*******
 
 First we discuss the tensor decomposition approach to answering knowledge graph
 queries. The other main way to solve relational learning queries is with tensor
@@ -874,13 +880,17 @@ or set of words as the answer.
 
 $$\hat{a} = \text{Softmax}\left(W\left(o + u\right)\right)$$
 
+The network itself is trained using backpropagation. The answers to the training
+set questions are provided as input, and the network learns to answer them. The
+exact details of training are covered in Section \ref{Evaluation Process}.
+
 Several strategies can be used to extend the Memory Network to multiple layers.
-We use the \textit{Recurrent Neural Network} strategy as it makes most sense
-for our purposes. This strategy is the simplest to understand as well as to train.
+We use the \textit{Recurrent Neural Network} strategy as it makes most sense for
+our purposes. This strategy is the simplest to understand as well as to train.
 Each layer acts the same as in the one-layer case. The only difference is that
-for all layers $k > 1$ the input $u^{k+1} = u^k + o^k$, and the matrix $W$
-is only applied to $o^{final}$. Each layer uses the same $A,B,C$ matrices. By
-using the same matrices at each level and passing the state along, this architecture
+for all layers $k > 1$ the input $u^{k+1} = u^k + o^k$, and the matrix $W$ is
+only applied to $o^{final}$. Each layer uses the same $A,B,C$ matrices. By using
+the same matrices at each level and passing the state along, this architecture
 acts like a Recurrent Neural Network.
 
 The initial layer calculates how relevant each memory vector is to the initial
@@ -892,6 +902,8 @@ layer finds new memories that can help answer the question. \\
 
 \subsubsection{Memory Network Enhancements}
 \label{Memory Network Enhancements}
+
+*****FIX THIS PART******
 
 As discussed, the original Memory Networks model uses simple bag-of-words
 embedding to vectorize the text into the input vectors ${x_i}$. This cannot work
@@ -927,8 +939,39 @@ $$p_i = \text{Softmax}\left(u^Tm_i\right)$$
 $$o = \sum_i p_ic_i$$
 $$\hat{a} = \text{Softmax}\left(W\left(o+u\right)\right)$$
 
-In the multiple-layer case, the approach is the same as in the original model where
-the matrix $C$ stays constant at each layer, and $u^{k+1} = u^k + o^k$.
+In the multiple-layer case, the approach is the same as in the original model
+where the matrix $C$ stays constant at each layer, and $u^{k+1} = u^k + o^k$.
+Specifically we use a 10-layer neural network. The original paper used a 3-layer
+model to find 3 steps of relevant facts. SAT questions require information
+pieced together from many sentences, however, so we add more layers to capture
+this additional complexity.
+
+\subsection{Model Comparison}
+\label{Model Comparison}
+
+The Tensor model and the Memory Network model have the same underlying goal but
+go about it very differently. Both models try to find the inherent properties
+of the knowledge graph given the graph itself. Essentially, by finding this
+latent representation of the graph, both models can answer questions about it.
+
+The tensor model has a much stronger mathematical base. The RESCAL model uses
+ASALSAN \cite{Bader2007} which is a general mathematical model for tensor
+evaluation. Using ALS to optimize is an approximation to make the problem
+computationally feasible, but the technique is still mathematically sound. At
+the same time however, the tensor model is trained only on the knowledge graph
+itself and not on the answers. IT is heavily reliant on the thoroughness of the
+knowledge graph triples extracted from the text. Information that is missed in
+the triple extraction will be lost to the tensor model as well.
+
+The Memory Networks model is the exact opposite. It has a much weaker
+theoretical base but is also more robust to errors in the knowledge graph
+extraction process. The mathematics of neural networks are not as well
+understood as that of tensors, especially as we add more layers. This means that
+the neural net model we are using can behave in various unexpected ways.
+Nevertheless, the model is trained using the answers to the training set
+questions. It can find patterns and information using the training process, and
+as a result is less subject to fluctuations in the actual knowledge graph
+extraction.
 
 \section{Data}
 \label{Data}
@@ -978,13 +1021,253 @@ software as a single line. Tests 2 and 3 were processed via Mechanical Turk
 while Test 1 was processed via OCR software. The expenditure on Mechanical Turk
 was \$116.92 and expenditure on OCR was \$17.95, for a total of \$134.87. Due to
 some errors in the conversion process, a few questions (mainly on small
-passages) were not used in the full evaluation.
+passages) were not used in the full evaluation. The passage text, question text,
+and answer key are all stored in text form and used as input for evaluation
+(Section \ref{Evaluation Process}).
 
-\section{Results and Discussion}
-\label{Results and Discussion}
+\section{Evaluation and Discussion}
+\label{Evaluation and Discussion}
 
 In this section we present and interpret our results on three full SAT reading
-comprehension tests. The 
+comprehension tests. First we discuss the peformance of each model on each test
+and compare the performance of our enhanced models to their baseline versions.
+We break down what types of problems each model did well / poorly on, and offer
+an interpretation as to why. Then we compare the Tensor model to the Memory
+Networks model and evaluate their relative performance. Finally we propose
+future improvements.
+
+\subsection{Implementation Details}
+\label{Implementation Details}
+
+There are three main components to the implementation: knowledge graph creation,
+tensor decomposition, and neural network. We heavily modified the Java code
+provided by Narasimhan and
+Barzilay\footnote{\url{https://bitbucket.org/ghostof2007/mctest}}
+\cite{Narasimhan2015}, which itself uses the Stanford CoreNLP
+Toolkit\footnote{\url{http://stanfordnlp.github.io/CoreNLP/}}
+\cite{Manning2014}, to create the entity-relation triple extraction program. The
+RESCAL algorithm used is the version created by
+Nickel\footnote{\url{https://github.com/mnick/rescal.py}} \cite{Nickel2011}. We
+modify this code to include our customized regularization term. The memory
+network is implemented using Numpy\footnote{\url{http://www.numpy.org/}},
+Theano\footnote{\url{http://www.deeplearning.net/software/theano/}}, and Jupyter
+Notebook\footnote{\url{http://ipython.org/notebook.html}} \cite{Jones2001,
+Perez2007, Bastien2012, Bergstra2010}.
+
+\subsection{Evaluation Process}
+\label{Evaluation Process}
+
+The evaluation process starts with the text input separated into passage text,
+questions, and answers. For each passage, the passage text is fed through the
+knowledge extraction program, which converts it into a set of entity-relation
+triples and outputs those into another text file.
+
+The tests are answered passage-by-passage. This means that each model evaluates
+on one passage at a time. Each passage is considered its own knowledge graph.
+This means that in the tensor model a new tensor of varying dimensionality is
+created for each passage, and the accompanying questions can only be answered as
+queries on that particular graph. Combining the knowledge graphs for different
+sections would only serve to make it harder to answer the questions (and it is
+already hard enough!) Therefore it makes sense to run the tensor model on each
+passage separately. The same holds true for the Memory Networks model. The
+neural net has an additional training constraint. Due to the dimensionality
+constraints on the embedding matrices and the underlying architecture, it is
+not possible to combine the tensors from different passages.
+
+In each evaluation we first train the model and then evaluate its performance on
+the questions for that passage. The Tensor model is trained using ALS (Section
+\ref{Solving the Optimization Problem}). The training process is independent of
+the actual performance of the model, i.e. there is no feedback, so we can test
+the model's performance on every question. The neural net is trained in a
+feedback loop using backpropagation as discussed in Section \ref{Feed-forward
+Neural Networks} and Section \ref{Recurrent Neural Networks}. In each passage we
+set aside $\dfrac{2}{3}$ of the questions for training and use the remaining
+$\dfrac{1}{3}$ as the test set. For this reason we do not evaluate the neural
+net on any of the Small passages.
+
+We run the Tensor model 10 times with $d=20$ and pick the model with best
+performance. We train the Neural Network model for 1000 iterations, evaluating
+its performance every 50 iterations, and pick the model with best performance.
+Ideally we would have a validation set separate from the test set, but because
+we have to train passage-by-passage the number of questions is already
+incredibly low for each model.
+
+\subsection{Results}
+\label{Results}
+
+Section \ref{Full Evaluation Data} in the Appendix contains full evaluation data
+for each test. The tables contain each model's answer for every question, as
+well as the correct answer for that question and its associated difficulty. We
+evaluated Test 1 on our enhanced models as well as their baseline versions for
+comparison. Both models outperformed the baselines, so on Tests 2 and 3 we
+evaluated only on our enhanced models. The analysis of exactly how our models
+perform better is in Section \ref{Comparison to Baseline}.
+
+On Test 1 our Tensor model with regularization (Section \ref{Tensor
+Decomposition}) scores 8 / 41 while the model without regularization scores 7 /
+41. The 1-layer and 10-layer Memory Networks both scored 2 / 13. Hereafter
+``tensor model'' refers to the tensor model with regularization, and ``MemN2N''
+refers to the 10-layer neural network.
+
+On Test 2 the tensor model scored 11 / 40 while the MemN2N scored 7 / 14.
+
+On Test 3 the tensor model scored 9 / 41 while the MemN2N scored 3 / 14.
+
+\subsection{Comparison to Baseline}
+\label{Comparison to Baseline}
+
+On Test 1 we compared our enhanced model to their respective baselines. We
+updated the tensor model with SSE regularization, so its baseline is the model
+without regularization. The baseline for the 10-layer MemN2N is the 1-layer
+MemN2N.
+
+The tensor model with regularization scores 1 better than the model without
+regularization. Besides pure score, there is additional evidence that adding
+regularization creates a better model. For each passage we train the model 10
+times and evaluate its performance. Without regularization, the training process
+produces the same model each time. However, with regularization it produces a
+slightly different model each time. The optimization process with ALS
+approximates the graph structure, which means that the tensor factorization
+should be slightly different each time. If it is the same, as is the case in the
+model without regularization, then the inherent properties are being found
+\textit{too easily}, suggesting that it is not a good factorization of the
+graph.
+
+The regularization term we use imposes some geometric constraints on the model.
+Training without regularization allows the training to violate these
+constraints, producing a model which does not actually represent the underlying
+graph. Adding the regularization term keeps the model flexible by forcing the
+factorization to more accurately represent the underlying graph. The model is
+not only more likely to answer correctly, but also more resistant to errors in
+the knowledge graph extraction. We discussed in Section \ref{Model Comparison}
+that the tensor model is too reliant on the knowledge graph extraction process.
+Preserving flexibility is of utmost importance, and the regularization term is
+necessary to do that.
+
+With regards to the neural net, the 10-layer MemN2N is significantly better than
+the 1-layer version. Although both score the same on Test 1, the 1-layer MemN2N
+does not actually learn any of the underlying representation! Table~\ref{tab:
+Evaluation on Test 1} demonstrates that in each section, the 1-layer MemN2N
+predicted the same answer choice for every question. Its choice was the letter
+answer choice seen most in the training set. For example, in the Section 2 first
+Medium passage passage there are two questions where the answer is \textit{C}.
+No other answer choice appears more than once. As a result, the 1-layer MemN2N
+guesses \textit{C} for all of the remaining questions. The 10-layer MemN2N, on
+the other hand, guesses different answers for different questions in the same
+section. This indicates that it is predicting an answer based on some underlying
+semantic information, rather than simply the most commonly-seen answer choice.
+Simply guessing the most commonly-seen answer choice is not useful in evaluating
+how well the model understands the semantic information of the questions and the
+underlying knowledge graph. Therefore the 10-layer MemN2N is a much better
+model.
+
+The reason the 1-layer MemN2N only outputs the most commonly-seen answer choice
+is that it overfits very quickly. Figure~\ref{fig: training error} shows how the
+1-layer MemN2N rapidly fits the answer distribution to the training data, and
+becomes more confident in its answer with more training iterations. We can guard
+against overfitting by adding more layers.
+
+\subsection{Interpretation of Results}
+\label{Interpretation of Results}
+
+In this section we interpret the models' performance. We first note that the
+model performance is not consistent across passages, but rather very good on
+some passages and very poor on others. For example, on Test 2 Section 1 the
+tensor model scores 3 / 12 but on Test 2 Section 2 on the second Medium passage
+the tensor model scores 4 / 9. Similarly, on Test 2 Section 3 the MemN2N scores
+4 / 5 but on Test 3 Section 2 the MemN2N scores 0 / 4.
+
+There are several possible reasons for this phenomenon. The first is that both
+models are dependent on the knowledge graph extraction, so if the extraction
+process is accurate for a given passage then both models will perform well, and
+if the extraction is inaccurate then both models will perform poorly. This
+reason is unlikely, however, because the two models do not necessarily perform
+well or poorly in the same passages. On Test 2 Section 3 the MemN2N scores 4 / 5
+but the tensor scores just 2 / 13. If the knowledge graph extraction were
+influencing the consistency of our models, they should both perform equally well
+or poorly in a given section.
+
+The more likely reason, and the one that proves the usefulness of our models, is
+that within those passages the models are able to find the inherent properties
+of the knowledge graph (and therefore the text) and answer questions about it.
+Why the models work on some passages but not on others is unclear, but that is
+to be expected when working with machine learning algorithms. While the
+mathematics behind the tensor method are clear, the actual ALS process is still
+quite variable and hard to interpret. The neural network is even harder to
+understand, as its learning process is hidden behind 10 layers. However, we know
+that when the models are scoring very well on multiple sections it is not simply
+coincidence. That they score very poorly on multiple sections as well simply
+reinforces the idea that the models are answering questions based on their
+understanding of the text. Whether or not they can answer correctly depends on
+how well they parse the question and how accurate their representation of the
+text is. What dictates this accuracy is not easily seen due to the learned
+nature of the models. The goal of this research was to create models which would
+be able to actually answer questions based on the semantic information, instead
+of just using bag-of-words matching or other basic techniques, and we have done
+just that.
+
+This claim is strengthened when we investigate the passages which the models
+performed particularly poorly on. Test 1 Section 3 has perhaps the hardest
+passage for our models, with the tensor model scoring 0 / 13 and the MemN2N
+scoring 1 / 5. This passage is actually composed of two separate passages about
+the same topic, and most of the questions require comparing the opinions and
+viewpoints of the two authors. These types of comparison questions cannot be
+answered using the knowledge graph, because they require a higher level of
+analysis. Our models try to answer the question by completing a triple using the
+entities and relations on the knowledge graph, but the types of questions asked
+in Test 1 Section 3 require analyzing the entire knowledge graph itself. We
+expect our models to score poorly on such questions, and that is what happens.
+It is difficult to explain exactly what about certain passages makes our models
+score well, but we can understand which passages will cause our models to score
+poorly.
+
+\subsection{Performance by Difficulty}
+\label{Performance by Difficulty}
+
+Figure~\ref{fig: qa_by_difficulty} shows the total number of questions answered
+across all three tests sorted by their difficulty, while Figure~\ref{fig:
+qa_by_difficulty_percent} controls Figure~\ref{fig: qa_by_difficulty} for the
+total number of questions of each difficulty.
+
+The first observation we can make is that both models answer significantly more
+Medium questions than Easy or Hard, but that their percentage on Medium
+questions is lowest. This point is actually quite subtle. The full data tables
+demonstrate that there are far more Medium questions in general than Easy or
+Hard. However, the huge number of Medium questions means that the types of
+Medium questions are also quite varied. Whether the percentage of Medium
+questions answered correctly is so low is because there are simply far more
+Medium questions or because there are types of Medium questions that both models
+score poorly on (such as compare/contrast questions across passages) is unclear.
+
+The second observation we make is that the MemN2N model scores perfectly on the
+Easy questions and 50\% on the Hard questions. The problem with analyzing this
+point is that the sample size is simply too small to make any claims about the
+MemN2N's performance on Easy or Hard questions. We can definitively say that
+the model was able to answer at least one of each type of question, even given
+the limited test size, but we cannot claim more than that.
+
+The third important observation here is that the tensor model answers a very
+high percentage of Hard questions correctly. This is partially due to the
+relatively small sample size (only 11), but also a consequence of the way in
+which the tensor model is actually answering these questions. Consider Test 3
+Section 2, where the tensor model answers 2 out of 4 Hard questions correctly.
+This is actually another passage that contains two smaller passages, but both of
+the Hard questions the model gets right deal with only one of the passages. In
+fact, both questions ask about the meaning of a specific phrase in the context
+of the passage. The tensor model is actually able to match the words in the
+phrase with entities in the knowledge graph, and then match the answer choice
+with the relevant information about the matched entity.
+
+As far as questions go, these are actually some of the easiest for the tensor
+model to answer because they do not require any high-level analysis. They simply
+require matching words in the question to entities in the graph, and then
+matching the corresponding graph element to words in the answer choice. This
+is exactly how the tensor model works, by using word2vec to match words in the
+question to entities in the graph, and then matching the relevant information to
+words in the answer choices.
+
+This analysis leads us to a key observation. The difficulty standards for humans
+are not at all similar to the difficulty standards of our models. 
 
 \subsection{****SOMETHING ABOUT KNOWLEDGE GRAPH****}
 \label{****SOMETHING ABOUT KNOWLEDGE GRAPH****}
@@ -1010,6 +1293,7 @@ the subtleties of the sentence.
 \bstctlcite{bstctl:etal, bstctl:nodash, bstctl:simpurl}
 \bibliographystyle{IEEEtranS}
 \bibliography{final_references}
+\newpage
 
 \section{Appendix}
 \label{Appendix}
