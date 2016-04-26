@@ -1228,6 +1228,20 @@ across all three tests sorted by their difficulty, while Figure~\ref{fig:
 qa_by_difficulty_percent} controls Figure~\ref{fig: qa_by_difficulty} for the
 total number of questions of each difficulty.
 
+\begin{figure}[!tb]
+    \centering
+    \includegraphics[width=0.7\textwidth,keepaspectratio]{figures/qa_by_difficulty.png}
+    \caption{The total questions of each difficulty answered correctly by the models}
+    \label{fig: qa_by_difficulty}
+\end{figure}
+
+\begin{figure}[!tb]
+    \centering
+    \includegraphics[width=0.7\textwidth,keepaspectratio]{figures/qa_by_difficulty_percent.png}
+    \caption{The percent of questions of each difficulty answered correctly by the models}
+    \label{fig: qa_by_difficulty_percent}
+\end{figure}
+
 The first observation we can make is that both models answer significantly more
 Medium questions than Easy or Hard, but that their percentage on Medium
 questions is lowest. This point is actually quite subtle. The full data tables
@@ -1289,6 +1303,13 @@ by each model on each test. There are several striking observations. The first
 is that the tensor model scores quite consistently, varying by just over 10\%
 across all three tests. The MemN2N model is very volatile, in fact scoring the
 single lowest and highest performances across both models and all tests.
+
+\begin{figure}[!tb]
+    \centering
+    \includegraphics[width=0.7\textwidth,keepaspectratio]{figures/qa_by_test.png}
+    \caption{The percent of questions on each test answered correctly by the models}
+    \label{fig: qa_by_percent}
+\end{figure}
 
 This result is to be expected, as we discussed in Section \ref{Model Comparison}
 how the tensor model is more mathematically sound while the neural net model
