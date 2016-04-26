@@ -462,15 +462,14 @@ knowledge graph and the questions as queries on that graph. \\
 
 There are several advantages to using a knowledge graph representation. The main
 benefit is that it actually preserves the meaning of the text. Whereas
-bag-of-words loses the ordering of words and word2vec keeps the latent
-properties but no others, a knowledge graph representation almost completely
-stores the intended meaning of the original text. Most sentences in English can
-be broken down into Subject-Verb-Object triples, which require little if any
-processing to convert into the $\langle \textit{entity}_1, \, \textit{relation}, \,
-\textit{entity}_2 \rangle$ format. The knowledge graph itself is simply a list of
-these triples. If we can parse the input text and extract the
-Subject-Verb-Object relationship, we can convert each sentence into a triple of
-the form
+bag-of-words loses the semantic and structural information in a sentence, a
+knowledge graph representation almost completely stores the intended meaning of
+the original text. Most sentences in English can be broken down into
+Subject-Verb-Object triples, which require little if any processing to convert
+into the $\langle \textit{entity}_1, \, \textit{relation}, \, \textit{entity}_2
+\rangle$ format. The knowledge graph itself is simply a list of these triples.
+If we can parse the input text and extract the Subject-Verb-Object relationship,
+we can convert each sentence into a triple of the form
 
 $$\langle \textit{subject}, \, \textit{verb}, \, \textit{object} \rangle
 \Rightarrow \langle e_1, \, r, \, e_2 \rangle$$
@@ -1267,16 +1266,78 @@ question to entities in the graph, and then matching the relevant information to
 words in the answer choices.
 
 This analysis leads us to a key observation. The difficulty standards for humans
-are not at all similar to the difficulty standards of our models. 
+are not at all similar to the difficulty standards of our models. The Hard
+questions described in the paragraph above can be very difficult for human
+readers, because they require understanding the given phrase in context and then
+translating it into one of the answer choices. Essentially, these questions
+require fully understanding the phrase as well as its context. Our models,
+however, do not need to fully understand the phrase or its context; they simply
+need to match words in the question to entities in the graph. On the other hand,
+questions marked Easy can be very difficult for our models (namely the tensor model,
+as the MemN2N scored 2 / 2 on all its Easy questions). Some Easy questions ask
+about the author's possible opinion on some topic that is not directly contained
+in the text. For many humans these can be answered simply by understanding the
+author's tone throughout the passage. Our models cannot understand tone, and
+cannot process information not contained in the knowledge graph. These types
+of questions are therefore impossible for them to answer.
 
-\subsection{****SOMETHING ABOUT KNOWLEDGE GRAPH****}
-\label{****SOMETHING ABOUT KNOWLEDGE GRAPH****}
+\subsection{Comparing Tensor Model to MemN2N}
+\label{Comparing Tensor Model to MemN2N}
 
-There are some drawbacks to the way we extract the knowledge graph triples from
-the text. Some information is lost in the extraction process. Because the
-subject is forced to be $\text{entity}_1$ we lose information about the direct
-object. For example, in the sentence in Figure~\ref{fig: dependency extraction},
-we learn that the dog likes sausage but not that the sausage is spicy.
+Figure~\ref{fig: qa_by_test} shows the percent of questions answered correctly
+by each model on each test. There are several striking observations. The first
+is that the tensor model scores quite consistently, varying by just over 10\%
+across all three tests. The MemN2N model is very volatile, in fact scoring the
+single lowest and highest performances across both models and all tests.
+
+This result is to be expected, as we discussed in Section \ref{Model Comparison}
+how the tensor model is more mathematically sound while the neural net model
+does not have as clear mathematics describing how it works. The MemN2N's
+flexibility allowed it to score very high on Test 2, but at the same time score
+very low on Test 1.
+
+We also note that the models scored relatively similar on all of the tests. They
+both scored lowest on Test 1, second-best on Test 3, and highest on Test 2.
+Additionally, on both Test 1 and 3, the scores for the tensor and MemN2N are
+almost identical, differing by no more than 2\%. This result is partially due to
+the small sample size of MemN2N questions. Nevertheless, that the two models
+have similar scores across all three tests indicates that for a given knowledge
+graph they find the hidden representation of the knowledge graph equally well.
+We conclude that the two models are, for the most part, equally viable. Across
+the three tests, the tensor model scores barely higher than the MemN2N model on
+Tests 1 and 3, but significantly worse on Test 2. The results demonstrate that
+the tensor model is the better general choice, as it guarantees some amount of
+competence, but at the same time it will not score very high. The MemN2N will
+most likely score slightly worse than the tensor model, but has much higher
+potential.
+
+\section{Future Work}
+\label{Future Work}
+
+We hope this work is just the start of research into answering SAT questions and
+tackling machine comprehension tasks of similar difficulty. To that end, we
+present several ways to improve the models discussed in this paper. These
+improvements fall in three major areas: linguistic analysis, tensor model, and
+neural network.
+
+\subsection{Linguistic Analysis}
+\label{Linguistic Analysis}
+
+There are three instances in our model where we need to analyze the semantic or
+structural information of text. The first is extracting the knowledge graph
+triples from the passage text. The second is parsing the question and
+understanding what it is asking. The third is choosing an answer choice given
+the information output by the model - this applies only to the tensor model.
+
+\subsubsection{Knowledge Graph Extraction Improvements}
+\label{Knowledge Graph Extraction Improvements}
+
+There are some drawbacks to the way we currently extract the knowledge graph
+triples from the text. Some information is lost in the extraction process.
+Because the subject is forced to be $\text{entity}_1$ we lose information about
+the direct object. For example, in the sentence in Figure~\ref{fig: dependency
+extraction}, we learn that the dog likes sausage but not that the sausage is
+spicy.
 
 Additionally, SAT sentences are very difficult to parse. Most have multiple
 clauses, and normally unusual structural elements such as the colon or dash are
@@ -1288,6 +1349,92 @@ structure of the sentence we are not able to extract that Wilson was not
 self-conscious or that Wilson did not \textit{try to sustain studied
 mannerisms.} Overall we can extract the most important points, but we often miss
 the subtleties of the sentence.
+
+If we can add more semantic rules to triple extraction then both the tensor
+model as well as the MemN2N could have more information at hand to answer the
+question. Right now we only focus on the \textit{nsubj} and \textit{dobj} or
+\textit{cop} dependencies. One useful dependency we could add is the
+\textit{amod} dependency, which is for adjectival modifiers \cite{De2014}. This
+could help us capture descriptive information about entities that is not given
+with a copular verb. We can also focus on entities that are not the nominal
+subject, or add logic to handle sentences with multiple clauses.
+
+\subsubsection{Question Parsing}
+\label{Question Parsing}
+
+In our existing model, we vectorize a given question by using word2vec to
+calculate the similarity of every word in the sentence (excluding stopwords) to
+every possible entity and relation, and choosing the 2 entities or entity and
+relation that have highest similarity to question words. This works well when
+the question tests a specific concept, but not when the question is more
+complicated. This system runs into the same problem as bag-of-words matching,
+where the semantic and structural information of the sentence is lost.
+
+A better way to tackle question parsing would be to feed the questions through
+the knowledge graph extraction program, and extract the information from the
+question. However, because we need to frame the question as a query on the
+knowledge graph we would modify the extraction program to extract triples with a
+missing entity or relation. We can then try to fill in these missing elements
+using the original knowledge graph, and match the resulting filled-in triples to
+the answer choices. The answer would be the choice with strongest match.
+Implementing this would require the improved deep extractor discussed above in
+Section \ref{Knowledge Graph Extraction Improvements}.
+
+\subsubsection{Choosing an Answer}
+\label{Choosing an Answer}
+
+Currently in the tensor model we choose an answer similarly to the way we parse
+a question- by using word2vec to find the single word which matches the model's
+output best. Often, the answer choices are sentences too, so we need to be able
+to parse them. Just as with the questions we can feed the choices through the
+Knowledge Graph extractor to find a set of triples. We then need to create some
+metric to match triples and use it to pick the best choice.
+
+\subsection{Tensor Model Improvements}
+\label{Tensor Model Improvements}
+
+There are several improvements that can be made to the tensor model. The first
+is that the model's accuracy can be affected greatly by errors in the knowledge
+graph extraction process. We need to find a way to make the tensor model robust
+to such fluctuations. The best way to do this is to use an ensemble training
+method. We can take the knowledge graph tensor and create several variants, each
+slightly different from the original. Each of these are trained separately, and
+then put together to create the actual approximation. This approximation has
+several redundancies and is therefore less affected by errors in the original
+knowledge graph. Ensemble learning methods are common in many machine learning
+algorithms.
+
+Another improvement that can be made to the tensor model is to provide
+supervision in the training process. Because the model is not trained on the
+actual questions, it cannot learn from the structure of the questions. By adding
+a small supervised training component, we can achieve the flexibility of the
+MemN2N while keeping the performance guarantee of the tensor model.
+
+\subsection{MemN2N Improvements}
+\label{MemN2N Improvements}
+
+There are two main improvements we can make to the Memory Network. The first is
+with the underlying architecture itself. The input vectors must be embedded with
+matrices $A,C$. Since each passage has a tensor of different shape, we cannot
+reuse $A,C$ across passages. We discussed in Section \ref{Evaluation Details}
+how it is advantageous to train on just one passage at a time. However, with the
+neural network there may be some underlying patterns across passages that we are
+not able to capture currently. If the dimensionality constraints on the
+architecture are loosened, the MemN2N model can be trained across passages and
+even across tests. This means that the model could be trained on one particular
+test, and run fully on another test.
+
+The second possibility is to improve the model's consistency while preserving
+its flexibility. The biggest drawback of the MemN2N currently is that it
+occasionally has very poor performance. If we can train the model such that it
+will be able to answer certain types of questions with high probability then the
+model will be more reliable. For example, the tensor model is able to answer
+most questions that ask for the meaning of some phrase in context (Section
+\ref{Performance by Difficulty}). If the model is more reliable and consistent
+while still flexible, then it can become the best tool for machine
+comprehension. The very nature of neural network training makes it hard to
+create consistency, but if the MemN2N has the ability to train across tests then
+a large training corpus can help it achieve the desired consistency.
 
 \newpage
 \bstctlcite{bstctl:etal, bstctl:nodash, bstctl:simpurl}
