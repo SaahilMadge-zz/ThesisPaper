@@ -31,7 +31,6 @@
 % Load the underlying article class.
 \LoadClass[letterpaper,12pt]{article}
 
-
 % Standard packages.
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[T1]{fontenc}
@@ -54,7 +53,7 @@
 % Page margins:
 % 1" left and right, 1" top, 1" bottom.
 \RequirePackage{geometry}
-\geometry{lmargin=1in,rmargin=1in,tmargin=1in,bmargin=1in}
+\geometry{lmargin=1.5in,rmargin=1in,tmargin=1in,bmargin=1in}
 
 % 1/4" space between columns.
 \setlength{\columnsep}{0.25in}
@@ -146,7 +145,7 @@
 
 % Utility packages for floats and tables.
 \RequirePackage{float}
-\RequirePackage{graphicx}
+%\RequirePackage{graphicx}
 \RequirePackage{booktabs}
 \RequirePackage{multirow}
 
@@ -202,5 +201,11 @@
 
 % Scientific units.
 \RequirePackage[squaren]{SIunits}
+
+\RequirePackage[normalem]{ulem}
+\RequirePackage{adjustbox}
+\RequirePackage{booktabs}
+\RequirePackage{tabularx}
+\RequirePackage{amsmath}
 
 \endinput
