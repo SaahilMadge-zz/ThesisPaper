@@ -207,5 +207,9 @@
 \RequirePackage{booktabs}
 \RequirePackage{tabularx}
 \RequirePackage{amsmath}
+%\DeclareMathOperator*{\argmax}{arg\,max}
+%\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\argmax}[1]{\underset{#1}{{\text{arg}}\,{\text{max}}}}
+%\newcommand{\argmin}[1]{\underset{#1}\textrm{arg}\,\textrm{min}}
 
 \endinput

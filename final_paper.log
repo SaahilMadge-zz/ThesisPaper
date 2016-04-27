@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  27 APR 2016 02:15
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  27 APR 2016 16:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -357,7 +357,7 @@ LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 (Font)                  OT1/cmr/bx/it --> OT1/ptm/m/it on input line 35.
 LaTeX Info: Redefining \hbar on input line 50.
 )
-(/usr/local/texlive/2013/texm/tex/latex/setspace/setspace.sty
+(/usr/local/texlive/2013/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2011/12/19 v6.7a set line spacing
 )
 (/usr/local/texlive/2013/texmf-dist/tex/latex/microtype/microtype.sty
@@ -453,34 +453,42 @@ Package: enumitem 2011/09/28 v3.5.2 Customized lists
 \enit@inbox=\box27
 \enitdp@description=\count96
 )
+(/usr/local/texlive/2013/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2013/05/02 v3.3-89 Customizing captions (AR)
 
-./final_paper.cls:110: LaTeX Error: Missing \begin{document}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.110 \let\jp@b
-               ibliography\thebibliography
-? 
-./final_paper.cls:110: Emergency stop.
- ...                                              
-                                                  
-l.110 \let\jp@b
-               ibliography\thebibliography
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
- 
-Here is how much of TeX's memory you used:
- 4669 strings out of 493315
- 66920 string characters out of 6137904
- 176100 words of memory out of 5000000
- 8097 multiletter control sequences out of 15000+600000
- 4403 words of font info for 15 fonts, out of 8000000 for 9000
- 957 hyphenation exceptions out of 8191
- 41i,0n,35p,776b,89s stack positions out of 5000i,500n,10000p,200000b,80000s
-./final_paper.cls:110:  ==> Fatal error occurred, no output PDF file produced!
+(/usr/local/texlive/2013/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2013/05/02 v1.6-88 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 57.
+\captionmargin=\dimen120
+\captionmargin@=\dimen121
+\captionwidth=\dimen122
+\caption@tempdima=\dimen123
+\caption@indent=\dimen124
+\caption@parindent=\dimen125
+\caption@hangindent=\dimen126
+)
+\c@ContinuedFloat=\count97
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/subfig/subfig.sty
+Package: subfig 2005/06/28 ver: 1.3 subfig package
+\c@KVtest=\count98
+\sf@farskip=\skip59
+\sf@captopadj=\dimen127
+\sf@capskip=\skip60
+\sf@nearskip=\skip61
+\c@subfigure=\count99
+\c@subfigure@save=\count100
+\c@lofdepth=\count101
+\c@subtable=\count102
+\c@subtable@save=\count103
+\c@lotdepth=\count104
+\sf@top=\skip62
+\sf@bottom=\skip63
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count105
+\float@exts=\toks26
 \float@box=\box28
 \@float@everytoks=\toks27
 \@floatcapt=\box29
@@ -1076,48 +1084,44 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
  [5]
-Underfull \hbox (badness 10000) in paragraph at lines 217--229
-
- []
-
 <figures/Example_KG.png, id=247, 501.875pt x 500.87125pt>
 File: figures/Example_KG.png Graphic file (type png)
 
 <use figures/Example_KG.png>
-Package pdftex.def Info: figures/Example_KG.png used on input line 241.
+Package pdftex.def Info: figures/Example_KG.png used on input line 246.
 (pdftex.def)             Requested size: 303.53267pt x 302.94014pt.
  [6 <./figures/Dependency_Graph.png>] [7 <./figures/Example_KG.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 293--301
+Underfull \hbox (badness 10000) in paragraph at lines 298--306
 
  []
 
 [8] [9] [10] [11]
-Underfull \hbox (badness 10000) in paragraph at lines 423--424
+Underfull \hbox (badness 10000) in paragraph at lines 428--429
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 427--431
+Underfull \hbox (badness 10000) in paragraph at lines 432--436
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 432--439
+Underfull \hbox (badness 10000) in paragraph at lines 437--444
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 440--445
+Underfull \hbox (badness 10000) in paragraph at lines 445--450
 
  []
 
 [12]
-Underfull \hbox (badness 10000) in paragraph at lines 461--463
+Underfull \hbox (badness 10000) in paragraph at lines 466--468
 
  []
 
 [13] [14]
-Underfull \hbox (badness 10000) in paragraph at lines 539--547
+Underfull \hbox (badness 10000) in paragraph at lines 544--552
 
  []
 
@@ -1126,53 +1130,59 @@ File: figures/Dependency_Extraction.png Graphic file (type png)
 
 <use figures/Dependency_Extraction.png>
 Package pdftex.def Info: figures/Dependency_Extraction.png used on input line 5
-65.
+70.
 (pdftex.def)             Requested size: 303.53267pt x 155.31505pt.
 
-Overfull \hbox (39.8786pt too wide) in paragraph at lines 570--591
+Overfull \hbox (39.8786pt too wide) in paragraph at lines 575--596
 []\T1/ptm/m/n/12 (-20) The in-for-ma-tion ex-tracted should be in knowl-edge gr
 aph for-mat, namely $\OMS/ztmcm/m/n/12 h[][]\OML/ztmcm/m/it/12 ;  [];  [][]\OMS
 /ztmcm/m/n/12 i$\T1/ptm/m/n/12 (-20) .
  []
 
 [16 <./figures/Dependency_Extraction.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 604--608
+Underfull \hbox (badness 10000) in paragraph at lines 608--612
 
  []
 
+<figures/tensor_figure.png, id=355, 268.00125pt x 235.88126pt>
+File: figures/tensor_figure.png Graphic file (type png)
 
-Underfull \hbox (badness 10000) in paragraph at lines 627--630
+<use figures/tensor_figure.png>
+Package pdftex.def Info: figures/tensor_figure.png used on input line 634.
+(pdftex.def)             Requested size: 303.53267pt x 267.15459pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 639--642
 
  []
 
-[17] [18]
-Underfull \hbox (badness 10000) in paragraph at lines 680--686
+[17] [18 <./figures/tensor_figure.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 694--700
 
  []
 
 [19] [20]
-Underfull \hbox (badness 10000) in paragraph at lines 757--761
+Underfull \hbox (badness 10000) in paragraph at lines 771--775
 
  []
 
-[21] [22]
-Underfull \hbox (badness 10000) in paragraph at lines 835--845
+[21] [22] [23]
+Underfull \hbox (badness 10000) in paragraph at lines 873--883
 
  []
 
-[23] [24]
-Underfull \hbox (badness 10000) in paragraph at lines 899--905
+[24] [25]
+Underfull \hbox (badness 10000) in paragraph at lines 937--943
 
  []
 
-[25] [26] [27] [28]
+[26] [27] [28] [29]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1048.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1092.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1048.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1092.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1048.
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 1048
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1092.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 1092
 .
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/base/t1cmtt.fd
@@ -1182,90 +1192,90 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             `cmtt' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
- [29] [30]
-[31]
+ [30] [31]
+[32]
 
-LaTeX Warning: Reference `fig: training error' on page 32 undefined on input li
-ne 1168.
+LaTeX Warning: Reference `fig: training error' on page 33 undefined on input li
+ne 1212.
 
-[32] [33] <figures/qa_by_difficulty.png, id=496, 934.49126pt x 550.055pt>
+[33] [34] <figures/qa_by_difficulty.png, id=510, 934.49126pt x 550.055pt>
 File: figures/qa_by_difficulty.png Graphic file (type png)
 
 <use figures/qa_by_difficulty.png>
-Package pdftex.def Info: figures/qa_by_difficulty.png used on input line 1237.
+Package pdftex.def Info: figures/qa_by_difficulty.png used on input line 1281.
 (pdftex.def)             Requested size: 303.53267pt x 178.66504pt.
 
-<figures/qa_by_difficulty_percent.png, id=497, 929.4725pt x 547.04375pt>
+<figures/qa_by_difficulty_percent.png, id=511, 929.4725pt x 547.04375pt>
 File: figures/qa_by_difficulty_percent.png Graphic file (type png)
 
 <use figures/qa_by_difficulty_percent.png>
 Package pdftex.def Info: figures/qa_by_difficulty_percent.png used on input lin
-e 1244.
+e 1288.
 (pdftex.def)             Requested size: 303.53267pt x 178.63852pt.
- [34 <./figures/qa_by_difficulty.png>] [35 <./figures/qa_by_difficulty_percent.
+ [35] [36 <./figures/qa_by_difficulty.png> <./figures/qa_by_difficulty_percent.
 png>]
 
-LaTeX Warning: Reference `fig: qa_by_test' on page 36 undefined on input line 1
-305.
+LaTeX Warning: Reference `fig: qa_by_test' on page 37 undefined on input line 1
+349.
 
-<figures/qa_by_test.png, id=510, 934.49126pt x 551.05875pt>
+[37] <figures/qa_by_test.png, id=529, 934.49126pt x 551.05875pt>
 File: figures/qa_by_test.png Graphic file (type png)
 
 <use figures/qa_by_test.png>
-Package pdftex.def Info: figures/qa_by_test.png used on input line 1313.
+Package pdftex.def Info: figures/qa_by_test.png used on input line 1357.
 (pdftex.def)             Requested size: 303.53267pt x 178.99106pt.
- [36] [37 <./figures/qa_by_test.png>] [38] [39]
+ [38 <./figures/qa_by_test.png>] [39] [40]
 
-LaTeX Warning: Reference `Evaluation Details' on page 40 undefined on input lin
-e 1444.
+LaTeX Warning: Reference `Evaluation Details' on page 41 undefined on input lin
+e 1488.
 
-[40] [41] (./final_paper.bbl [42]) [43]
+[41] [42] (./final_paper.bbl [43]) [44]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 1517.
+               Default added (so using `tbp') on input line 1561.
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1523.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1567.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 1525.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 1569.
 LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <8> not available
-(Font)              Font shape `T1/ptm/b/it' tried instead on input line 1526.
+(Font)              Font shape `T1/ptm/b/it' tried instead on input line 1570.
 
-Overfull \hbox (50.4568pt too wide) in paragraph at lines 1523--1574
+Overfull \hbox (50.4568pt too wide) in paragraph at lines 1567--1618
  [][] 
  []
 
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 1578.
+               Default added (so using `tbp') on input line 1622.
 
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 1585.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 1629.
 LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <10> not available
-(Font)              Font shape `T1/ptm/b/it' tried instead on input line 1586.
+(Font)              Font shape `T1/ptm/b/it' tried instead on input line 1630.
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 1636.
+               Default added (so using `tbp') on input line 1680.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1692.
-[44] [45] [46] [47]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1692.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1736.
+[45] [46] [47] [48]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1736.
  (./final_paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1692.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1692.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1736.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1736.
 
 Package rerunfilecheck Info: File `final_paper.out' has not changed.
-(rerunfilecheck)             Checksum: 836A7EB44376F8CF888CBD1645B72E6E;7483.
+(rerunfilecheck)             Checksum: 48D85F54F2BE84044B3C5B466E2E2D43;7579.
 
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 16513 strings out of 493315
- 241536 string characters out of 6137904
- 407654 words of memory out of 5000000
- 19238 multiletter control sequences out of 15000+600000
+ 16522 strings out of 493315
+ 241740 string characters out of 6137904
+ 407804 words of memory out of 5000000
+ 19244 multiletter control sequences out of 15000+600000
  112681 words of font info for 335 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  48i,10n,75p,773b,503s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1283,10 +1293,10 @@ onts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/
 urw/times/utmb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/
 utmbi8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pf
 b></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on final_paper.pdf (47 pages, 525915 bytes).
+Output written on final_paper.pdf (48 pages, 542486 bytes).
 PDF statistics:
- 662 PDF objects out of 1000 (max. 8388607)
- 580 compressed objects within 6 object streams
- 143 named destinations out of 1000 (max. 500000)
- 53119 words of extra memory for PDF output out of 61914 (max. 10000000)
+ 678 PDF objects out of 1000 (max. 8388607)
+ 592 compressed objects within 6 object streams
+ 145 named destinations out of 1000 (max. 500000)
+ 53124 words of extra memory for PDF output out of 61914 (max. 10000000)
 

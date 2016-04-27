@@ -225,16 +225,21 @@ example, \textbf{vector(``king'')} - \textbf{vector(``man'')} +
 \textbf{vector(``woman'')} produces a vector that is very close to
 \textbf{vector(``queen'')}. The reason word2vec is able to embed so successfully
 is generally thought to be the fact that the process of embedding gives similar
-words a similar embedding (which is measured by cosine similarity). \\
+words a similar embedding (which is measured by cosine similarity). The cosine
+similarity measure is also used to find the similarity between two arbitrary
+words. $word2vec.similarity(\text{word1}, \text{word2})$ is a function within
+word2vec which returns a measure between 0 (not at all similar) and 1
+(identical).
 
-\subsubsection{Knowledge Graph}
-\label{Knowledge Graph}
+\subsubsection{Knowledge Graph Overview}
+\label{Knowledge Graph Overview}
 
 A knowledge graph generally refers to a set of \textit{entity-relation triples}.
 These triples take the form $\langle e_1, r, e_2 \rangle$. where $e_1$ and $e_2$
 are entities and $r$ describes the relation between these two entities. Entities
-and relations can be repeated across triples. The total set of triples denotes
-all the knowledge in our ``Knowledge Base''.
+and relations (collectively referred to as \textit{labels}) can be repeated
+across triples. The total set of triples denotes all the knowledge in our
+``Knowledge Base''.
 
 \begin{figure}[!tb]
     \centering
@@ -595,9 +600,8 @@ objects.
 *******REVISE THIS PART AND ALSO DESCRIBE HOW THE WORD2VEC QUESTION MATCHING
 IS DONE TO CONVERT QUERIES*******
 
-First we discuss the tensor decomposition approach to answering knowledge graph
-queries. The other main way to solve relational learning queries is with tensor
-analysis.  The advantage of using tensor decomposition is that it is based on
+First we discuss the tensor decomposition approach to answering SAT questions.
+The advantage of using tensor decomposition is that it is based on
 well-understood mathematics, rather than simply empirical validation as with the
 neural network.
 
@@ -613,52 +617,62 @@ The tensor decomposition approach treats the knowledge graph as a directed
 graph. A tensor is simply a multi-dimensional array. In our case, we use a
 three-dimensional array $\mathcal{X}$ to represent the knowledge graph. If we
 have $N$ entities $e_1, e_2, ..., e_N$ and $M$ relations $k_1, k_2, ..., k_M$
-then we can consider $\mathcal{X}$ as $M$ layers of $N\times N$ matrices. Each layer
-$\mathcal{X}_k$ tells which entities are linked by relation $k$. If we denote
-our knowledge base as $KB$, then $\mathcal{X}$ is formulated as
+then we can consider $\mathcal{X}$ as $M$ layers of $N\times N$ matrices. Each
+layer $\mathcal{X}_k$ tells which entities are linked by relation $k$. If we
+denote our knowledge base as $KB$, then $\mathcal{X}$ is formulated as
 
 $$
+\mathcal{X}_{ijk} =
 \begin{cases}
-    \mathcal{X}_{ijk} = 1 & \langle e_i,\,k,\,e_j\rangle \in KB \\
-    \mathcal{X}_{ijk} = 0 & \text{otherwise}
+    1 & \text{if } \langle e_i,\,k,\,e_j\rangle \in KB \\
+    0 & \text{otherwise}
 \end{cases}
 $$
 
-*********INCLUDE FIGURE HERE********. Another way
-to think of this is to see the matrix $\mathcal{X}_k$ as an adjacency matrix
-of the knowledge graph, but only for the relation type $k$. \\
+\begin{figure}[!tb]
+    \centering
+    \includegraphics[width=0.7\textwidth,keepaspectratio]{figures/tensor_figure.png}
+    \caption{A graphical representation of $\mathcal{X}$, from \cite{Chang2014}}
+    \label{fig: tensor figure}
+\end{figure}
 
-\subsubsection{Tensor Factorization}
-\label{Tensor Factorization}
+Figure~\ref{fig: tensor figure} from \cite{Chang2014} presents a graphical view
+of $\mathcal{X}$. $\mathcal{X}$ is essentially a series of adjacency matrices
+$\mathcal{X}_k$, where each matrix only marks edges of relation type $k$. \\
 
-Our approach aims to factorize the tensor such that we take advantage of the
-inherent structure of the graph. To that end, we train a rank-$r$ factorization
-of each slice, as suggested in \cite{Bader2007, Nickel2011}.
+\subsubsection{Tensor Factorization Overview}
+\label{Tensor Factorization Overview}
+
+Our approach aims to factorize the tensor and take advantage of the inherent
+structure of the graph. To that end we train a rank-$r$ factorization of each
+slice, as suggested in \cite{Bader2007, Nickel2011}.
 
 $$X_k \approx A R_k A^T \text{ for } k \in [1,m]$$
 
-Here, A is an $n\times r$ matrix which contains the latent-component representation
-of the entities in the knowledge graph. We can think of this as an $r$-dimensional
-embedding of the entities, where we claim that there are $r$ hidden features of
-each entity. This is conceptually similar to the word2vec embedding, where each
+Here, A is an $n\times r$ matrix which contains the latent-component
+representation of the entities in the knowledge graph. We can think of this as
+an $r$-dimensional embedding of the entities, where each entity has $r$ hidden
+features. This is conceptually similar to the word2vec embedding, where each
 feature of a word vector does not necessarily mean something intuitive but is a
 hidden component found through training.
 
-$R_k$ is a an $r\times r$ matrix which represents how these hidden features
+$R_k$ is an $r\times r$ matrix which represents how these hidden features
 interact with each other for the $k$-th relation. $R_k$ is asymmetric, which
 means that the hidden feature interactions are one-way. It is not necessarily
 true that $R_{ijk} = R_{jik}$, although it could be. Note that $R$ itself is
 also a three-dimensional tensor of shape $r\times r\times k$.
 
-The reason we factorize the tensor is that we can now answer queries using the factorization,
+We decompose the tensor so that we can answer queries using the factorization,
 which has the hidden components of the graph and is thus more generalizable, as
 opposed to using the original tensor which is simply an adjacency tensor of the
-knowledge graph.
+knowledge graph. A particular connection between two entities, for example,
+might not be explicit on the knowledge graph but can be uncovered by the
+factorization.
 
-We will frame the problem of finding $A$ and $R_k$ as an optmiziation problem,
-where we aim to minimize the difference between the original matrix
-$\mathcal{X}_k$ and its factorization $AR_kA^T$. Specifically, define the loss
-function $f$ as the squared frobenius norm of this difference.
+We frame the problem of finding $A$ and $R_k$ as an optimization problem, where
+we aim to minimize the difference between the original matrix $\mathcal{X}_k$
+and its factorization $AR_kA^T$. Specifically, define the loss function $f$ as
+the squared frobenius norm of this difference.
 
 \begin{equation}
 \label{eq: loss function}
@@ -689,15 +703,15 @@ regularization function which adds more constraints on the factorization. \\
 
 Semantically Smooth Embedding (SSE) was proposed by Guo et al. \cite{Guo2015} as
 a way to improve the TransE \cite{Bordes2013} embedding model. Whereas the
-traditional models simply embed each individual fact in isolation, SSE imposes
+traditional models embed each individual fact in isolation, SSE imposes
 geometric constraints on the whole model.
 
 Specifically, we modify the \textit{Locally Linear Embedding} (LLE) constraint.
 This constraint states that each node should be roughly a linear combination of
-its neighbors \cite{Roweis2000}. Guo et al. created a version which applies to
-the neural net embeddings done by TransE and other models, but does not apply to
-the tensor decomposition method. Here we review their version first and then
-present our new version.
+its neighbors \cite{Roweis2000}. Guo et al. \cite{Guo2015} created a version
+meant for neural net embeddings such as TransE, but is not applicable to the
+tensor decomposition method. Here we review their version first and then present
+our new version for tensor decomposition.
 
 In the original implementation each entity was labeled with a category and
 then embedded into a vector representation. All nodes in the same category as
@@ -722,9 +736,9 @@ that are far from each other. We cannot use this equation for our purposes since
 our entities do not have categories and we do not have embedded vectors, but we
 can apply similar logic.
 
-To that end we propose defining the neighbor set of each entity $e_i$ in our graph
-as all other entities for which there is a directed edge from $e_i$ to $e_j$ in
-the knowledge graph. The full neighbor set matrix is denoted $W$.
+We propose defining the neighbor set of each entity $e_i$ in our graph as all
+other entities for which there is a directed edge from $e_i$ to $e_j$ in the
+knowledge graph. The full neighbor set matrix is denoted $W$.
 
 \begin{equation}
     \label{eq: new wij}
@@ -754,10 +768,10 @@ neighbor set.
 
 $$ A_i \approx \sum_{i=1}^n w_{ij}A_j = \sum_{i=1} W_iA$$
 
- We can penalize more for an $A$ in which this distance is large. The reason we
- made the neighbor relation only one way is that we do not expect a large number
- of disconnected components of our knowledge graph, and a two-way neighbor set
- would push every node to have the same latent representation. \\
+We can penalize more for an $A$ in which this distance is large. The reason we
+made the neighbor relation only one way is that we do not expect a large number
+of disconnected components of our knowledge graph, and a two-way neighbor set
+would push every node to have the same latent representation. \\
 
 \subsubsection{Solving the Optimization Problem}
 \label{Solving the Optimization Problem}
@@ -771,20 +785,20 @@ The new, semantically smooth regularization function is
 \end{equation}
 
 We are now ready to actually solve for $A$ and $R_k$. We want to minimize $f(A,
-R_k) + \lambda g(A, R_k)$. This is a nonlinear, non-convex optimization problem
-which would require complicated techniques. Calculating $f$ and $g$ is
-expensive, so we use the Alternating Least Squares(ALS) method \cite{Koren2009}.
-Specifically, we use the ASALSAN factorization method \cite{Bader2007}.
+R_k) + g(A, R_k)$. This is a nonlinear, non-convex optimization problem which
+would require complicated techniques. Calculating $f$ and $g$ is expensive, so
+we use the Alternating Least Squares(ALS) method \cite{Koren2009}. Specifically,
+we use the ASALSAN factorization method \cite{Bader2007}.
 
 ALS turns the non-convex optimization problem into a convex problem by fixing
 one of the unknowns. Then the problem can be solved with ordinary least-squares
-optimization, so we use the normal method of least-squares to lower the
-variable unknown. Then we alternate by fixing this unknown and changing the
-other one. The ordinary least-squares can be solved relatively fast (although
+optimization, so we use the normal method of least-squares to update the unknown
+variable. Then we alternate by fixing this unknown and changing the other
+variable. The ordinary least-squares can be solved relatively fast (although
 calculating inverse matrices is expensive) and since each unknown is calculated
-independently (keeping one fixed), the ALS algorithm can be easily parallelized.
-These two qualities make it very computationally fast, a quality necessary for
-our purposes.
+independently (keeping the other fixed), the ALS algorithm can be easily
+parallelized. These two aspects make it very computationally fast, a quality
+necessary for our purposes.
 
 We have
 
@@ -798,7 +812,7 @@ $$\bar{R} = \left( R_1 R_1^T ... R_mR_m^T \right)$$
 Then by ASALSAN we derive the following update rules. We first update $A$ while
 keeping $R_k$ fixed.
 
-$$A \leftarrow \bigg[ \sum_k \mathcal{X}_kAR_k^T + \mathcal{X}_k^TAR_k \bigg] \bigg[ B_k + C_k + \lambda\mathbf{I} \bigg]^{-1}$$
+$$A \leftarrow \bigg[ \sum_k \mathcal{X}_kAR_k^T + \mathcal{X}_k^TAR_k \bigg] \bigg[ B_k + C_k + \mathbf{I} \bigg]^{-1}$$
 where
 $$B_k = R_k A^T AR_k^T,\,\,\,\,\,\,\, C_k = R_k^TA^TAR_k$$
 
@@ -812,7 +826,7 @@ where we have removed an extra term $\lambda \norm{\textbf{vec}(R_k)}$ because
 $R_k$ is no longer in our regularization term. This rewritten $f$ is actually
 a linear regression problem whose solution is
 
-$$R_k \leftarrow \left( \left(A \otimes A \right)^T \left(A \otimes A\right) + \lambda\textbf{I}
+$$R_k \leftarrow \left( \left(A \otimes A \right)^T \left(A \otimes A\right) + \textbf{I}
  \right) ^{-1} \left(A \otimes A\right) \textbf{vec}\left(\mathcal{X}_k\right)$$
 
 We alternate updating $A$ and $R_k$ until we have performed some maximum number
@@ -823,11 +837,35 @@ be used to answer queries.
 \subsubsection{Answering Queries}
 \label{Answering Queries}
 
-Link-prediction queries are relatively simple to answer. Given $e_i, e_j$
-the existence of a link between the two can be found by seeing whether for any
-relation $k$ we have that $\hat{\mathcal{X}_{ijk}} > 0$. Given an entity $e_i$ and a relation
-$k$, we can see whether some entity $e_j$ completes the triple by seeing whether
-$\hat{\mathcal{X}_{ijk}} > \theta$, where $\theta$ is some threshold of confidence.
+The first step in answering SAT questions with tensor decomposition is to
+convert them to queries on the knowledge graph. Queries are either link
+prediction queries or entity prediction queries (Section \ref{Knowledge Graph
+Overview}). We use \textit{word2vec} to perform the conversion. As each entity
+and relation is a word, we test the similarity of every word in the question to
+every entity and relation. The two highest scoring graph labels (at least one
+entity) are the knowns in our query. If there are two entities, then we have a
+link prediction query. If there is an entity and a relation, then we have an
+entity prediction query. The advantage of using word2vec similarity is that SAT
+questions often rephrase the textual words. For example, if in the passage a
+character is ``angry'', the question will use a word such as ``incensed'', which
+does not exist in the knowledge graph, instead. word2vec translates unseen words
+into  knowledge graph labels which can then be operated on.
+
+Link-prediction queries are relatively simple to answer. Given $e_i, e_j$ we
+return the relation $k$ that satisfies $\argmax{k}\,\, AR_kA^T_{ijk}$.
+This is the relation which our factorization guesses is strongest between the
+two entities.
+
+Entity prediction queries are answered similarly. Given $e_i, k$ we return the
+entity $e_j$ that satisfies $\argmax{j}\,\, AR_kA^T_{ijk}$. This is
+the entity which our factorization guesses is most likely to be the recipient of
+relation $k$ from entity $e_i$.
+
+Once we find the label that satisfies the query, we test the similarity of this
+label to every word in every answer choice, and pick the answer choice that
+matches best. To summarize, we first convert the question a query on the
+knowledge graph, find the label in the knowledge graph that answers the query,
+and choose the answer that is most similar to it.
 
 \subsection{Memory Networks}
 \label{Memory Networks}
@@ -906,41 +944,47 @@ layer finds new memories that can help answer the question. \\
 \subsubsection{Memory Network Enhancements}
 \label{Memory Network Enhancements}
 
-*****FIX THIS PART******
-
 As discussed, the original Memory Networks model uses simple bag-of-words
-embedding to vectorize the text into the input vectors ${x_i}$. This cannot work
-for SAT question purposes because each layer finds what is most relevant based
-on which words are shared between query and input. To answer SAT questions the
-text must be vectorized in such a way that the knowledge graph relationships are
-captured. One possible way would be to use word2vec embedding, but it still does
-not make use of the inherent structure of the original text, nor is it
-compatible with the knowledge graph. We need to change the inputs while preserving
-the overall architecture so that the memories chosen as relevant actually match
-the concept in the query, as opposed to simply matching the words.
+embedding to vectorize the text into the input vectors ${x_i}$. The problem with
+this method is that the ``most relevant'' memories found in each layer are
+relevant based on the exact word choice, not based on conceptual similarity. To
+answer SAT questions the text must be vectorized in such a way that the
+knowledge graph relationships are captured, and the question must be converted
+into a query vector for the network. We need to change the inputs while
+preserving the overall architecture so that the memories chosen as relevant
+actually match the concept in the query, as opposed to simply matching the
+words.
 
 We propose stacking horizontally each slice of the tensor $\mathcal{X}$ as
 defined in Section \ref{Knowledge Base Tensor} and using each column as an input
 vector. In total the input matrix $\mathcal{X}'$ will be of shape $n\times
-(nm)$. The query is more complicated to vectorize. The key is that we can parse
-the question itself in the same way we parsed the original text and obtain an
-entity-relation triple. However, in this case either an entity or the relation
-is missing. Finding the right answer can be turned into a problem of finding the
-missing entity or relation. If the query has an entity $e_i$ and a relation $k$,
-we pass in the column vector $\mathcal{X}_{ik}^T$ as the query. If instead it is
-a missing link problem, we create a $m$-length vector where element $k$ is equal
-to $\mathcal{X}_{ijk}$ and pad the rest so that it becomes an $n$-length vector
-$q$.
+(nm)$. The query is more complicated to vectorize. The memory network
+architecture requires the query to be a 1-dimensional vector. We create a vector
+$q$ of length $N+M$ where $N$ is the number of entities and $M$ the number of
+relations, where each element is 0. We find the two most similar labels as in
+Section \ref{Answering Queries} and set their corresponding vector elements to
+1. This is a two-hot encoding vectorization.
 
-The input vectors and query vectors already take advantage of the knowledge
-graph representation, so we do not need to embed them again using $A,B$
-matrices. ${m_i} = {x_i}$ and $u = q$. We do, however, use a separate matrix $C$
-to transform the input vectors again. In a one-layer case, the architecture
-calculates
+We make two changes to the original network architecture. We set the current
+layer $u^k = R(u^{k-1} + o^{k-1})$, and $o$ is now the dot product of $Cx_i$ and
+the $p_i$ vector, instead of being a scaled sum. Adding another matrix $R$
+allows us to capture extra complexity across layers while preserving
+dimensionality. Changing $o$ to be a dot product is also to help with
+dimensionality. The original matrix had a fixed query size as well as input
+length of 177, but with SAT questions the length $N+R$ is different for every
+knowledge graph input, so we need to add more flexibility in the architecture
+for this changing dimensionality.
 
-$$p_i = \text{Softmax}\left(u^Tm_i\right)$$
-$$o = \sum_i p_ic_i$$
-$$\hat{a} = \text{Softmax}\left(W\left(o+u\right)\right)$$
+The architecture equations become
+
+$$m_i = Ax_i$$
+$$u^0 = Bq,\, u^{k+1} = R(u^k + o^k)$$
+$$p_i = \text{Softmax}\left(\left(u^k\right)^Tm_i\right)$$
+$$c_i = Cx_i$$
+$$o^k = \sum_i p_ic_i$$
+$$\hat{a} = \text{Softmax}\left(W\left(o^l+u^l\right)\right)$$
+
+where $l$ is the total number of layers.
 
 In the multiple-layer case, the approach is the same as in the original model
 where the matrix $C$ stays constant at each layer, and $u^{k+1} = u^k + o^k$.
@@ -1460,6 +1504,29 @@ while still flexible, then it can become the best tool for machine
 comprehension. The very nature of neural network training makes it hard to
 create consistency, but if the MemN2N has the ability to train across tests then
 a large training corpus can help it achieve the desired consistency.
+
+\section{Conclusion}
+\label{Conclusion}
+
+In this work we present an approach to machine comprehension tasks that uses
+semantic and structural information instead of simple word-matching. We discuss
+how any text can be represented as a knowledge graph of entity-relation triples
+and questions about the text can be converted into queries on the graph. These
+queries can be answered with either link prediction or entity prediction. We use
+the Stanford NLP Toolkit's Dependency Parser \cite{Manning2014, Chen2014} to
+turn every sentence in the text into a dependency graph, and then use semantic
+rules to extract the information in triple form and create the knowledge graph.
+We present two methods to answer the knowledge graph queries. We first present a
+tensor decomposition approach, which factorizes the knowledge graph into a
+product of matrices representing the latent properties of the graph. We improve
+the RESCAL \cite{Nickel2011, Chang2014} method to use Semantically Smooth
+Embedding \cite{Guo2015}. The second approach uses neural networks. We enhance
+the Memory Networks \cite{Weston2015a, Sukhbaatar2015} architecture and
+generalize it so that it can take any arbitrary knowledge graph and question
+as input.
+
+We also demonstrate the results of both tensor decomposition and Memory Networks
+method on 
 
 \newpage
 \bstctlcite{bstctl:etal, bstctl:nodash, bstctl:simpurl}
