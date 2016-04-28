@@ -188,6 +188,7 @@
 
 % Link and URL formatting.
 \iftoggle{jp@hyperref}{%
+  \RequirePackage[hyphens]{url}
   \RequirePackage{hyperref}
   \hypersetup{%
     unicode=true,%
@@ -198,7 +199,6 @@
     %linkcolor=black,%
     %urlcolor=black
 }}{}
-\RequirePackage{url}
 
 % Scientific units.
 \RequirePackage[squaren]{SIunits}
@@ -213,9 +213,10 @@
 \newcommand{\argmax}[1]{\underset{#1}{{\textit{arg}}\,{\textit{max}}}}
 %\newcommand{\argmin}[1]{\underset{#1}\textrm{arg}\,\textrm{min}}
 %\usepackage[usenames, dvipsnames]{xcolor}
-\newcommand{\g}[1]{\textcolor{green}{#1}}
+\newcommand{\g}[1]{\textcolor{Red}{#1}}
 \RequirePackage{pdfpages}
 \RequirePackage{commath}
 \RequirePackage{relsize}
+\RequirePackage{mathtools}
 
 \endinput

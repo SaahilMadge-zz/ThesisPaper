@@ -14,6 +14,7 @@
 \newcommand{\textbi}[1]{\textbf{\textit{#1}}}
 % \renewcommand{\abstractnamefont}{\normalfont\large\bfseries}
 % \newcommand{spc}[2][c]{ \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+\mathtoolsset{showonlyrefs}
 
 \begin{document}
 \includepdf{titlepage.pdf}
@@ -342,14 +343,14 @@ At step $t$ in a recurrent neural network, we have input $x_t$ and a hidden
 state $h_{t-1}$. We also have weight matrices $U$ and $W$. We can define the
 current state $h_t = \sigma(Ux_t + Wh_{t-1})$. We have another weight matrix $V$
 for the output. The output $y_t = softmax(h_t)$, where $softmax(z_i) =
-\frac{e_{z_i}}{\sum_j e^{z_j}}$. The softmax function output is a probability
+\dfrac{e^{z_i}}{\sum_j e^{z_j}}$. The softmax function output is a probability
 distribution over the vector.
 
 Using the softmax function has several advantages. Because it is a smooth
 function, we can take its derivative, making it easier to calculate the
 backpropagation equations. Additionally, most RNNs and variants use a loss
 function known as cross-entropy loss. If the model output is $\hat{y}$ and the
-real (target) is $y$, then cross-entropy loss is defined as $\sum_i y_i
+true output is $y$, then cross-entropy loss is defined as $C = -\sum_i y_i
 \log(\hat{y_{i}})$. When we pair a softmax output with cross-entropy loss, the
 error at the output node $i$ is simply $\hat{y_i} - y_i$. This is very
 convenient because it can be calculated rapidly, so it allows for fast training
@@ -622,9 +623,6 @@ refers to information, not linguistic objects.
 \subsection{Tensor Decomposition}
 \label{Tensor Decomposition}
 
-*******REVISE THIS PART AND ALSO DESCRIBE HOW THE WORD2VEC QUESTION MATCHING
-IS DONE TO CONVERT QUERIES*******
-
 First we discuss the tensor decomposition approach to answering SAT questions.
 The advantage of using tensor decomposition is that it is based on
 well-understood mathematics, rather than simply empirical validation as with the
@@ -708,7 +706,7 @@ where the frobenius norm of some $a\times b$ matrix X is defined as
 
 $$\norm{X}_F = \sqrt{\sum_{i=1}^a \sum_{j=1}^b |X_{ij}|^2}$$
 
-To find the optimal $A$ and $R_k$, we just have to minimize \ref{eq: loss
+To find the optimal $A$ and $R_k$, we just have to minimize Equation~\eqref{eq: loss
 function}, along with some regularization function $g(A, R_k)$. Formally,
 
 \begin{equation}
@@ -837,12 +835,12 @@ $$\bar{R} = \left( R_1 R_1^T ... R_mR_m^T \right)$$
 Then by ASALSAN we derive the following update rules. We first update $A$ while
 keeping $R_k$ fixed.
 
-$$A \leftarrow \bigg[ \sum_k \mathcal{X}_kAR_k^T + \mathcal{X}_k^TAR_k \bigg] \bigg[ B_k + C_k + \mathbf{I} \bigg]^{-1}$$
+$$A \leftarrow \bigg[ \sum_k \mathcal{X}_kAR_k^T + \mathcal{X}_k^TAR_k \bigg] \bigg[ B_k + C_k \bigg]^{-1}$$
 where
 $$B_k = R_k A^T AR_k^T,\,\,\,\,\,\,\, C_k = R_k^TA^TAR_k$$
 
 To update $R_k$, we first fix $A$. Then we notice that if we vectorize
-$\mathcal{X}$ and $R_k$, we can rewrite Equation \ref{eq: to minimize} as
+$\mathcal{X}$ and $R_k$, we can rewrite Equation~\eqref{eq: to minimize} as
 
 $$f(R_k) = \norm{\textbf{vec}\left(\mathcal{X}_k\right) - \left(A \otimes A \right)
 \textbf{vec}\left(R_k\right)}$$
@@ -851,7 +849,7 @@ where we have removed an extra term $\lambda \norm{\textbf{vec}(R_k)}$ because
 $R_k$ is no longer in our regularization term. This rewritten $f$ is actually
 a linear regression problem whose solution is
 
-$$R_k \leftarrow \left( \left(A \otimes A \right)^T \left(A \otimes A\right) + \textbf{I}
+$$R_k \leftarrow \left( \left(A \otimes A \right)^T \left(A \otimes A\right)
  \right) ^{-1} \left(A \otimes A\right) \textbf{vec}\left(\mathcal{X}_k\right)$$
 
 We alternate updating $A$ and $R_k$ until we have performed some maximum number
@@ -877,12 +875,12 @@ does not exist in the knowledge graph, instead. word2vec translates unseen words
 into  knowledge graph labels which can then be operated on.
 
 Link-prediction queries are relatively simple to answer. Given $e_i, e_j$ we
-return the relation $k$ that satisfies $\argmax{k}\,\, AR_kA^T_{ijk}$.
+return the relation $k$ that satisfies $\argmax{k}\,\, \hat{\mathcal{X}}_{ijk}$.
 This is the relation which our factorization guesses is strongest between the
 two entities.
 
 Entity prediction queries are answered similarly. Given $e_i, k$ we return the
-entity $e_j$ that satisfies $\argmax{j}\,\, AR_kA^T_{ijk}$. This is
+entity $e_j$ that satisfies $\argmax{j}\,\, \hat{\mathcal{X}}_{ijk}$. This is
 the entity which our factorization guesses is most likely to be the recipient of
 relation $k$ from entity $e_i$.
 
@@ -927,10 +925,10 @@ dot product of each vector with $u$.
 
 $$p_i = \text{Softmax}(u^Tm_i)$$
 
-where Softmax$(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}$. Since the softmax function
-returns a value between 0 and 1, each score $p_i$ is a scalar that can be considered
-a probability of how relevant each memory vector is to the query. The more relevant
-it is, the more likely it will help find the answer.
+Since the softmax function returns a value between 0 and 1, each score $p_i$ is
+a scalar that can be considered a probability of how relevant each memory vector
+is to the query. The more relevant it is, the more likely it will help find the
+answer.
 
 The input vectors are now sent through another matrix $C$ to produce a set of
 transformed inputs ${c_i}$. Each transformed vector $c_i$ is weighted by its
@@ -1506,7 +1504,7 @@ MemN2N while keeping the performance guarantee of the tensor model.
 There are two main improvements we can make to the Memory Network. The first is
 with the underlying architecture itself. The input vectors must be embedded with
 matrices $A,C$. Since each passage has a tensor of different shape, we cannot
-reuse $A,C$ across passages. We discussed in Section \ref{Evaluation Details}
+reuse $A,C$ across passages. We discussed in Section \ref{Evaluation Process}
 how it is advantageous to train on just one passage at a time. However, with the
 neural network there may be some underlying patterns across passages that we are
 not able to capture currently. If the dimensionality constraints on the
@@ -1580,16 +1578,19 @@ presented here will be useful in further machine comprehension research.
 \subsection{Derivation of Output Layer Error}
 \label{Derivation of Output Layer Error}
 
-In this section we present the derivation for the output layer error of an RNN
-with cross-entropy loss and softmax at the output layer. Let us consider an
-output layer with $n$ nodes. Define $z_i$ as the quantity before activation
-function at the output layer, and $h_i$ as the final output of node $i$. The
-vector of $h_i$ is the output $\hat{y}$. The true output of node $i$ is $t_i$,
-and the true output vector is $y$.
+In this section we present the derivation for the error of an output node of an
+RNN with cross-entropy loss and softmax at the output layer. Softmax and
+cross-entropy loss $C$ are defined in Section \ref{Recurrent Neural Networks}.
+The Let us consider an output layer with $n$ nodes. Define $z_i$ as the quantity
+before activation function at the output layer, and $\hat{y}_i$ as the final
+output of node $i$. The true output of node $i$ is $y_i$. The output vectors can
+be written as $\mathbf{\hat{y}},\,\mathbf{y}$. Note that $y$ is a one-hot
+vector, so exactly one $y_i = 1$ and all other $y_j = 0$. The output node error
+is calculated as $\dfrac{\partial C}{\partial z_i}$.
 
 \begin{equation}
     \label{eq: output layer value}
-    h_i = \text{Softmax}(z_i) = \dfrac{e^{z_i}}{\sum\limits_{j=1}^n e^{z_j}} = \dfrac{e^{z_i}}
+    \hat{y}_i = \text{Softmax}(z_i) = \dfrac{e^{z_i}}{\sum\limits_{j=1}^n e^{z_j}} = \dfrac{e^{z_i}}
     {e^{z_i} + \sum\limits_{j\neq i} e^{z_j}}
 \end{equation}
 
@@ -1599,48 +1600,66 @@ The partial derivatives yield
     \label{eq: output partials}
     % \begin{gather*}
     \begin{aligned}
-        \dfrac{\partial h_i}{\partial z_i} &= \dfrac{\sum\limits_{j=1}^n e^{z_j}(e^{z_i}) - e^{z_i}(e^{z_i})}
+        \dfrac{\partial \hat{y}_i}{\partial z_i} &= \dfrac{\sum\limits_{j=1}^n e^{z_j}(e^{z_i}) - e^{z_i}(e^{z_i})}
         {\left( \sum\limits_{j=1}^n e^{z_j} \right)^2}
         = \dfrac{e^{z_i}\sum\limits_{j=1}^n e^{z_j}}{\left( \sum\limits_{j=1}^n e^{z_j} \right)^2}
         - \left( \dfrac{e^{z_i}}{ \sum\limits_{j=1}^n e^{z_j} } \right)^2 \\
         &\phantom{=} \\
-        &= h_i - h_i^2
-        = h_i\left( 1 - h_i \right) \\
+        &= \hat{y}_i - \hat{y}_i^2
+        = \hat{y}_i\left( 1 - h_i \right) \\
         &\phantom{=} \\
-        \dfrac{\partial h_i}{\partial z_j} &= \dfrac{\sum\limits_{j=1}^n e^{z_j}*0 - e^{z_i}(e^{z_i})}
+        \dfrac{\partial \hat{y}_i}{\partial z_j} &= \dfrac{\sum\limits_{j=1}^n e^{z_j}(0) - e^{z_i}(e^{z_i})}
         {\left( \sum\limits_{j=1}^n e^{z_j} \right)^2}
         = \dfrac{-e^{z_i}}{\sum\limits_{j=1}^n e^{z_j}}\dfrac{e^{z_j}}{\sum\limits_{j=1}^n e^{z_j}} \\
         &\phantom{=} \\
-        &= -h_ih_j
+        &= -\hat{y}_i\hat{y}_j
     \end{aligned}
     % \end{gather*}
 \end{equation}
 
-We can arrange the partials in an $n\times n$ matrix as
+When we take the partial of $C$ with respect to the individual $z_i$, we need
+$\dfrac{\partial \hat{y}_i}{\partial z_i}$ as well as $\dfrac{\partial
+\hat{y}_j}{\partial z_i}$.
 
 $$
-\dfrac{\partial h_i}{\partial z_j} =
+\dfrac{\partial \hat{y}_i}{\partial z_j} =
 \begin{cases}
-    h_i(1-h_i) & \text{if } i = j \\
-    -h_ih_j & \text{if } i \neq j
+    \hat{y}_i(1-\hat{y}_i) & \text{if } i = j \\
+    -\hat{y}_i\hat{y}_j & \text{if } i \neq j
 \end{cases}
 $$
 
-The cross-entropy cost function $C$ is defined as $C = -\sum_i t_i \log h_i$.
-Therefore when we take the partial of $C$ with respect to the individual $z_i$,
-we need $\dfrac{\partial h_i}{\partial z_i}$ as well as $\dfrac{\partial
-h_j}{\partial z_i}$.
-
+Now we derive the output node error using the results of Equation~\eqref{eq: output partials}.
 \begin{equation}
     \label{eq: loss function partial to h}
     \begin{aligned}
-        \dfrac{\partial C}{\partial h_i} &= -\dfrac{t_i}{h_i}
+        \dfrac{\partial C}{\partial \hat{y}_i} &= -\dfrac{y_i}{\hat{y}_i} \\
         &\phantom{=} \\
-        \dfrac{\partial C}{\partial z_i} &=
+        % \dfrac{\partial C}{\partial z_i} &= \dfrac{\partial C}{\partial h_i}
+        \dfrac{\partial C}{\partial z_i} &= \sum\limits_{j=1}^n \dfrac{\partial C}{\partial \hat{y}_j}\dfrac{\partial \hat{y}_j}{\partial z_i} =
+            \dfrac{\partial C}{\partial \hat{y}_i}\dfrac{\partial \hat{y}_i}{\partial z_i} + \sum\limits_{j\neq i} \dfrac{\partial C}{\partial \hat{y}_j}\dfrac{\partial \hat{y}_j}{\partial z_i} \\
+        &\phantom{=} \\
+        \dfrac{\partial C}{\partial \hat{y}_i}\dfrac{\partial \hat{y}_i}{\partial z_i} &= -\dfrac{y_i}{\hat{y}_i} \hat{y}_i (1-\hat{y}_i) = -y_i(1-\hat{y}_i) \\
+        &\phantom{=} \\
+        \dfrac{\partial C}{\partial \hat{y}_j}\dfrac{\partial \hat{y}_j}{\partial z_i} &= -\dfrac{y_j}{\hat{y}_j} \left(-\hat{y}_i\hat{y}_j\right) = y_j\hat{y}_i
     \end{aligned}
 \end{equation}
 
+Summing together these partials yields
+\begin{equation}
+    \dfrac{\partial C}{\partial z_i} = -y_i(1-\hat{y}_i) + \sum\limits_{j\neq i} y_j\hat{y}_i =
+        -y_i + y_i\hat{y}_i + \sum\limits_{j\neq i} y_j\hat{y}_i = -y_i + \sum\limits_{j = 1}^n y_j\hat{y}_i = -y_i + \hat{y}_i\sum\limits_{j=1}^n y_j
+\end{equation}
 
+However, we know that $\sum_{j=1}^n y_j = 1$ because $\mathbf{y}$ is a one-hot vector. This
+yields our desired result.
+\begin{equation}
+    \dfrac{\partial C}{\partial z_i} = \hat{y}_i - y_i
+\end{equation}
+
+This is a very useful result. It can be calculated very easily and in parallel
+for each node, which prevents backpropagation from becoming a bottleneck and
+allows the RNN to learn quickly.
 
 % When we have $n$ output nodes, our cost function is $\sum^n_i y_i
 % \log(\hat{y_i})$. Consider some output
@@ -1650,7 +1669,7 @@ Here we present the full evaluation data on three practice tests.
 
 % Please add the following required packages to your document preamble:
 % \usepackage{booktabs}
-\begin{table}[]
+\begin{table}[b]
 \scriptsize
 \centering
 \caption{Evaluation on Test 1}
@@ -1658,53 +1677,53 @@ Here we present the full evaluation data on three practice tests.
 % \begin{tabularx}{\textwidth}{XXXXXXXXXX}
 \begin{tabularx}{\textwidth}{lXXXXXXX}
 \toprule
-                         & \textbf{Number} & \textbf{Tensor\newline w/o Reg} & \textbf{Tensor\newline w/ Reg} & \textbf{1-layer\newline MemN2N} & \textbf{3-layer\newline MemN2N} & \textbf{Correct\newline Answer} & \textbf{Difficulty} \\ \midrule
-\textbi{Section 1}       &                 &                         &                        &                         &                         &                         &                     \\ \midrule
-\textbf{Small}           & 9               & A                       & A                      & -                       & -                       & E                       & E                   \\
-\textbf{}                & 10              & A                       & D                      & -                       & -                       & B                       & M                   \\
-\textbf{}                & 11              & D                       & D                      & -                       & -                       & D                       & E                   \\
-\textbf{}                & 12              & E                       & E                      & -                       & -                       & D                       & E                   \\
-\textbf{Long}            & 13              & C                       & D                      & train                   & train                   & E                       & M                   \\
-\textbf{}                & 14              & D                       & D                      & train                   & train                   & D                       & E                   \\
-\textbf{}                & 15              & E                       & B                      & train                   & train                   & B                       & M                   \\
-\textbf{}                & 16              & E                       & A                      & train                   & train                   & A                       & H                   \\
-\textbf{}                & 17              & A                       & A                      & train                   & train                   & A                       & H                   \\
-\textbf{}                & 18              & E                       & D                      & train                   & train                   & C                       & E                   \\
-\textbf{}                & 19              & D                       & D                      & train                   & train                   & A                       & M                   \\
-\textbf{}                & 20              & D                       & A                      & train                   & train                   & B                       & M                   \\
-\textbf{}                & 21              & E                       & E                      & A                       & A                       & B                       & M                   \\
-\textbf{}                & 22              & A                       & A                      & A                       & A                       & C                       & M                   \\
-\textbf{}                & 23              & D                       & D                      & A                       & A                       & B                       & M                   \\
-\textbf{}                & 24              & A                       & B                      & A                       & A                       & A                       & E                   \\ \midrule
-\textbi{Section 2}       &                 &                         &                        &                         &                         &                         &                     \\ \midrule
-\textbf{Medium}          & 13              & B                       & B                      & train                   & train                   & C                       & M                   \\
-\textbf{}                & 14              & C                       & D                      & train                   & train                   & B                       & E                   \\
-\textbf{}                & 15              & E                       & E                      & train                   & train                   & C                       & M                   \\
-\textbf{}                & 16              & B                       & B                      & train                   & train                   & E                       & E                   \\
-\textbf{}                & 17              & A                       & A                      & C                       & C                       & D                       & E                   \\
-\textbf{}                & 18              & A                       & A                      & C                       & D                       & C                       & M                   \\
-\textbf{Medium}          & 19              & B                       & E                      & train                   & train                   & E                       & M                   \\
-\textbf{}                & 20              & E                       & E                      & train                   & train                   & C                       & E                   \\
-\textbf{}                & 21              & D                       & B                      & train                   & train                   & D                       & M                   \\
-\textbf{}                & 22              & E                       & E                      & train                   & train                   & E                       & M                   \\
-\textbf{}                & 23              & D                       & E                      & E                       & C                       & A                       & M                   \\
-\textbf{}                & 24              & B                       & B                      & E                       & C                       & B                       & M                   \\ \midrule
-\textbi{Section 3}       &                 &                         &                        &                         &                         &                         &                     \\ \midrule
-\textbf{Long}            & 7               & A                       & A                      & train                   & train                   & B                       & M                   \\
-\textbf{}                & 8               & C                       & C                      & train                   & train                   & A                       & M                   \\
-\textbf{}                & 9               & E                       & E                      & train                   & train                   & D                       & M                   \\
-\textbf{}                & 10              & D                       & D                      & train                   & train                   & E                       & M                   \\
-\textbf{}                & 11              & B                       & B                      & train                   & train                   & A                       & M                   \\
-\textbf{}                & 12              & C                       & C                      & train                   & train                   & A                       & E                   \\
-\textbf{}                & 13              & E                       & B                      & train                   & train                   & D                       & E                   \\
-\textbf{}                & 14              & B                       & B                      & train                   & train                   & D                       & M                   \\
-\textbf{}                & 15              & A                       & A                      & D                       & D                       & E                       & M                   \\
-\textbf{}                & 16              & A                       & A                      & D                       & D                       & E                       & M                   \\
-\textbf{}                & 17              & D                       & D                      & D                       & D                       & C                       & M                   \\
-\textbf{}                & 18              & D                       & D                      & D                       & A                       & A                       & M                   \\
-\textbf{}                & 19              & C                       & C                      & D                       & D                       & E                       & M                   \\ \midrule
-\textbf{Correct}         &                 & 7                       & 8                      & 2                       & 2                       &                         &                     \\
-\textbf{Questions}       &                 & 41                      & 41                     & 13                      & 13                      &                         &                     \\ \bottomrule
+                         & \textbf{Number} & \textbf{Difficulty} & \textbf{Correct\newline Answer} & \textbf{Tensor\newline w/o Reg} & \textbf{Tensor\newline w/ Reg} & \textbf{1-layer\newline MemN2N} & \textbf{3-layer\newline MemN2N} \\ \midrule
+\textbi{Section 1}       &            &   &       &                         &                        &                         &                             \\ \midrule
+\textbf{Small}           & 9          & E & E     & A                       & A                      & -                       & -                           \\
+\textbf{}                & 10         & M & B     & A                       & D                      & -                       & -                           \\
+\textbf{}                & 11         & E & D     & \g{D}                   & \g{D}                   & -                       & -                           \\
+\textbf{}                & 12         & E & D     & E                       & E                      & -                       & -                           \\
+\textbf{Long}            & 13         & M & E     & C                       & D                      & train                   & train                       \\
+\textbf{}                & 14         & E & D     & \g{D}                   & \g{D}                      & train                   & train                       \\
+\textbf{}                & 15         & M & B     & E                       & \g{B}                      & train                   & train                       \\
+\textbf{}                & 16         & H & A     & E                       & \g{A}                      & train                   & train                       \\
+\textbf{}                & 17         & H & A     & \g{A}                   & \g{A}                      & train                   & train                       \\
+\textbf{}                & 18         & E & C     & E                       & D                      & train                   & train                       \\
+\textbf{}                & 19         & M & A     & D                       & D                      & train                   & train                       \\
+\textbf{}                & 20         & M & B     & D                       & A                      & train                   & train                       \\
+\textbf{}                & 21         & M & B     & E                       & E                      & A                       & A                           \\
+\textbf{}                & 22         & M & C     & A                       & A                      & A                       & A                           \\
+\textbf{}                & 23         & M & B     & D                       & D                      & A                       & A                           \\
+\textbf{}                & 24         & E & A     & \g{A}                   & B                      & \g{A}                       & \g{A}                           \\ \midrule
+\textbi{Section 2}       &            &   &       &                         &                        &                         &                             \\ \midrule
+\textbf{Medium}          & 13         & M & C     & B                       & B                      & train                   & train                       \\
+\textbf{}                & 14         & E & B     & C                       & D                      & train                   & train                       \\
+\textbf{}                & 15         & M & C     & E                       & E                      & train                   & train                       \\
+\textbf{}                & 16         & E & E     & B                       & B                      & train                   & train                       \\
+\textbf{}                & 17         & E & D     & A                       & A                      & C                       & C                           \\
+\textbf{}                & 18         & M & C     & A                       & A                      & \g{C}                       & D                           \\
+\textbf{Medium}          & 19         & M & E     & B                       & \g{E}                  & train                   & train                       \\
+\textbf{}                & 20         & E & C     & E                       & E                      & train                   & train                       \\
+\textbf{}                & 21         & M & D     & \g{D}                   & B                      & train                   & train                       \\
+\textbf{}                & 22         & M & E     & \g{E}                   & \g{E}                  & train                   & train                       \\
+\textbf{}                & 23         & M & A     & D                       & E                      & E                       & C                           \\
+\textbf{}                & 24         & M & B     & \g{B}                   & \g{B}                  & E                       & C                           \\ \midrule
+\textbi{Section 3}       &            &   &       &                         &                        &                         &                             \\ \midrule
+\textbf{Long}            & 7          & M & B     & A                       & A                      & train                   & train                       \\
+\textbf{}                & 8          & M & A     & C                       & C                      & train                   & train                       \\
+\textbf{}                & 9          & M & D     & E                       & E                      & train                   & train                       \\
+\textbf{}                & 10         & M & E     & D                       & D                      & train                   & train                       \\
+\textbf{}                & 11         & M & A     & B                       & B                      & train                   & train                       \\
+\textbf{}                & 12         & E & A     & C                       & C                      & train                   & train                       \\
+\textbf{}                & 13         & E & D     & E                       & B                      & train                   & train                       \\
+\textbf{}                & 14         & M & D     & B                       & B                      & train                   & train                       \\
+\textbf{}                & 15         & M & E     & A                       & A                      & D                       & D                           \\
+\textbf{}                & 16         & M & E     & A                       & A                      & D                       & D                           \\
+\textbf{}                & 17         & M & C     & D                       & D                      & D                       & D                           \\
+\textbf{}                & 18         & M & A     & D                       & D                      & D                       & \g{A}                           \\
+\textbf{}                & 19         & M & E     & C                       & C                      & D                       & D                           \\ \midrule
+\textbf{Correct}         &            &   &       & 7                       & 8                      & 2                       & 2                           \\
+\textbf{Questions}       &            &   &       & 41                      & 41                     & 13                      & 13                          \\ \bottomrule
 \end{tabularx}
 % \end{tabular}
 \end{table}
@@ -1718,52 +1737,52 @@ Here we present the full evaluation data on three practice tests.
 \label{tab: Evaluation on Test 2}
 \begin{tabular}{llllll}
 \toprule
-\multicolumn{1}{c}{}     & \multicolumn{1}{c}{\textbf{Number}} & \multicolumn{1}{c}{\textbf{Tensor w/ Reg}} & \multicolumn{1}{c}{\textbf{3-layer MemN2N}} & \multicolumn{1}{c}{\textbf{Correct Answer}} & \multicolumn{1}{c}{\textbf{Difficulty}} \\ \midrule
-\textbi{Section 1}       &                                     &                                            &                                             &                                             &                                         \\ \midrule
-\textbf{Long}            & 13                                  & C                                          & train                                       & A                                           & M                                       \\
-\textbf{}                & 14                                  & A                                          & train                                       & C                                           & M                                       \\
-\textbf{}                & 15                                  & D                                          & train                                       & E                                           & M                                       \\
-\textbf{}                & 16                                  & D                                          & train                                       & D                                           & M                                       \\
-\textbf{}                & 17                                  & B                                          & train                                       & D                                           & M                                       \\
-\textbf{}                & 18                                  & E                                          & train                                       & D                                           & M                                       \\
-\textbf{}                & 19                                  & E                                          & train                                       & E                                           & M                                       \\
-\textbf{}                & 20                                  & A                                          & train                                       & C                                           & M                                       \\
-\textbf{}                & 21                                  & B                                          & E                                           & A                                           & M                                       \\
-\textbf{}                & 22                                  & A                                          & B                                           & B                                           & M                                       \\
-\textbf{}                & 23                                  & B                                          & B                                           & B                                           & H                                       \\
-\textbf{}                & 24                                  & B                                          & D                                           & A                                           & M                                       \\ \midrule
-\textbi{Section 2}       &                                     &                                            &                                             &                                             &                                         \\ \midrule
-\textbf{Medium}          & 10                                  & B                                          & train                                       & A                                           & M                                       \\
-\textbf{}                & 11                                  & B                                          & train                                       & A                                           & M                                       \\
-\textbf{}                & 12                                  & A                                          & train                                       & D                                           & M                                       \\
-\textbf{}                & 13                                  & C                                          & train                                       & C                                           & E                                       \\
-\textbf{}                & 14                                  & B                                          & D                                           & B                                           & M                                       \\
-\textbf{}                & 15                                  & E                                          & A                                           & A                                           & M                                       \\
-\textbf{Medium}          & 16                                  & A                                          & train                                       & E                                           & M                                       \\
-\textbf{}                & 17                                  & B                                          & train                                       & D                                           & E                                       \\
-\textbf{}                & 18                                  & A                                          & train                                       & A                                           & E                                       \\
-\textbf{}                & 19                                  & E                                          & train                                       & C                                           & M                                       \\
-\textbf{}                & 20                                  & B                                          & train                                       & E                                           & H                                       \\
-\textbf{}                & 21                                  & A                                          & train                                       & A                                           & M                                       \\
-\textbf{}                & 22                                  & C                                          & E                                           & C                                           & M                                       \\
-\textbf{}                & 23                                  & E                                          & E                                           & B                                           & M                                       \\
-\textbf{}                & 24                                  & B                                          & E                                           & B                                           & M                                       \\ \midrule
-\textbi{Section 3}       &                                     &                                            &                                             &                                             &                                         \\ \midrule
-\textbf{Long}            & 7                                   & C                                          & train                                       & B                                           & M                                       \\
-\textbf{}                & 8                                   & E                                          & train                                       & B                                           & E                                       \\
-\textbf{}                & 9                                   & A                                          & train                                       & D                                           & M                                       \\
-\textbf{}                & 10                                  & C                                          & train                                       & D                                           & M                                       \\
-\textbf{}                & 11                                  & E                                          & train                                       & C                                           & E                                       \\
-\textbf{}                & 12                                  & E                                          & train                                       & A                                           & M                                       \\
-\textbf{}                & 13                                  & A                                          & train                                       & B                                           & M                                       \\
-\textbf{}                & 14                                  & E                                          & train                                       & E                                           & H                                       \\
-\textbf{}                & 15                                  & A                                          & B                                           & B                                           & M                                       \\
-\textbf{}                & 16                                  & E                                          & E                                           & E                                           & M                                       \\
-\textbf{}                & 17                                  & C                                          & D                                           & D                                           & M                                       \\
-\textbf{}                & 18                                  & A                                          & B                                           & B                                           & M                                       \\
-\textbf{}                & 19                                  & C                                          & C                                           & A                                           & M                                       \\ \midrule
-\textbf{Correct}         &                                     & 11                                         & 7                                           &                                             &                                         \\
-\textbf{Questions}       &                                     & 40                                         & 14                                          &                                             &                                         \\ \bottomrule
+\multicolumn{1}{c}{}     & \multicolumn{1}{c}{\textbf{Number}} & \multicolumn{1}{c}{\textbf{Difficulty}} & \multicolumn{1}{c}{\textbf{Correct Answer}} & \multicolumn{1}{c}{\textbf{Tensor w/ Reg}} & \multicolumn{1}{c}{\textbf{3-layer MemN2N}} \\ \midrule
+\textbi{Section 1}       &                                     &                                         &                                             &                                            &                                             \\ \midrule
+\textbf{Long}            & 13                                  & M                                       & A                                           & C                                          & train                                       \\
+\textbf{}                & 14                                  & M                                       & C                                           & A                                          & train                                       \\
+\textbf{}                & 15                                  & M                                       & E                                           & D                                          & train                                       \\
+\textbf{}                & 16                                  & M                                       & D                                           & \g{D}                                      & train                                       \\
+\textbf{}                & 17                                  & M                                       & D                                           & B                                          & train                                       \\
+\textbf{}                & 18                                  & M                                       & D                                           & E                                          & train                                       \\
+\textbf{}                & 19                                  & M                                       & E                                           & \g{E}                                      & train                                       \\
+\textbf{}                & 20                                  & M                                       & C                                           & A                                          & train                                       \\
+\textbf{}                & 21                                  & M                                       & A                                           & B                                          & E                                           \\
+\textbf{}                & 22                                  & M                                       & B                                           & A                                          & \g{B}                                           \\
+\textbf{}                & 23                                  & H                                       & B                                           & \g{B}                                      & \g{B}                                           \\
+\textbf{}                & 24                                  & M                                       & A                                           & B                                          & D                                           \\ \midrule
+\textbi{Section 2}       &                                     &                                         &                                             &                                            &                                             \\ \midrule
+\textbf{Medium}          & 10                                  & M                                       & A                                           & B                                          & train                                       \\
+\textbf{}                & 11                                  & M                                       & A                                           & B                                          & train                                       \\
+\textbf{}                & 12                                  & M                                       & D                                           & A                                          & train                                       \\
+\textbf{}                & 13                                  & E                                       & C                                           & \g{C}                                      & train                                       \\
+\textbf{}                & 14                                  & M                                       & B                                           & \g{B}                                      & D                                           \\
+\textbf{}                & 15                                  & M                                       & A                                           & E                                          & \g{A}                                           \\
+\textbf{Medium}          & 16                                  & M                                       & E                                           & A                                          & train                                       \\
+\textbf{}                & 17                                  & E                                       & D                                           & B                                          & train                                       \\
+\textbf{}                & 18                                  & E                                       & A                                           & \g{A}                                          & train                                       \\
+\textbf{}                & 19                                  & M                                       & C                                           & E                                          & train                                       \\
+\textbf{}                & 20                                  & H                                       & E                                           & B                                          & train                                       \\
+\textbf{}                & 21                                  & M                                       & A                                           & \g{A}                                          & train                                       \\
+\textbf{}                & 22                                  & M                                       & C                                           & \g{C}                                          & E                                           \\
+\textbf{}                & 23                                  & M                                       & B                                           & E                                          & E                                           \\
+\textbf{}                & 24                                  & M                                       & B                                           & \g{B}                                          & E                                           \\ \midrule
+\textbi{Section 3}       &                                     &                                         &                                             &                                            &                                             \\ \midrule
+\textbf{Long}            & 7                                   & M                                       & B                                           & C                                          & train                                       \\
+\textbf{}                & 8                                   & E                                       & B                                           & E                                          & train                                       \\
+\textbf{}                & 9                                   & M                                       & D                                           & A                                          & train                                       \\
+\textbf{}                & 10                                  & M                                       & D                                           & C                                          & train                                       \\
+\textbf{}                & 11                                  & E                                       & C                                           & E                                          & train                                       \\
+\textbf{}                & 12                                  & M                                       & A                                           & E                                          & train                                       \\
+\textbf{}                & 13                                  & M                                       & B                                           & A                                          & train                                       \\
+\textbf{}                & 14                                  & H                                       & E                                           & \g{E}                                      & train                                       \\
+\textbf{}                & 15                                  & M                                       & B                                           & A                                          & \g{B}                                           \\
+\textbf{}                & 16                                  & M                                       & E                                           & \g{E}                                      & \g{E}                                           \\
+\textbf{}                & 17                                  & M                                       & D                                           & C                                          & \g{D}                                           \\
+\textbf{}                & 18                                  & M                                       & B                                           & A                                          & \g{B}                                           \\
+\textbf{}                & 19                                  & M                                       & A                                           & C                                          & C                                           \\ \midrule
+\textbf{Correct}         &                                     &                                         &                                             & 11                                         & 7                                           \\
+\textbf{Questions}       &                                     &                                         &                                             & 40                                         & 14                                          \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -1776,52 +1795,52 @@ Here we present the full evaluation data on three practice tests.
 \label{tab: Evaluation on Test 3}
 \begin{tabular}{@{}llllll@{}}
 \toprule
-\multicolumn{1}{c}{}    & \multicolumn{1}{c}{\textbf{Number}} & \multicolumn{1}{c}{\textbf{Tensor w/ Reg}} & \multicolumn{1}{c}{\textbf{3-layer MemN2N}} & \multicolumn{1}{c}{\textbf{Correct Answer}} & \multicolumn{1}{c}{\textbf{Difficulty}} \\ \midrule
-\textbi{Section 1}      &                                     &                                            &                                             &                                             &                                         \\ \midrule
-\textbf{Medium}         & 10                                  & C                                          & train                                       & B                                           & E                                       \\
-\textbf{}               & 11                                  & E                                          & train                                       & C                                           & M                                       \\
-\textbf{}               & 12                                  & B                                          & train                                       & A                                           & E                                       \\
-\textbf{}               & 13                                  & A                                          & train                                       & D                                           & M                                       \\
-\textbf{}               & 14                                  & A                                          & C                                           & C                                           & M                                       \\
-\textbf{}               & 15                                  & C                                          & C                                           & D                                           & E                                       \\
-\textbf{Medium}         & 16                                  & A                                          & train                                       & A                                           & M                                       \\
-\textbf{}               & 17                                  & A                                          & train                                       & B                                           & H                                       \\
-\textbf{}               & 18                                  & B                                          & train                                       & E                                           & M                                       \\
-\textbf{}               & 19                                  & A                                          & train                                       & D                                           & M                                       \\
-\textbf{}               & 20                                  & B                                          & train                                       & D                                           & M                                       \\
-\textbf{}               & 21                                  & C                                          & train                                       & D                                           & M                                       \\
-\textbf{}               & 22                                  & A                                          & E                                           & A                                           & M                                       \\
-\textbf{}               & 23                                  & E                                          & E                                           & E                                           & E                                       \\
-\textbf{}               & 24                                  & C                                          & E                                           & B                                           & M                                       \\ \midrule
-\textbi{Section 2}      &                                     &                                            &                                             &                                             &                                         \\ \midrule
-\textbf{Long}           & 13                                  & A                                          & train                                       & E                                           & M                                       \\
-\textbf{}               & 14                                  & E                                          & train                                       & C                                           & M                                       \\
-\textbf{}               & 15                                  & A                                          & train                                       & D                                           & M                                       \\
-\textbf{}               & 16                                  & D                                          & train                                       & D                                           & H                                       \\
-\textbf{}               & 17                                  & A                                          & train                                       & B                                           & M                                       \\
-\textbf{}               & 18                                  & C                                          & train                                       & C                                           & M                                       \\
-\textbf{}               & 19                                  & B                                          & train                                       & B                                           & H                                       \\
-\textbf{}               & 20                                  & E                                          & train                                       & B                                           & M                                       \\
-\textbf{}               & 21                                  & B                                          & B                                           & D                                           & H                                       \\
-\textbf{}               & 22                                  & A                                          & B                                           & E                                           & H                                       \\
-\textbf{}               & 23                                  & A                                          & E                                           & A                                           & M                                       \\
-\textbf{}               & 24                                  & D                                          & A                                           & E                                           & M                                       \\ \midrule
-\textbi{Section 3}      &                                     &                                            &                                             &                                             &                                         \\ \midrule
-\textbf{Long}           & 7                                   & B                                          & train                                       & D                                           & E                                       \\
-\textbf{}               & 8                                   & E                                          & train                                       & E                                           & M                                       \\
-\textbf{}               & 9                                   & B                                          & train                                       & D                                           & M                                       \\
-\textbf{}               & 10                                  & A                                          & train                                       & D                                           & M                                       \\
-\textbf{}               & 11                                  & A                                          & train                                       & B                                           & M                                       \\
-\textbf{}               & 12                                  & E                                          & train                                       & C                                           & E                                       \\
-\textbf{}               & 13                                  & A                                          & train                                       & A                                           & M                                       \\
-\textbf{}               & 14                                  & D                                          & train                                       & E                                           & M                                       \\
-\textbf{}               & 15                                  & A                                          & E                                           & C                                           & M                                       \\
-\textbf{}               & 16                                  & D                                          & B                                           & B                                           & M                                       \\
-\textbf{}               & 17                                  & C                                          & D                                           & E                                           & M                                       \\
-\textbf{}               & 18                                  & B                                          & D                                           & A                                           & M                                       \\
-\textbf{}               & 19                                  & E                                          & D                                           & D                                           & M                                       \\ \midrule
-\textbf{Correct}        &                                     & 9                                          & 3                                           &                                             &                                         \\
-\textbf{Questions}      &                                     & 41                                         & 14                                          &                                             &                                         \\ \bottomrule
+\multicolumn{1}{c}{}    & \multicolumn{1}{c}{\textbf{Number}} & \multicolumn{1}{c}{\textbf{Difficulty}} & \multicolumn{1}{c}{\textbf{Correct Answer}} & \multicolumn{1}{c}{\textbf{Tensor w/ Reg}} & \multicolumn{1}{c}{\textbf{3-layer MemN2N}} \\ \midrule
+\textbi{Section 1}      &                                     &                                         &    &    &                                             \\ \midrule
+\textbf{Medium}         & 10                                  & E                                       & B  & C  & train                                       \\
+\textbf{}               & 11                                  & M                                       & C  & E  & train                                       \\
+\textbf{}               & 12                                  & E                                       & A  & B  & train                                       \\
+\textbf{}               & 13                                  & M                                       & D  & A  & train                                       \\
+\textbf{}               & 14                                  & M                                       & C  & A  & \g{C}                                           \\
+\textbf{}               & 15                                  & E                                       & D  & C  & C                                           \\
+\textbf{Medium}         & 16                                  & M                                       & A  & \g{A}  & train                                       \\
+\textbf{}               & 17                                  & H                                       & B  & A  & train                                       \\
+\textbf{}               & 18                                  & M                                       & E  & B  & train                                       \\
+\textbf{}               & 19                                  & M                                       & D  & A  & train                                       \\
+\textbf{}               & 20                                  & M                                       & D  & B  & train                                       \\
+\textbf{}               & 21                                  & M                                       & D  & C  & train                                       \\
+\textbf{}               & 22                                  & M                                       & A  & A  & E                                           \\
+\textbf{}               & 23                                  & E                                       & E  & \g{E}  & \g{E}                                           \\
+\textbf{}               & 24                                  & M                                       & B  & C  & E                                           \\ \midrule
+\textbi{Section 2}      &                                     &                                         &    &    &                                             \\ \midrule
+\textbf{Long}           & 13                                  & M                                       & E  & A  & train                                       \\
+\textbf{}               & 14                                  & M                                       & C  & E  & train                                       \\
+\textbf{}               & 15                                  & M                                       & D  & A  & train                                       \\
+\textbf{}               & 16                                  & H                                       & D  & \g{D}  & train                                       \\
+\textbf{}               & 17                                  & M                                       & B  & A  & train                                       \\
+\textbf{}               & 18                                  & M                                       & C  & \g{C}  & train                                       \\
+\textbf{}               & 19                                  & H                                       & B  & \g{B}  & train                                       \\
+\textbf{}               & 20                                  & M                                       & B  & E  & train                                       \\
+\textbf{}               & 21                                  & H                                       & D  & B  & B                                           \\
+\textbf{}               & 22                                  & H                                       & E  & A  & B                                           \\
+\textbf{}               & 23                                  & M                                       & A  & \g{A}  & E                                           \\
+\textbf{}               & 24                                  & M                                       & E  & D  & A                                           \\ \midrule
+\textbi{Section 3}      &                                     &                                         &    &    &                                             \\ \midrule
+\textbf{Long}           & 7                                   & E                                       & D  & B  & train                                       \\
+\textbf{}               & 8                                   & M                                       & E  & \g{E}  & train                                       \\
+\textbf{}               & 9                                   & M                                       & D  & B  & train                                       \\
+\textbf{}               & 10                                  & M                                       & D  & A  & train                                       \\
+\textbf{}               & 11                                  & M                                       & B  & A  & train                                       \\
+\textbf{}               & 12                                  & E                                       & C  & E  & train                                       \\
+\textbf{}               & 13                                  & M                                       & A  & \g{A}  & train                                       \\
+\textbf{}               & 14                                  & M                                       & E  & D  & train                                       \\
+\textbf{}               & 15                                  & M                                       & C  & A  & E                                           \\
+\textbf{}               & 16                                  & M                                       & B  & D  & B                                           \\
+\textbf{}               & 17                                  & M                                       & E  & C  & D                                           \\
+\textbf{}               & 18                                  & M                                       & A  & B  & D                                           \\
+\textbf{}               & 19                                  & M                                       & D  & E  & \g{D}                                           \\ \midrule
+\textbf{Correct}        &                                     &                                         &    & 9  & 3                                           \\
+\textbf{Questions}      &                                     &                                         &    & 41 & 14                                          \\ \bottomrule
 \end{tabular}
 \end{table}
 
