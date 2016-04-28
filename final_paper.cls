@@ -39,9 +39,10 @@
 \RequirePackage[usenames,dvipsnames,svgnames,table]{xcolor}
 
 % Basic text typesetting options.
-\RequirePackage{mathptmx}
-%\RequirePackage[scaled=0.833]{helvet}
-%\RequirePackage[scaled=0.875]{couriers}
+%\RequirePackage{mathptmx}
+\renewcommand\rmdefault{ptm}
+\RequirePackage[scaled=0.833]{helvet}
+\RequirePackage[scaled=0.875]{couriers}
 \setlength{\parindent}{1em}
 \RequirePackage{setspace}
 \newcommand{\normalspacing}{}
@@ -59,45 +60,45 @@
 \setlength{\columnsep}{0.25in}
 
 % Title formatting.
-\RequirePackage{titling}
-\setlength{\droptitle}{-3.5em}
+%\RequirePackage{titling}
+%\setlength{\droptitle}{-3.5em}
 
 % \pretitle{\begin{center}\vspace{-.5in}
 % -- Independent Work Report Fall, \IWreport\ -- \\
 % \vspace{.35in}
 % \normalfont\Large\bfseries}
-\posttitle{\par\end{center}}
-\preauthor{\begin{center}\normalfont\large%
-    \begin{tabular}[t]{c}}
-\postauthor{\end{tabular}\par\end{center}}
-\predate{}
-\postdate{}
+%\posttitle{\par\end{center}}
+%\preauthor{\begin{center}\normalfont\large%
+%   \begin{tabular}[t]{c}}
+%\postauthor{\end{tabular}\par\end{center}}
+%\predate{}
+%\postdate{}
 
 
 % The abstract should be normally sized and italicized. Abstract leading
 % should, in general, follow the normal leading.
 \RequirePackage{abstract}
-\newcommand{\abstractspacing}{\normalspacing}
-\renewcommand{\abstractnamefont}{\normalfont\large\bfseries}
-\renewcommand{\abstracttextfont}{\normalfont\itshape\abstractspacing}
-\setlength{\absleftindent}{0in}
-\setlength{\absrightindent}{0in}
-\setlength{\abstitleskip}{-1.5em}
+%\newcommand{\abstractspacing}{\normalspacing}
+\renewcommand{\abstractnamefont}{\Large\bf}
+%\renewcommand{\abstracttextfont}{\normalfont\itshape\abstractspacing}
+%\setlength{\absleftindent}{0in}
+%\setlength{\absrightindent}{0in}
+%\setlength{\abstitleskip}{-1.5em}
 
 % Compress vertical space around section and subsection headings. Make
 % subsubsection headings run-in (i.e. part of the following paragraph).
-\RequirePackage[compact]{titlesec}
-\titleformat{\section}[hang]{\normalfont\large\bfseries}{\thesection. }%
-  {0pt}{}{}
-\titleformat{\subsection}[hang]{\normalfont\bfseries}{\thesubsection. }%
-  {0pt}{}{}
-\titleformat{\subsubsection}[hang]{\normalfont\bfseries}{\thesubsubsection. }%
-  {0pt}{}{}
-\newlength{\sectionspace}
-\setlength{\sectionspace}{1.5ex plus 0.25ex}
-\titlespacing*{\section}{0pt}{\sectionspace}{\sectionspace}
-\titlespacing*{\subsection}{0pt}{\sectionspace}{\sectionspace}
-\titlespacing*{\subsubsection}{0pt}{\sectionspace}{\sectionspace}
+%\RequirePackage[compact]{titlesec}
+%\titleformat{\section}[hang]{\normalfont\large\bfseries}{\thesection. }%
+ % {0pt}{}{}
+%\titleformat{\subsection}[hang]{\normalfont\bfseries}{\thesubsection. }%
+ % {0pt}{}{}
+%\titleformat{\subsubsection}[hang]{\normalfont\bfseries}{\thesubsubsection. }%
+ % {0pt}{}{}
+%\newlength{\sectionspace}
+%\setlength{\sectionspace}{1.5ex plus 0.25ex}
+%\titlespacing*{\section}{0pt}{\sectionspace}{\sectionspace}
+%\titlespacing*{\subsection}{0pt}{\sectionspace}{\sectionspace}
+%\titlespacing*{\subsubsection}{0pt}{\sectionspace}{\sectionspace}
 
 % Compress itemize and enumerate environments.
 \RequirePackage{enumerate}
@@ -122,11 +123,11 @@
 
 % Settings for figures and tables. Figure captions are placed below the figure,
 % while table captions are placed above the table. All captions are sans-serif.
-\RequirePackage[font={normalsize,sf,bf}]{caption}
+\RequirePackage[font={normalsize, bf}]{caption}
 \RequirePackage[position=bottom]{subfig}
-\captionsetup[table]{aboveskip=0.5em, belowskip=0.5em}
-\captionsetup[figure]{aboveskip=0.5em, belowskip=0em}
-\captionsetup[subfloat]{font={small,sf}}
+\captionsetup[table]{aboveskip=1em, belowskip=1em}
+\captionsetup[figure]{aboveskip=1em, belowskip=1em}
+\captionsetup[subfloat]{font={small}}
 \setcounter{topnumber}{2}
 \setcounter{dbltopnumber}{2}
 \setcounter{bottomnumber}{2}
@@ -191,8 +192,8 @@
   \hypersetup{%
     unicode=true,%
     pdfstartview={FitH},%
-    colorlinks=true,%
-    citecolor=red,%
+    %colorlinks=true,%
+    %citecolor=red,%
     %filecolor=black,%
     %linkcolor=black,%
     %urlcolor=black
@@ -209,7 +210,12 @@
 \RequirePackage{amsmath}
 %\DeclareMathOperator*{\argmax}{arg\,max}
 %\DeclareMathOperator*{\argmin}{arg\,min}
-\newcommand{\argmax}[1]{\underset{#1}{{\text{arg}}\,{\text{max}}}}
+\newcommand{\argmax}[1]{\underset{#1}{{\textit{arg}}\,{\textit{max}}}}
 %\newcommand{\argmin}[1]{\underset{#1}\textrm{arg}\,\textrm{min}}
+%\usepackage[usenames, dvipsnames]{xcolor}
+\newcommand{\g}[1]{\textcolor{green}{#1}}
+\RequirePackage{pdfpages}
+\RequirePackage{commath}
+\RequirePackage{relsize}
 
 \endinput

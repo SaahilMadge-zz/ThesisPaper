@@ -10,18 +10,45 @@
 % \newcommand{\textbi}[1]{\textbf{\textit{#1}}}
 % \usepackage{amsmath}
 \DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+% \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\textbi}[1]{\textbf{\textit{#1}}}
+% \renewcommand{\abstractnamefont}{\normalfont\large\bfseries}
+% \newcommand{spc}[2][c]{ \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
 
 \begin{document}
+\includepdf{titlepage.pdf}
 
-\title{
-Solving SAT Reading Comprehension Questions with Memory Networks}
+\newgeometry{left=1.5in, top=3in, right=1in}
+\begin{abstract}
 
-\author{Saahil Madge\\Advisor: Professor Christiane Fellbaum}
+    \noindent We present a general approach for machine comprehension tasks by
+    converting the text to a knowledge graph and the questions to queries on the
+    graph. We extend \cite{Narasimhan2015} and use the Stanford NLP Toolkit's
+    Dependency Parser \cite{Manning2014, Chen2014} to transform each sentence
+    into a set of entity-relation triples. We use word2vec \cite{Mikolov2013} to
+    convert the questions into queries on the graph. We present a tensor
+    decomposition approach to answering queries by adding Semantically Smooth
+    Embedding \cite{Guo2015} to RESCAL \cite{Nickel2011}. We also generalize the
+    Memory Networks \cite{Weston2015a, Sukhbaatar2015} to take any knowledge
+    graph as input. We evaluate these models on three full SAT reading
+    comprehension tests. The models presented here perform better than their
+    respective baselines. Both models demonstrate the ability to answer
+    questions based on the semantic and structural information in the text.
 
-\date{}
-\maketitle
+\end{abstract}
+\restoregeometry
+
+\newpage
+
+{\large \tableofcontents}
+\newpage
+% \title{
+% Solving SAT Reading Comprehension Questions with Memory Networks}
+%
+% \author{Saahil Madge\\Advisor: Professor Christiane Fellbaum}
+%
+% \date{}
+% \maketitle
 
 \thispagestyle{empty}
 \doublespacing
@@ -88,16 +115,16 @@ system to answer questions based on a paragraph describing biological processes,
 which is certainly an advanced topic, but the system is specialized for
 biological tasks and not applicable as is to general reading comprehension.
 
-In this paper we focus on SAT reading questions. The major reason is that they
-are far more complex than MCTest questions and other commonly-used machine
-comprehension datasets. The sentence structures, vocabulary, and topics covered
-in SAT passages are all far more varied than in the other benchmarks. The
-questions are much harder as well, and simply understanding the question and the
-individual choices is difficult by itself. SAT questions often test underlying
-themes and broad ideas rather than particular factual details (``Why'' or
-``How'' questions). In contrast, MCTest questions are often of a ``Who'',
-``When'', or ``What'' form, which have traditionally been easier for programs to
-answer.
+In this paper we focus on SAT reading comprehension questions. The major reason
+is that they are far more complex than MCTest questions and other commonly-used
+machine comprehension datasets. The sentence structures, vocabulary, and topics
+covered in SAT passages are all far more varied than in the other benchmarks.
+The questions are much harder as well, and simply understanding the question and
+the individual choices is difficult by itself. SAT questions often test
+underlying themes and broad ideas rather than particular factual details
+(``Why'' or ``How'' questions). In contrast, MCTest questions are often of a
+``Who'', ``When'', or ``What'' form, which have traditionally been easier for
+programs to answer.
 
 Another aspect that makes SAT questions so difficult is that they require
 inference to answer, as opposed to just matching words or syntax. MCTest and
@@ -111,19 +138,18 @@ query structure is not correlated with passage structure. To solve these
 questions, our system has to really understand the high-level concepts and
 information that is implied but not directly on the surface. This is a
 significantly harder problem than has been tackled before, but it is necessary
-to solve to continue moving forwad in the field of machine comprehension.
-Essentially, by trying to answer SAT questions we can try to solve problems that
-will be present in real-world applications but have not yet been tackled by
-existing research.
+to solve to continue moving forward in the field of machine comprehension. By
+trying to answer SAT questions we can try to solve problems that will be present
+in real-world applications but have not yet been tackled by existing research.
 
 Due to the difficulty of interpreting the text as-is, we represent the text
-using relational logic instead. Essentially we dynamically create a
-\textit{Knowledge Graph} (covered in more detail in Section \ref{Representation
-Techniques}) as we parse through the text and try to frame each question as a
-query on this knowledge graph. The knowledge graph representation is typically
-used for factual data that has already been collected in entity-relation triple
-form. As far as we know, no previous research in this space has tried to
-dynamically create a knowledge graph on which we can answer questions.
+using relational logic instead. We dynamically create a \textit{Knowledge Graph}
+(covered in more detail in Section \ref{Representation Techniques}) as we parse
+through the text and try to frame each question as a query on this knowledge
+graph. The knowledge graph representation is typically used for factual data
+that has already been collected in entity-relation triple form. As far as we
+know, no previous research in this space has tried to dynamically create a
+knowledge graph on which we can answer questions.
 
 Traditionally most research on relational learning has used either neural
 networks or tensor decomposition to answer queries on the graph. In this work we
@@ -143,14 +169,15 @@ take knowledge graph triples and queries as input, and provide a scoring of the
 answer choices as output. We discuss memory networks and alternatives in much
 greater depth in Section \ref{Related Work} and Section \ref{Model}.
 
-Our goal with this research is to present a way to combine ideas that were
-previously used in isolation for QA or other learning tasks into a system which
-can parse and interpret a complex text, and answer difficult high-level
-questions about the text. The text, questions, and techniques we use are more
-ambitious than those studied in previous research. Our results should be
-interpreted as merely proof-of-concept. We hope that this paper will encourage
-others to tackle problems of equal or greater ambition, and drive progress in
-the development of safe artificial intelligence.
+All models and data are available at
+\url{https://github.com/SaahilMadge/Senior-Thesis}. Our goal with this research
+is to present a way to combine ideas that were previously used in isolation for
+QA or other learning tasks into a system which can parse and interpret a complex
+text, and answer difficult high-level questions about the text. The text,
+questions, and techniques we use are more ambitious than those studied in
+previous research. We hope that this paper will encourage others to tackle
+problems of equal or greater ambition, and drive progress in the development of
+safe artificial intelligence.
 
 \section{Technical Review}
 \label{Technical Review}
@@ -162,7 +189,7 @@ research and in this paper.
 \label{Representation Techniques}
 
 We begin by reviewing various methods for embedding text and performing queries
-on the embedded representations. \\
+on the embedded representations.
 
 \subsubsection{Bag-of-words}
 \label{Bag-of-words}
@@ -179,7 +206,7 @@ are first embedded into some dimension $d$. The learning algorithm is run on the
 embedded vectors, and we can output a response in a specified format. Two common
 methods are to return a probability vector of size $V$ where each element
 represents how likely that word is to be the output, or to pick the most likely
-word from that distribution and return only that word. \\
+word from that distribution and return only that word.
 
 \subsubsection{Dependency Parsing}
 \label{Dependency Parsing}
@@ -479,10 +506,8 @@ into the $\langle \textit{entity}_1, \, \textit{relation}, \, \textit{entity}_2
 \rangle$ format. The knowledge graph itself is simply a list of these triples.
 If we can parse the input text and extract the Subject-Verb-Object relationship,
 we can convert each sentence into a triple of the form
-
 $$\langle \textit{subject}, \, \textit{verb}, \, \textit{object} \rangle
 \Rightarrow \langle e_1, \, r, \, e_2 \rangle$$
-
 The details of the conversion are covered in Section \ref{Converting to
 Knowledge Graph Representation}.
 
@@ -572,27 +597,27 @@ triple.
     \label{fig: dependency extraction}
 \end{figure}
 
-The information extracted should be in knowledge graph format, namely $\langle
-\text{entity}_1, \,\text{relation}, \,\text{entity}_2 \rangle$. We want to frame
-the information in the sentence so that it is one entity with some relation to
-another entity. Most sentences are of the form where the subject performs some
-action or has some description, so we focus on these two types of sentences. In
-each sentence we isolate the main subject using the \textit{nsubj} dependency.
-Then we check for one of two relations. If the subject is performing some action
-then the sentence can be generally extracted as $\langle \text{subject},
-\,\text{action}, \,\text{direct object} \rangle$. In this case the \textit{dobj}
-dependency is used to extract the action verb as well as the direct object.
-Figure~\ref{fig: dependency extraction} shows this case. In the second case, the
-sentence is often of the form ``<subject> is... <description>''. Here we use the
-\textit{cop} dependency to extract the verb and the description. The triple
-$\langle \text{subject}, \,\text{copular verb}, \,\text{description} \rangle$ is
-added to the knowledge graph. In English, ``verbs of being'' such as ``is'',
-``are'', ``were'', etc. are all copular verbs. Narasimhan and Barzilay
-\cite{Narasimhan2015} do a similar type of extraction, but they create what they
-call an \textit{entity graph}, which is slightly different from our knowledge
-graph. Their entity graph refers to linguistic entities from the dependency
-parsing, while our knowledge graph refers to information, not linguistic
-objects.
+The information extracted should conform to knowledge graph format, namely
+\\$\langle \text{entity}_1, \,\text{relation}, \,\text{entity}_2 \rangle$. We
+want to frame the information in the sentence so that it is one entity with some
+relation to another entity. Most sentences are of the form where the subject
+performs some action or has some description, so we focus on these two types of
+sentences. In each sentence we isolate the main subject using the \textit{nsubj}
+dependency. Then we check for one of two relations. If the subject is performing
+some action then the sentence can be generally extracted as $\langle
+\text{subject}, \,\text{action}, \,\text{direct object} \rangle$. In this case
+the \textit{dobj} dependency is used to extract the action verb as well as the
+direct object. Figure~\ref{fig: dependency extraction} shows this case. In the
+second case, the sentence is often of the form ``<subject> is...
+<description>''. Here we use the \textit{cop} dependency to extract the verb and
+the description. The triple $\langle \text{subject}, \,\text{copular verb},
+\,\text{description} \rangle$ is added to the knowledge graph. In English,
+``verbs of being'' such as ``is'', ``are'', ``were'', etc. are all copular
+verbs. Narasimhan and Barzilay \cite{Narasimhan2015} do a similar type of
+extraction, but they create what they call an \textit{entity graph}, which is
+slightly different from our knowledge graph. Their entity graph refers to
+linguistic entities from the dependency parsing, while our knowledge graph
+refers to information, not linguistic objects.
 
 \subsection{Tensor Decomposition}
 \label{Tensor Decomposition}
@@ -676,12 +701,12 @@ the squared frobenius norm of this difference.
 
 \begin{equation}
 \label{eq: loss function}
-    f(A, R_k) = \dfrac{1}{2} \sum_k \Vert \mathcal{X}_k - AR_kA^T \Vert _F^2
+    f(A, R_k) = \dfrac{1}{2} \sum_k \norm{\mathcal{X}_k - AR_kA^T}_F^2
 \end{equation}
 
 where the frobenius norm of some $a\times b$ matrix X is defined as
 
-$$\Vert X \Vert_F = \sqrt{\sum_{i=1}^a \sum_{j=1}^b |X_{ij}|^2}$$
+$$\norm{X}_F = \sqrt{\sum_{i=1}^a \sum_{j=1}^b |X_{ij}|^2}$$
 
 To find the optimal $A$ and $R_k$, we just have to minimize \ref{eq: loss
 function}, along with some regularization function $g(A, R_k)$. Formally,
@@ -692,11 +717,11 @@ function}, along with some regularization function $g(A, R_k)$. Formally,
 \end{equation}
 
 In \cite{Nickel2011}\cite{Chang2014} the regularization term is simply defined
-as $g(A, R_k) = \dfrac{1}{2}\lambda (\Vert A \Vert_F + \sum_k \Vert R_k
-\Vert_F)$. This is a standard regularization function where $\lambda$ is a
-hyperparameter. The aim is to prevent overfitting when we try to solve the
-optimization problem. We enhance their approach by using a stronger
-regularization function which adds more constraints on the factorization. \\
+as $g(A, R_k) = \dfrac{1}{2}\lambda \left(\norm{A}_F + \sum_k \norm{R_k}_F\right)$. This is
+a standard regularization function where $\lambda$ is a hyperparameter. The aim
+is to prevent overfitting when we try to solve the optimization problem. We
+enhance their approach by using a stronger regularization function which adds
+more constraints on the factorization. \\
 
 \subsubsection{Semantically Smooth Embedding}
 \label{Semantically Smooth Embedding}
@@ -726,8 +751,8 @@ w_{ij} =
 \end{cases}
 $$
 
-$$R = \sum_{i=1}^n \lVert \mathbf{e_i} - \sum_{e_j \in \mathcal{N}(e_i)} w_{ij}
-\mathbf{e_j} \rVert_2^2$$
+$$R = \mathlarger{\sum_{i=1}^n} \norm{\mathbf{e_i} - \sum_{e_j \in \mathcal{N}(e_i)} w_{ij}
+\mathbf{e_j}}_2^2$$
 
 where $R$ is the regularization term added to the loss function. The logic here
 is that we suffer more penalty in our loss function when entities that are close
@@ -1205,14 +1230,10 @@ section. This indicates that it is predicting an answer based on some underlying
 semantic information, rather than simply the most commonly-seen answer choice.
 Simply guessing the most commonly-seen answer choice is not useful in evaluating
 how well the model understands the semantic information of the questions and the
-underlying knowledge graph. Therefore the 10-layer MemN2N is a much better
-model.
-
-The reason the 1-layer MemN2N only outputs the most commonly-seen answer choice
-is that it overfits very quickly. Figure~\ref{fig: training error} shows how the
-1-layer MemN2N rapidly fits the answer distribution to the training data, and
-becomes more confident in its answer with more training iterations. We can guard
-against overfitting by adding more layers.
+underlying knowledge graph. The reason the 1-layer MemN2N only outputs the most
+commonly-seen answer choice is that it overfits very quickly. We can guard
+against overfitting and create a more flexible architecture by adding more
+layers. Therefore the 10-layer MemN2N is a much better model.
 
 \subsection{Interpretation of Results}
 \label{Interpretation of Results}
@@ -1279,14 +1300,14 @@ total number of questions of each difficulty.
 \begin{figure}[!tb]
     \centering
     \includegraphics[width=0.7\textwidth,keepaspectratio]{figures/qa_by_difficulty.png}
-    \caption{The total questions of each difficulty answered correctly by the models}
+    \caption{Total correct answers by difficulty level}
     \label{fig: qa_by_difficulty}
 \end{figure}
 
 \begin{figure}[!tb]
     \centering
     \includegraphics[width=0.7\textwidth,keepaspectratio]{figures/qa_by_difficulty_percent.png}
-    \caption{The percent of questions of each difficulty answered correctly by the models}
+    \caption{Percent of questions of each difficulty level answered correctly}
     \label{fig: qa_by_difficulty_percent}
 \end{figure}
 
@@ -1355,8 +1376,8 @@ single lowest and highest performances across both models and all tests.
 \begin{figure}[!tb]
     \centering
     \includegraphics[width=0.7\textwidth,keepaspectratio]{figures/qa_by_test.png}
-    \caption{The percent of questions on each test answered correctly by the models}
-    \label{fig: qa_by_percent}
+    \caption{Percent of questions on each test answered correctly}
+    \label{fig: qa_by_test}
 \end{figure}
 
 This result is to be expected, as we discussed in Section \ref{Model Comparison}
@@ -1525,8 +1546,27 @@ the Memory Networks \cite{Weston2015a, Sukhbaatar2015} architecture and
 generalize it so that it can take any arbitrary knowledge graph and question
 as input.
 
-We also demonstrate the results of both tensor decomposition and Memory Networks
-method on 
+We evaluate the tensor decomposition and Memory Networks methods on three full
+SAT reading comprehension tests. We demonstrate that the methods are able to
+answer questions correctly using the actual semantic and structural meaning of
+the original text. We also prove that our enhanced models perform better than
+their respective baselines. The tensor decomposition model mostly outperforms
+the Memory Networks model, but the Memory Networks model has a higher potential
+to perform well. We discuss the types of questions which are possible for these
+models to answer and which require a higher level of analysis. Finally, we
+present possible extensions to our models. These include stronger semantic
+parsing, making the tensor model more robust, and improving the Memory Network's
+consistency.
+
+The main goal of this research was to create a general model that could be used
+to tackle a machine comprehension task that is much harder than the standard
+MCTest \cite{Richardson2013} and bAbi \cite{Weston2015} datasets. We wanted to
+show that these models could actually capture the semantic and structural
+information of the text, and use that to answer questions. In this regard we
+have definitely succeeded. Both models are able to parse the meaning of the text
+as well as the questions, and use that information to find the correct answers.
+There is still much room for improvement, however. We hope that the ideas
+presented here will be useful in further machine comprehension research.
 
 \newpage
 \bstctlcite{bstctl:etal, bstctl:nodash, bstctl:simpurl}
@@ -1543,7 +1583,9 @@ method on
 In this section we present the derivation for the output layer error of an RNN
 with cross-entropy loss and softmax at the output layer. Let us consider an
 output layer with $n$ nodes. Define $z_i$ as the quantity before activation
-function at the output layer, and $h_i$ as the final output of node $i$.
+function at the output layer, and $h_i$ as the final output of node $i$. The
+vector of $h_i$ is the output $\hat{y}$. The true output of node $i$ is $t_i$,
+and the true output vector is $y$.
 
 \begin{equation}
     \label{eq: output layer value}
@@ -1561,17 +1603,44 @@ The partial derivatives yield
         {\left( \sum\limits_{j=1}^n e^{z_j} \right)^2}
         = \dfrac{e^{z_i}\sum\limits_{j=1}^n e^{z_j}}{\left( \sum\limits_{j=1}^n e^{z_j} \right)^2}
         - \left( \dfrac{e^{z_i}}{ \sum\limits_{j=1}^n e^{z_j} } \right)^2 \\
+        &\phantom{=} \\
         &= h_i - h_i^2
         = h_i\left( 1 - h_i \right) \\
+        &\phantom{=} \\
         \dfrac{\partial h_i}{\partial z_j} &= \dfrac{\sum\limits_{j=1}^n e^{z_j}*0 - e^{z_i}(e^{z_i})}
         {\left( \sum\limits_{j=1}^n e^{z_j} \right)^2}
         = \dfrac{-e^{z_i}}{\sum\limits_{j=1}^n e^{z_j}}\dfrac{e^{z_j}}{\sum\limits_{j=1}^n e^{z_j}} \\
+        &\phantom{=} \\
         &= -h_ih_j
     \end{aligned}
     % \end{gather*}
 \end{equation}
 
-******WORK IN PROGRESS*******
+We can arrange the partials in an $n\times n$ matrix as
+
+$$
+\dfrac{\partial h_i}{\partial z_j} =
+\begin{cases}
+    h_i(1-h_i) & \text{if } i = j \\
+    -h_ih_j & \text{if } i \neq j
+\end{cases}
+$$
+
+The cross-entropy cost function $C$ is defined as $C = -\sum_i t_i \log h_i$.
+Therefore when we take the partial of $C$ with respect to the individual $z_i$,
+we need $\dfrac{\partial h_i}{\partial z_i}$ as well as $\dfrac{\partial
+h_j}{\partial z_i}$.
+
+\begin{equation}
+    \label{eq: loss function partial to h}
+    \begin{aligned}
+        \dfrac{\partial C}{\partial h_i} &= -\dfrac{t_i}{h_i}
+        &\phantom{=} \\
+        \dfrac{\partial C}{\partial z_i} &=
+    \end{aligned}
+\end{equation}
+
+
 
 % When we have $n$ output nodes, our cost function is $\sum^n_i y_i
 % \log(\hat{y_i})$. Consider some output
@@ -1587,9 +1656,9 @@ Here we present the full evaluation data on three practice tests.
 \caption{Evaluation on Test 1}
 \label{tab: Evaluation on Test 1}
 % \begin{tabularx}{\textwidth}{XXXXXXXXXX}
-\begin{tabular}{llllllll}
+\begin{tabularx}{\textwidth}{lXXXXXXX}
 \toprule
-                         & \textbf{Number} & \textbf{Tensor w/o Reg} & \textbf{Tensor w/ Reg} & \textbf{1-layer MemN2N} & \textbf{3-layer MemN2N} & \textbf{Correct Answer} & \textbf{Difficulty} \\ \midrule
+                         & \textbf{Number} & \textbf{Tensor\newline w/o Reg} & \textbf{Tensor\newline w/ Reg} & \textbf{1-layer\newline MemN2N} & \textbf{3-layer\newline MemN2N} & \textbf{Correct\newline Answer} & \textbf{Difficulty} \\ \midrule
 \textbi{Section 1}       &                 &                         &                        &                         &                         &                         &                     \\ \midrule
 \textbf{Small}           & 9               & A                       & A                      & -                       & -                       & E                       & E                   \\
 \textbf{}                & 10              & A                       & D                      & -                       & -                       & B                       & M                   \\
@@ -1634,10 +1703,10 @@ Here we present the full evaluation data on three practice tests.
 \textbf{}                & 17              & D                       & D                      & D                       & D                       & C                       & M                   \\
 \textbf{}                & 18              & D                       & D                      & D                       & A                       & A                       & M                   \\
 \textbf{}                & 19              & C                       & C                      & D                       & D                       & E                       & M                   \\ \midrule
-\textbf{Total Correct}   &                 & 7                       & 8                      & 2                       & 2                       &                         &                     \\
-\textbf{Total Questions} &                 & 41                      & 41                     & 13                      & 13                      &                         &                     \\ \bottomrule
-% \end{tabularx}
-\end{tabular}
+\textbf{Correct}         &                 & 7                       & 8                      & 2                       & 2                       &                         &                     \\
+\textbf{Questions}       &                 & 41                      & 41                     & 13                      & 13                      &                         &                     \\ \bottomrule
+\end{tabularx}
+% \end{tabular}
 \end{table}
 
 % Please add the following required packages to your document preamble:
@@ -1693,8 +1762,8 @@ Here we present the full evaluation data on three practice tests.
 \textbf{}                & 17                                  & C                                          & D                                           & D                                           & M                                       \\
 \textbf{}                & 18                                  & A                                          & B                                           & B                                           & M                                       \\
 \textbf{}                & 19                                  & C                                          & C                                           & A                                           & M                                       \\ \midrule
-\textbf{Total Correct}   &                                     & 11                                         & 7                                           &                                             &                                         \\
-\textbf{Total Questions} &                                     & 40                                         & 14                                          &                                             &                                         \\ \bottomrule
+\textbf{Correct}         &                                     & 11                                         & 7                                           &                                             &                                         \\
+\textbf{Questions}       &                                     & 40                                         & 14                                          &                                             &                                         \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -1751,8 +1820,8 @@ Here we present the full evaluation data on three practice tests.
 \textbf{}               & 17                                  & C                                          & D                                           & E                                           & M                                       \\
 \textbf{}               & 18                                  & B                                          & D                                           & A                                           & M                                       \\
 \textbf{}               & 19                                  & E                                          & D                                           & D                                           & M                                       \\ \midrule
-\textbf{Total Correct}  &                                     & 9                                          & 3                                           &                                             &                                         \\
-\textbf{Total Questions} &                                     & 41                                         & 14                                          &                                             &                                         \\ \bottomrule
+\textbf{Correct}        &                                     & 9                                          & 3                                           &                                             &                                         \\
+\textbf{Questions}      &                                     & 41                                         & 14                                          &                                             &                                         \\ \bottomrule
 \end{tabular}
 \end{table}
 
