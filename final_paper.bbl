@@ -58,6 +58,12 @@ A.~Bordes, N.~Usunier, A.~Garcia-Duran, J.~Weston, and O.~Yakhnenko,
   \emph{Advances in Neural Information Processing Systems}, 2013, pp.
   2787--2795.
 
+\bibitem{Britz2015}
+\BIBentryALTinterwordspacing
+D.~Britz. (2015) Introduction to rnns. [Online]. Available:
+  \url{http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/}
+\BIBentrySTDinterwordspacing
+
 \bibitem{Chang2014}
 K.-W. Chang, W.-t. Yih, B.~Yang, and C.~Meek, ``{Typed tensor decomposition of
   knowledge bases for relation extraction},'' \emph{Proceedings of the 2014
@@ -86,6 +92,11 @@ S.~Guo, Q.~Wang, B.~Wang, L.~Wang, and L.~Guo, ``Semantically smooth knowledge
 L.~Hirschman, M.~Light, E.~Breck, and J.~D. Burger, ``{{\{}D{\}}eep
   {\{}R{\}}ead: {\{}A{\}} Reading Comprehension System},'' \emph{Proceedings of
   ACL}, pp. 325--332, 1999.
+
+\bibitem{Hochreiter1991}
+S.~Hochreiter, ``Untersuchungen zu dynamischen neuronalen netzen,''
+  \emph{Master's thesis, Institut fur Informatik, Technische Universitat,
+  Munchen}, 1991.
 
 \bibitem{Jones2001}
 \BIBentryALTinterwordspacing

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  28 APR 2016 20:40
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  29 APR 2016 02:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1078,136 +1078,150 @@ File: mt-eur.cfg 2006/07/31 v1.1 microtype config. file: AMS Euler Roman (RS)
 \openout4 = `final_paper.toc'.
 
 
-[5] [6] [7]
-LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 202.
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 115--126
+
+ []
+
+[6] [7] [8]
+LaTeX Font Info:    Try loading font information for T1+pcrs on input line 208.
 
 
-LaTeX Warning: Reference `Model' on page 8 undefined on input line 202.
-
-[8]
-LaTeX Font Info:    Try loading font information for T1+pcrs on input line 205.
-
- (/usr/local/texlive/2013/texmf-dist/tex/latex/courier-scaled/t1pcrs.fd
+(/usr/local/texlive/2013/texmf-dist/tex/latex/courier-scaled/t1pcrs.fd
 File: t1pcrs.fd 2004/07/09 scalable font definitions for T1/pcrs.
 )
 LaTeX Font Info:    Font shape `T1/pcrs/m/n' will be
-(Font)              scaled to size 10.5pt on input line 205.
+(Font)              scaled to size 10.5pt on input line 208.
 Package microtype Info: Loading generic settings for font family
 (microtype)             `pcrs' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
+LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 229.
 
-[9] <figures/Dependency_Graph.png, id=353, 333.245pt x 115.43124pt>
+[9] <figures/Dependency_Graph.png, id=354, 333.245pt x 115.43124pt>
 File: figures/Dependency_Graph.png Graphic file (type png)
 
 <use figures/Dependency_Graph.png>
-Package pdftex.def Info: figures/Dependency_Graph.png used on input line 261.
-(pdftex.def)             Requested size: 216.81pt x 75.10162pt.
+Package pdftex.def Info: figures/Dependency_Graph.png used on input line 265.
+(pdftex.def)             Requested size: 260.17465pt x 90.12758pt.
  [10 <./figures/Dependency_Graph.png>]
-<figures/Example_KG.png, id=366, 501.875pt x 500.87125pt>
+<figures/Example_KG.png, id=367, 501.875pt x 500.87125pt>
 File: figures/Example_KG.png Graphic file (type png)
 
 <use figures/Example_KG.png>
-Package pdftex.def Info: figures/Example_KG.png used on input line 305.
+Package pdftex.def Info: figures/Example_KG.png used on input line 308.
 (pdftex.def)             Requested size: 303.53267pt x 302.94014pt.
+ [11] [12 <./figures/Example_KG.png>] [13] [14]
+[15] [16] [17] [18]
+Underfull \hbox (badness 10000) in paragraph at lines 579--588
 
+ []
 
-LaTeX Warning: Reference `Model' on page 11 undefined on input line 316.
-
-[11] [12 <./figures/Example_KG.png>] [13] [14] [15]
-
-LaTeX Warning: Reference `Model' on page 16 undefined on input line 462.
-
-[16] [17] [18] [19] [20]
-<figures/Dependency_Extraction.png, id=455, 343.2825pt x 175.65625pt>
+[19] [20]
+<figures/Dependency_Extraction.png, id=466, 343.2825pt x 175.65625pt>
 File: figures/Dependency_Extraction.png Graphic file (type png)
 
 <use figures/Dependency_Extraction.png>
 Package pdftex.def Info: figures/Dependency_Extraction.png used on input line 6
-27.
-(pdftex.def)             Requested size: 216.81pt x 110.94008pt.
- [21 <./figures/Dependency_Extraction.png>] <figures/tensor_figure.png, id=470,
+37.
+(pdftex.def)             Requested size: 260.17465pt x 133.13023pt.
+ [21 <./figures/Dependency_Extraction.png>] <figures/tensor_figure.png, id=480,
  268.00125pt x 235.88126pt>
 File: figures/tensor_figure.png Graphic file (type png)
 
 <use figures/tensor_figure.png>
-Package pdftex.def Info: figures/tensor_figure.png used on input line 688.
+Package pdftex.def Info: figures/tensor_figure.png used on input line 699.
 (pdftex.def)             Requested size: 216.81pt x 190.82521pt.
  [22] [23 <./figures/tensor_figure.png>]
-Overfull \hbox (6.86372pt too wide) in paragraph at lines 748--754
+Overfull \hbox (6.86372pt too wide) in paragraph at lines 758--764
 []\T1/ptm/m/n/12 (-20) In [[]][[]] the reg-u-lar-iza-tion term is sim-ply de-fi
 ned as $\OML/cmm/m/it/12 g\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 A; R[]\OT1/cmr/m/n/
 12 ) = []\OML/cmm/m/it/12 ^^U []$\T1/ptm/m/n/12 (-20) .
  []
 
-[24] [25] [26] [27] [28] [29] [30] [31] [32] [33] [34]
+[24]
+Underfull \hbox (badness 10000) in paragraph at lines 819--820
+
+ []
+
+[25]
+Underfull \hbox (badness 10000) in paragraph at lines 852--857
+
+ []
+
+[26] [27] [28] [29] [30] [31]
+Underfull \hbox (badness 10000) in paragraph at lines 1063--1067
+
+ []
+
+[32] [33] [34]
 LaTeX Font Info:    Font shape `T1/pcrs/m/n' will be
-(Font)              scaled to size 8.75pt on input line 1146.
- [35] [36] [37] [38]
-[39] <figures/qa_by_difficulty.png, id=621, 666.8112pt x 400.3758pt>
+(Font)              scaled to size 8.75pt on input line 1154.
+ [35] [36] [37]
+Underfull \hbox (badness 10000) in paragraph at lines 1278--1284
+
+ []
+
+[38] [39] <figures/qa_by_difficulty.png, id=630, 666.8112pt x 400.3758pt>
 File: figures/qa_by_difficulty.png Graphic file (type png)
 
 <use figures/qa_by_difficulty.png>
-Package pdftex.def Info: figures/qa_by_difficulty.png used on input line 1331.
+Package pdftex.def Info: figures/qa_by_difficulty.png used on input line 1339.
 (pdftex.def)             Requested size: 390.25536pt x 234.33191pt.
 
-<figures/qa_by_difficulty_percent.png, id=622, 665.8476pt x 399.894pt>
+<figures/qa_by_difficulty_percent.png, id=631, 665.8476pt x 399.894pt>
 File: figures/qa_by_difficulty_percent.png Graphic file (type png)
 
 <use figures/qa_by_difficulty_percent.png>
 Package pdftex.def Info: figures/qa_by_difficulty_percent.png used on input lin
-e 1338.
+e 1346.
 (pdftex.def)             Requested size: 390.25536pt x 234.37943pt.
  [40 <./figures/qa_by_difficulty.png>] [41 <./figures/qa_by_difficulty_percent.
 png>] [42]
-<figures/qa_by_test.png, id=640, 667.293pt x 400.8576pt>
+<figures/qa_by_test.png, id=649, 667.293pt x 400.8576pt>
 File: figures/qa_by_test.png Graphic file (type png)
 
 <use figures/qa_by_test.png>
-Package pdftex.def Info: figures/qa_by_test.png used on input line 1407.
+Package pdftex.def Info: figures/qa_by_test.png used on input line 1415.
 (pdftex.def)             Requested size: 390.25536pt x 234.43652pt.
  [43 <./figures/qa_by_test.png>] [44] [45] [46]
 [47] [48] (./final_paper.bbl [49]) [50]
-<figures/MCTest_Example.png, id=705, 335.8146pt x 410.0118pt>
+<figures/MCTest_Example.png, id=716, 335.8146pt x 410.0118pt>
 File: figures/MCTest_Example.png Graphic file (type png)
 
 <use figures/MCTest_Example.png>
-Package pdftex.def Info: figures/MCTest_Example.png used on input line 1618.
+Package pdftex.def Info: figures/MCTest_Example.png used on input line 1625.
 (pdftex.def)             Requested size: 216.81pt x 264.70895pt.
  [51 <./figures/MCTest_Example.png>]
-<figures/SAT_Example.png, id=715, 476.0184pt x 542.025pt>
+<figures/SAT_Example.png, id=726, 476.0184pt x 542.025pt>
 File: figures/SAT_Example.png Graphic file (type png)
 
 <use figures/SAT_Example.png>
-Package pdftex.def Info: figures/SAT_Example.png used on input line 1636.
+Package pdftex.def Info: figures/SAT_Example.png used on input line 1643.
 (pdftex.def)             Requested size: 390.25536pt x 444.38066pt.
  [52 <./figures/SAT_Example.png>] [53] [54]
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 1805.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 1812.
 LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <10> not available
-(Font)              Font shape `T1/ptm/b/it' tried instead on input line 1806.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1912.
+(Font)              Font shape `T1/ptm/b/it' tried instead on input line 1813.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1919.
 
 [55] [56] [57]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1912.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1919.
  (./final_paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1912.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1912.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1919.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1919.
 
 Package rerunfilecheck Info: File `final_paper.out' has not changed.
-(rerunfilecheck)             Checksum: 97755D2E34B0A3DC0E59DB97A4984902;7872.
-
-
-LaTeX Warning: There were undefined references.
-
+(rerunfilecheck)             Checksum: AF3C7B23A2B6DEF5946E6CA0C34E008E;7968.
  ) 
 Here is how much of TeX's memory you used:
- 17392 strings out of 493315
- 256092 string characters out of 6137904
- 463270 words of memory out of 5000000
- 20104 multiletter control sequences out of 15000+600000
- 78706 words of font info for 268 fonts, out of 8000000 for 9000
+ 17418 strings out of 493315
+ 256376 string characters out of 6137904
+ 464351 words of memory out of 5000000
+ 20105 multiletter control sequences out of 15000+600000
+ 80250 words of font info for 283 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  48i,18n,75p,773b,509s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
@@ -1229,10 +1243,10 @@ st/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2013/texmf-dist
 ype1/urw/times/utmb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/t
 imes/utmbi8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr
 8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on final_paper.pdf (57 pages, 1624639 bytes).
+Output written on final_paper.pdf (57 pages, 1626248 bytes).
 PDF statistics:
- 844 PDF objects out of 1000 (max. 8388607)
- 733 compressed objects within 8 object streams
- 158 named destinations out of 1000 (max. 500000)
+ 855 PDF objects out of 1000 (max. 8388607)
+ 744 compressed objects within 8 object streams
+ 160 named destinations out of 1000 (max. 500000)
  39861 words of extra memory for PDF output out of 42996 (max. 10000000)
 
