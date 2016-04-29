@@ -30,17 +30,47 @@
     convert the questions into queries on the graph. We present a tensor
     decomposition approach to answering queries by adding Semantically Smooth
     Embedding \cite{Guo2015} to RESCAL \cite{Nickel2011}. We also generalize the
-    Memory Networks \cite{Weston2015a, Sukhbaatar2015} to take any knowledge
-    graph as input. We evaluate these models on three full SAT reading
-    comprehension tests. The models presented here perform better than their
-    respective baselines. Both models demonstrate the ability to answer
-    questions based on the semantic and structural information in the text.
+    Memory Networks \cite{Weston2015a, Sukhbaatar2015} architecture to take any
+    knowledge graph as input. We evaluate these models on three full SAT reading
+    comprehension tests. The models presented here outperform their respective
+    baselines. Both models demonstrate the ability to capture the semantic and
+    structural information in the text and answer questions using that
+    information.
 
 \end{abstract}
-\restoregeometry
+
+\newpage
+%
+\section*{\centering{Acknowledgements}}
+% \singlespacing
+I would like to say thank you to Professor Christiane Fellbaum for her guidance
+and encouragement over the past year in helping a student who didn't know
+anything about linguistics teach a computer to read and answer SAT questions.
+Professor Fellbaum, your willingness to meet with me every week, teach me
+concepts, and work through problems with me is the main reason I could take this
+thesis from a mere idea to its finished state. Your advice about work, graduate
+school, and life in general has been very helpful too. A big thank you to
+Professor Emmanuel Abbe as well for helping me understand knowledge graphs and
+for agreeing to review this thesis.
+
+Of course a huge thank you to all my friends here who have helped me learn and
+grow over the past four years. Thank you to all the members of The Lodge, who
+made sure that not a single day at Princeton was a boring one, and with whom I'm
+lucky to have spent so much time. We've lived together for four years and we'll
+be best friends for a lot longer. Thanks to everyone at Charter for all the
+great dinner conversations, gaming sessions, and wonderful memories. Thanks to
+the HackPrinceton team for helping me out with the hardest of tasks. Thanks to
+all my other friends who haven't been mentioned yet but whom I value just as
+much.
+
+Most importantly, a tremendous, tremendous thanks to my mother, father, and
+sister. It is impossible to say in words how grateful I am for everything you've
+done for me. All I have ever accomplished has been thanks to your love and
+support every step of the way. I love you all so much.
 
 \newpage
 
+\restoregeometry
 {\large \tableofcontents}
 \newpage
 % \title{
@@ -57,13 +87,14 @@
 % This document is intended to serve as a sample you can use for independent work reports.  We provide some guidelines on content and formatting.  They are not required, but they might be helpful.
 % \end{abstract}
 
-\section{Background and Motivation}
-\label{Background and Motivation}
+\section{Introduction}
+\label{Introduction}
 
 Machine question-answering (QA) has been a popular subject in recent research.
-It is a very interesting field from an academic perspective, requiring
-knowledge and techniques across the areas of artificial intelligence, machine
-learning, natural language processing, linguistics, and mathematics.
+It is a very interesting field from an academic as well as practical
+perspective, requiring knowledge and techniques across the areas of artificial
+intelligence, machine learning, natural language processing, linguistics, and
+mathematics.
 
 QA has applications to many aspects of daily life. A famous use of
 question-answering techniques is in Apple's Siri program. Siri combines speech
@@ -108,13 +139,15 @@ tests. The most common dataset is MCTest \cite{Richardson2013}, which we discuss
 in more detail in Section \ref{Related Work}. This dataset is a set of passages
 and reading comprehension questions created by crowdsourcing. The stories are
 ``carefully limited to those a young child would understand''
-\cite{Richardson2013}. Another common dataset is Facebook's bAbi dataset
-\cite{Weston2015}, which has a collection of short toy problems that can be used
-to train machine comprehension systems. These problems could certainly be solved
-by a human elementary school student. Berant et al. \cite{Berant2014} train a
-system to answer questions based on a paragraph describing biological processes,
-which is certainly an advanced topic, but the system is specialized for
-biological tasks and not applicable as is to general reading comprehension.
+\cite{Richardson2013}. An example of an MCTest passage and question can be found
+in Appendix Section \ref{MCTest Example}. Another common dataset is
+Facebook's bAbi dataset \cite{Weston2015}, which has a collection of short toy
+problems that can be used to train machine comprehension systems. These problems
+could certainly be solved by a human elementary school student. Berant et al.
+\cite{Berant2014} train a system to answer questions based on a paragraph
+describing biological processes, which is certainly an advanced topic, but the
+system is specialized for biological tasks and not applicable as is to general
+reading comprehension.
 
 In this paper we focus on SAT reading comprehension questions. The major reason
 is that they are far more complex than MCTest questions and other commonly-used
@@ -125,7 +158,8 @@ the individual choices is difficult by itself. SAT questions often test
 underlying themes and broad ideas rather than particular factual details
 (``Why'' or ``How'' questions). In contrast, MCTest questions are often of a
 ``Who'', ``When'', or ``What'' form, which have traditionally been easier for
-programs to answer.
+programs to answer. An example of an SAT reading comprehension passage can be
+found in Appendix Section \ref{SAT Example}.
 
 Another aspect that makes SAT questions so difficult is that they require
 inference to answer, as opposed to just matching words or syntax. MCTest and
@@ -227,7 +261,7 @@ High-Performance Dependency Parser by Chen and Manning \cite{Chen2014}.
 
 \begin{figure}[!tb]
     \centering
-    \includegraphics[width=0.7\textwidth,keepaspectratio]{figures/Dependency_Graph.png}
+    \includegraphics[width=0.5\textwidth,keepaspectratio]{figures/Dependency_Graph.png}
     \caption{A small example knowledge graph, from \cite{Chen2014}}
     \label{fig: dependency parsing}
 \end{figure}
@@ -294,10 +328,10 @@ either \textit{link prediction} queries or \textit{entity prediction} queries.
 \subsection{Neural Networks}
 \label{Neural Networks}
 
-As discussed in Section \ref{Background and Motivation}, recent research in
-machine comprehension has extensively used neural nets (NNs) and their variants.
-Here we provide a quick review of neural network design. These topics can be
-covered in far more depth in \cite{Bishop1995, Nielsen2015}.
+As discussed in Section \ref{Introduction}, recent research in machine
+comprehension has extensively used neural nets (NNs) and their variants. Here we
+provide a quick review of neural network design. These topics can be covered in
+far more depth in \cite{Bishop1995, Nielsen2015}.
 
 \subsubsection{Feed-forward Neural Networks}
 \label{Feed-forward Neural Networks}
@@ -310,7 +344,7 @@ input if this is the input layer). It multiplies these by some weight matrix
 $W^l$, transforms it using an activation function $g$, and sends its output to the
 next layer (or as the final output if this is the output layer). Common
 activation functions are the $tanh$ and $sigmoid$ functions. The sigmoid
-function is defined as $\sigma (x) = \frac{1}{1+e^{-x}}$. For now we will assume
+function is defined as $\sigma (x) = \dfrac{1}{1+e^{-x}}$. For now we will assume
 that our activation function is sigmoid.
 
 Mathematically, we define the input to the current layer as $x^{l-1}$,
@@ -330,7 +364,7 @@ the error of our output. We find the error at the output layer, and then change
 the weights at each previous layer, working backwards to the input layer. The
 key to backpropagation relies on updating the weights based on their partial
 derivatives with relation to $C$. In-depth derivations are provided in
-\cite{Bishop1995, Nielsen2015}.\\
+\cite{Bishop1995, Nielsen2015}.
 
 \subsubsection{Recurrent Neural Networks}
 \label{Recurrent Neural Networks}
@@ -356,8 +390,8 @@ error at the output node $i$ is simply $\hat{y_i} - y_i$. This is very
 convenient because it can be calculated rapidly, so it allows for fast training
 of the RNN. Training is normally a bottleneck, and by combining a robust output
 function and robust loss function we get a very elegant output error. As this is
-a very important result, we have included it in Section \ref{Derivation of
-Output Layer Error}.
+a very important result, we have included it in Appendix Section \ref{Derivation
+of Output Layer Error}.
 
 \section{Related Work}
 \label{Related Work}
@@ -450,17 +484,17 @@ Queries about the knowledge graph can be easily converted into searching over a
 relevant subset of elements in the factorization. Chang et al. \cite{Chang2014}
 created TRESCAL, which is an optimized version of RESCAL.
 
-\section{Model}
-\label{Model}
+\section{Our Model}
+\label{Our Model}
 
-This research presents three fundamental insights. \\
+This research presents three fundamental insights.
 
 \begin{enumerate}
 
     \item We treat the input text as a knowledge base and dynamically convert it
     into a knowledge graph. We can then interpret the questions as queries on
     the graph, requiring us to find an entity or relation that represents the
-    answer to the question. \\
+    answer to the question.
 
     \item We use tensor decomposition to embed the knowledge graph and
     questions. Specifically, we use an enhanced version of RESCAL
@@ -468,13 +502,13 @@ This research presents three fundamental insights. \\
     accurate by adding ``Semantically Smooth Embedding''(SSE), as proposed by
     Guo et al. \cite{Guo2015}. In their original paper they propose adding this
     type of embedding to tensor decomposition as future work, so to our
-    knowledge we are the first to perform tensor decomposition with SSE. \\
+    knowledge we are the first to perform tensor decomposition with SSE.
 
     \item We embed the knowledge graph and questions into input vectors, and
     pass them into a Memory Network. Given a set of embedded inputs and queries,
     this type of neural network takes advantage of ``memory'' to find new facts
     that are relevant given the current set of relevant facts, but may not be
-    relevant solely based on the query. \\
+    relevant solely based on the query.
 
 \end{enumerate}
 
@@ -492,7 +526,7 @@ mathematical basis.
 \label{Knowledge Graph Representation}
 
 The first part of our design is to dynamically convert the input passage into a
-knowledge graph and the questions as queries on that graph. \\
+knowledge graph and the questions as queries on that graph.
 
 \subsubsection{Advantages of Knowledge Graph Representation}
 \label{Advantages of Knowledge Graph Representation}
@@ -574,7 +608,7 @@ the graph but there is no way to perform higher-level reasoning. For example,
 questions that ask about classification of new information or broad themes of
 the passage cannot be answered. Nevertheless, these are flaws in any form of
 representation. The knowledge graph representation provides the most advantages
-and fewest drawbacks of any representation. \\
+and fewest drawbacks of any representation.
 
 \subsubsection{Converting to Knowledge Graph Representation}
 \label{Converting to Knowledge Graph Representation}
@@ -593,7 +627,7 @@ triple.
 
 \begin{figure}[!tb]
     \centering
-    \includegraphics[width=0.7\textwidth,keepaspectratio]{figures/Dependency_Extraction.png}
+    \includegraphics[width=0.5\textwidth,keepaspectratio]{figures/Dependency_Extraction.png}
     \caption{Extracting an entity-relation triple from a sentence, from \cite{Narasimhan2015}}
     \label{fig: dependency extraction}
 \end{figure}
@@ -631,10 +665,10 @@ neural network.
 Our model is an improved version of RESCAL, proposed by Nickel et al.
 \cite{Nickel2011} and used by Chang et al. \cite{Chang2014}. RESCAL itself takes
 the general tensor decomposition model proposed by Bader et al. \cite{Bader2007}
-and modifies it to work for relational learning. \\
+and modifies it to work for relational learning.
 
-\subsubsection{Knowledge Base Tensor}
-\label{Knowledge Base Tensor}
+\subsubsection{Knowledge Graph Tensor}
+\label{Knowledge Graph Tensor}
 
 The tensor decomposition approach treats the knowledge graph as a directed
 graph. A tensor is simply a multi-dimensional array. In our case, we use a
@@ -654,14 +688,14 @@ $$
 
 \begin{figure}[!tb]
     \centering
-    \includegraphics[width=0.7\textwidth,keepaspectratio]{figures/tensor_figure.png}
+    \includegraphics[width=0.5\textwidth,keepaspectratio]{figures/tensor_figure.png}
     \caption{A graphical representation of $\mathcal{X}$, from \cite{Chang2014}}
     \label{fig: tensor figure}
 \end{figure}
 
 Figure~\ref{fig: tensor figure} from \cite{Chang2014} presents a graphical view
 of $\mathcal{X}$. $\mathcal{X}$ is essentially a series of adjacency matrices
-$\mathcal{X}_k$, where each matrix only marks edges of relation type $k$. \\
+$\mathcal{X}_k$, where each matrix only marks edges of relation type $k$.
 
 \subsubsection{Tensor Factorization Overview}
 \label{Tensor Factorization Overview}
@@ -719,7 +753,7 @@ as $g(A, R_k) = \dfrac{1}{2}\lambda \left(\norm{A}_F + \sum_k \norm{R_k}_F\right
 a standard regularization function where $\lambda$ is a hyperparameter. The aim
 is to prevent overfitting when we try to solve the optimization problem. We
 enhance their approach by using a stronger regularization function which adds
-more constraints on the factorization. \\
+more constraints on the factorization.
 
 \subsubsection{Semantically Smooth Embedding}
 \label{Semantically Smooth Embedding}
@@ -794,7 +828,7 @@ $$ A_i \approx \sum_{i=1}^n w_{ij}A_j = \sum_{i=1} W_iA$$
 We can penalize more for an $A$ in which this distance is large. The reason we
 made the neighbor relation only one way is that we do not expect a large number
 of disconnected components of our knowledge graph, and a two-way neighbor set
-would push every node to have the same latent representation. \\
+would push every node to have the same latent representation.
 
 \subsubsection{Solving the Optimization Problem}
 \label{Solving the Optimization Problem}
@@ -853,7 +887,7 @@ $$R_k \leftarrow \left( \left(A \otimes A \right)^T \left(A \otimes A\right)
  \right) ^{-1} \left(A \otimes A\right) \textbf{vec}\left(\mathcal{X}_k\right)$$
 
 We alternate updating $A$ and $R_k$ until we have performed some maximum number
-of iterations or until $\frac{f(A, R_k)}{\norm{\mathcal{X}_k}_F^2}$ is below
+of iterations or until $\dfrac{f(A, R_k)}{\norm{\mathcal{X}_k}_F^2}$ is below
 some tolerance $\epsilon$. The final factorization $\hat{\mathcal{X}}$ can now
 be used to answer queries.
 
@@ -894,15 +928,15 @@ and choose the answer that is most similar to it.
 \label{Memory Networks}
 
 The second way we propose answering queries is with neural networks.
-Specifically, an enhanced version of Memory Networks. The advantage of the
-neural network approach is that it is very intuitive, computationally feasible,
-and empirically proven. However, it does lack the strong theory of the
-mathematical approach. We choose the Memory Networks architecture as the basis
-for our model because it has strong performance on the bAbi dataset and the
-foundational architecture itself scales easily to more complex problems as long
-as the input is in a valid format. First we review the architecture as proposed
-in \cite{Sukhbaatar2015}. Then we discuss how to adapt it to this specific
-problem. \\
+Specifically, an enhanced version of Memory Networks (also referred to as
+\textit{MemN2N}). The advantage of the neural network approach is that it is
+very intuitive, computationally feasible, and empirically proven. However, it
+does lack the strong theory of the mathematical approach. We choose the Memory
+Networks architecture as the basis for our model because it has strong
+performance on the bAbi dataset and the foundational architecture itself scales
+easily to more complex problems as long as the input is in a valid format. First
+we review the architecture as proposed in \cite{Sukhbaatar2015}. Then we discuss
+how to adapt it to this specific problem.
 
 \subsubsection{Memory Network Architecture}
 \label{Memory Network Architecture}
@@ -962,7 +996,7 @@ query. That output is combined with the initial query and passed as $u$ to the
 next layer. That layer finds how relevant each memory vector is to the new state
 $u$. This means that memories which were not very relevant to the initial query
 may be relevant to the memories which were relevant to the initial query. Each
-layer finds new memories that can help answer the question. \\
+layer finds new memories that can help answer the question.
 
 \subsubsection{Memory Network Enhancements}
 \label{Memory Network Enhancements}
@@ -979,7 +1013,7 @@ actually match the concept in the query, as opposed to simply matching the
 words.
 
 We propose stacking horizontally each slice of the tensor $\mathcal{X}$ as
-defined in Section \ref{Knowledge Base Tensor} and using each column as an input
+defined in Section \ref{Knowledge Graph Tensor} and using each column as an input
 vector. In total the input matrix $\mathcal{X}'$ will be of shape $n\times
 (nm)$. The query is more complicated to vectorize. The memory network
 architecture requires the query to be a 1-dimensional vector. We create a vector
@@ -1059,11 +1093,11 @@ can use for data.
 There are no publicly available datasets for the SAT. We tried contacting ETS to
 obtain a research dataset, but as we have not yet heard a response, we collected
 practice SAT tests from a 2005 CollegeBoard preparation book. We evaluated on
-all reading comprehension sections from 3 full SAT tests. These books were
-already purchased several years ago. For convenience, we use ``test'' to refer
-to just the 3 reading sections of a test, and ``reading section'' to refer to
-just the reading comprehension passages and accompanying questions of each
-reading section.
+all reading comprehension sections from 3 full SAT tests. This book was already
+purchased several years ago. For convenience, we use ``test'' to refer to just
+the 3 reading sections of a test, and ``reading section'' to refer to just the
+reading comprehension passages and accompanying questions of each reading
+section.
 
 Each practice test contains 3 reading sections. Within each section there can be
 \textit{small} passages (about 100 words) with 4 questions, \textit{medium}
@@ -1132,17 +1166,17 @@ questions, and answers. For each passage, the passage text is fed through the
 knowledge extraction program, which converts it into a set of entity-relation
 triples and outputs those into another text file.
 
-The tests are answered passage-by-passage. This means that each model evaluates
-on one passage at a time. Each passage is considered its own knowledge graph.
-This means that in the tensor model a new tensor of varying dimensionality is
-created for each passage, and the accompanying questions can only be answered as
-queries on that particular graph. Combining the knowledge graphs for different
-sections would only serve to make it harder to answer the questions (and it is
-already hard enough!) Therefore it makes sense to run the tensor model on each
-passage separately. The same holds true for the Memory Networks model. The
-neural net has an additional training constraint. Due to the dimensionality
-constraints on the embedding matrices and the underlying architecture, it is
-not possible to combine the tensors from different passages.
+The tests are answered passage-by-passage. This means that each model is
+evaluated one passage at a time. Each passage is considered its own knowledge
+graph. This means that in the tensor model a new tensor of varying
+dimensionality is created for each passage, and the accompanying questions can
+only be answered as queries on that particular graph. Combining the knowledge
+graphs for different sections would only serve to make it harder to answer the
+questions (and it is already hard enough!) Therefore it makes sense to run the
+tensor model on each passage separately. The same holds true for the Memory
+Networks model. The neural net has an additional training constraint. Due to the
+dimensionality constraints on the embedding matrices and the underlying
+architecture, it is not possible to combine the tensors from different passages.
 
 In each evaluation we first train the model and then evaluate its performance on
 the questions for that passage. The Tensor model is trained using ALS (Section
@@ -1165,13 +1199,13 @@ incredibly low for each model.
 \subsection{Results}
 \label{Results}
 
-Section \ref{Full Evaluation Data} in the Appendix contains full evaluation data
-for each test. The tables contain each model's answer for every question, as
-well as the correct answer for that question and its associated difficulty. We
-evaluated Test 1 on our enhanced models as well as their baseline versions for
-comparison. Both models outperformed the baselines, so on Tests 2 and 3 we
-evaluated only on our enhanced models. The analysis of exactly how our models
-perform better is in Section \ref{Comparison to Baseline}.
+Appendix Section \ref{Full Evaluation Data} contains full evaluation data for
+each test. The tables contain each model's answer for every question, as well as
+the correct answer for that question and its associated difficulty. We evaluated
+Test 1 on our enhanced models as well as their baseline versions for comparison.
+Both models outperformed the baselines, so on Tests 2 and 3 we evaluated only on
+our enhanced models. The analysis of exactly how our models perform better is in
+Section \ref{Comparison to Baseline}.
 
 On Test 1 our Tensor model with regularization (Section \ref{Tensor
 Decomposition}) scores 8 / 41 while the model without regularization scores 7 /
@@ -1292,19 +1326,19 @@ poorly.
 
 Figure~\ref{fig: qa_by_difficulty} shows the total number of questions answered
 across all three tests sorted by their difficulty, while Figure~\ref{fig:
-qa_by_difficulty_percent} controls Figure~\ref{fig: qa_by_difficulty} for the
-total number of questions of each difficulty.
+qa_by_difficulty_percent} uses the same data but controlled for the total number
+of questions of each difficulty.
 
 \begin{figure}[!tb]
     \centering
-    \includegraphics[width=0.7\textwidth,keepaspectratio]{figures/qa_by_difficulty.png}
+    \includegraphics[width=0.9\textwidth,keepaspectratio]{figures/qa_by_difficulty.png}
     \caption{Total correct answers by difficulty level}
     \label{fig: qa_by_difficulty}
 \end{figure}
 
-\begin{figure}[!tb]
+\begin{figure}[!bt]
     \centering
-    \includegraphics[width=0.7\textwidth,keepaspectratio]{figures/qa_by_difficulty_percent.png}
+    \includegraphics[width=0.9\textwidth,keepaspectratio]{figures/qa_by_difficulty_percent.png}
     \caption{Percent of questions of each difficulty level answered correctly}
     \label{fig: qa_by_difficulty_percent}
 \end{figure}
@@ -1362,8 +1396,8 @@ author's tone throughout the passage. Our models cannot understand tone, and
 cannot process information not contained in the knowledge graph. These types
 of questions are therefore impossible for them to answer.
 
-\subsection{Comparing Tensor Model to MemN2N}
-\label{Comparing Tensor Model to MemN2N}
+\subsection{Comparing Tensor Model to Memory Networks}
+\label{Comparing Tensor Model to Memory Networks}
 
 Figure~\ref{fig: qa_by_test} shows the percent of questions answered correctly
 by each model on each test. There are several striking observations. The first
@@ -1373,7 +1407,7 @@ single lowest and highest performances across both models and all tests.
 
 \begin{figure}[!tb]
     \centering
-    \includegraphics[width=0.7\textwidth,keepaspectratio]{figures/qa_by_test.png}
+    \includegraphics[width=0.9\textwidth,keepaspectratio]{figures/qa_by_test.png}
     \caption{Percent of questions on each test answered correctly}
     \label{fig: qa_by_test}
 \end{figure}
@@ -1498,8 +1532,8 @@ actual questions, it cannot learn from the structure of the questions. By adding
 a small supervised training component, we can achieve the flexibility of the
 MemN2N while keeping the performance guarantee of the tensor model.
 
-\subsection{MemN2N Improvements}
-\label{MemN2N Improvements}
+\subsection{Memory Network Improvements}
+\label{Memory Network Improvements}
 
 There are two main improvements we can make to the Memory Network. The first is
 with the underlying architecture itself. The input vectors must be embedded with
@@ -1575,6 +1609,39 @@ presented here will be useful in further machine comprehension research.
 \section{Appendix}
 \label{Appendix}
 
+\subsection{MCTest Example}
+\label{MCTest Example}
+
+Figure~\ref{fig: MCTest Example} shows a sample MCTest passage and an
+accompanying question. The sentence structure is straightforward throughout the
+passage, and the question can be answered using bag-of-words matching.
+\vspace{3cm}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth,keepaspectratio]{figures/MCTest_Example.png}
+    \caption{A sample MCTest passage and accompanying question, from \cite{Richardson2013}}
+    \label{fig: MCTest Example}
+\end{figure}
+
+\newpage
+\subsection{SAT Example}
+\label{SAT Example}
+
+Figure~\ref{fig: SAT Example} shows a sample SAT reading comprehension passage
+and some accompanying questions. The sentence structure here is far more complex
+than in the MCTest passages. The vocabulary used is more varied and nuanced as
+well. Additionally, the questions are tougher to parse and require information
+across multiple sentences and even paragraphs. The answer choices are harder to
+interpret as well.
+
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.9\textwidth,keepaspectratio]{figures/SAT_Example.png}
+    \caption{A sample SAT reading comprehension passage and accompanying questions}
+    \label{fig: SAT Example}
+\end{figure}
+
+\newpage
 \subsection{Derivation of Output Layer Error}
 \label{Derivation of Output Layer Error}
 
@@ -1617,6 +1684,7 @@ The partial derivatives yield
     % \end{gather*}
 \end{equation}
 
+\newpage
 When we take the partial of $C$ with respect to the individual $z_i$, we need
 $\dfrac{\partial \hat{y}_i}{\partial z_i}$ as well as $\dfrac{\partial
 \hat{y}_j}{\partial z_i}$.
@@ -1666,10 +1734,10 @@ allows the RNN to learn quickly.
 \subsection{Full Evaluation Data}
 \label{Full Evaluation Data}
 Here we present the full evaluation data on three practice tests.
-
+% \vspace{2cm}
 % Please add the following required packages to your document preamble:
 % \usepackage{booktabs}
-\begin{table}[b]
+\begin{table}[h]
 \scriptsize
 \centering
 \caption{Evaluation on Test 1}
@@ -1730,7 +1798,7 @@ Here we present the full evaluation data on three practice tests.
 
 % Please add the following required packages to your document preamble:
 % \usepackage{booktabs}
-\begin{table}[]
+\begin{table}[t]
 \footnotesize
 \centering
 \caption{Evaluation on Test 2}
@@ -1788,7 +1856,7 @@ Here we present the full evaluation data on three practice tests.
 
 % Please add the following required packages to your document preamble:
 % \usepackage{booktabs}
-\begin{table}[]
+\begin{table}[t]
 \footnotesize
 \centering
 \caption{Evaluation on Test 3}

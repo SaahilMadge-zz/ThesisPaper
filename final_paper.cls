@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{jpaper}[2012/08/02 ISCA Submission template]
+\ProvidesClass{final_paper}[2012/08/02 ISCA Submission template]
 
 % jpaper provides two modes:
 % In addition to the usual options leqno and fleqn, jpaper also provides the
